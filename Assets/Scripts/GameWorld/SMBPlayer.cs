@@ -3,9 +3,17 @@ using System.Collections;
 
 public class SMBPlayer : MonoBehaviour {
 
+	enum MoveDirection {
+		Forward  =  1,
+		Backward = -1
+	}
+
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
 
+	private bool _isOnGround = false;
+
+	// Custom components
 	private Rigidbody2D _rigidbody;
 
 	void Start() {
@@ -20,10 +28,10 @@ public class SMBPlayer : MonoBehaviour {
 			Jump();
 
 		if (Input.GetKey (KeyCode.LeftArrow))
-			Move (-1f);
+			Move ((float)MoveDirection.Backward);
 
 		if (Input.GetKey (KeyCode.RightArrow))
-			Move (1f);
+			Move ((float)MoveDirection.Forward);
 
 		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp (KeyCode.RightArrow)) {
 
@@ -36,7 +44,8 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Jump() {
 
-		_rigidbody.velocity += Vector2.up * ySpeed * Time.fixedDeltaTime;
+		if(_isOnGround)
+			_rigidbody.velocity += Vector2.up * ySpeed * Time.fixedDeltaTime;
 	}
 
 	void Move(float side) {
@@ -46,5 +55,29 @@ public class SMBPlayer : MonoBehaviour {
 		_rigidbody.velocity = currentVelocity;
 	}
 
+	void OnCollisionEnter2D(Collision2D coll) {
 
+		if (coll.gameObject.tag == "Platform") {
+
+			foreach (ContactPoint2D contact in coll.contacts) {
+				if (contact.normal == Vector2.up) {
+					_isOnGround = true;
+					break;
+				}
+			}
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D coll) {
+
+		if (coll.gameObject.tag == "Platform") {
+
+			foreach (ContactPoint2D contact in coll.contacts) {
+				if (contact.normal == Vector2.up) {
+					_isOnGround = false;
+					break;
+				}
+			}
+		}
+	}
 }

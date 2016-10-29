@@ -30,6 +30,7 @@ public static class SMBLevelPosProcessing {
 						GameObject newBoxObject = new GameObject ();
 						newBoxObject.name = "Collider_" + i + "_" + j;
 						newBoxObject.transform.parent = collidersParent;
+						newBoxObject.tag = "Platform";
 
 						float offsetX = ((float)j - (float)groundTilesSoFar / 2f) - 0.5f;
 
