@@ -7,13 +7,11 @@ public class SMBCamera : MonoBehaviour {
 	public float cameraSpeed = 5.0f;
 	public float deltaFromPlayer = 0f;
 
-	void Start (){
-
-		player = GameObject.FindGameObjectWithTag ("Player");
-	}
-
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		if (!player)
+			return;
 
 		// X position follow
 		Vector3 camPos = transform.position;

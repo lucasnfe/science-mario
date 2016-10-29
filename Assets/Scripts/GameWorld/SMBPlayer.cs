@@ -14,11 +14,15 @@ public class SMBPlayer : MonoBehaviour {
 	private bool _isOnGround = false;
 
 	// Custom components
-	private Rigidbody2D _rigidbody;
+	private Rigidbody2D    _rigidbody;
+	private Animator       _animator;
+	private SpriteRenderer _renderer;
 
 	void Start() {
 
 		_rigidbody = GetComponent<Rigidbody2D> ();
+		_animator = GetComponent<Animator> ();
+		_renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	// Update is called once per frame
@@ -27,19 +31,26 @@ public class SMBPlayer : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space))
 			Jump();
 
-		if (Input.GetKey (KeyCode.LeftArrow))
-			Move ((float)MoveDirection.Backward);
+		if (Input.GetKey (KeyCode.LeftArrow)) {
 
-		if (Input.GetKey (KeyCode.RightArrow))
+			Move ((float)MoveDirection.Backward);
+			_animator.SetBool ("isMoving", true);
+		}
+
+		if (Input.GetKey (KeyCode.RightArrow)) {
+
 			Move ((float)MoveDirection.Forward);
+			_animator.SetBool ("isMoving", true);
+		}
 
 		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp (KeyCode.RightArrow)) {
 
 			Vector2 currentVelocity = _rigidbody.velocity;
 			currentVelocity.x = 0f;
 			_rigidbody.velocity = currentVelocity;
-		}
 
+			_animator.SetBool ("isMoving", false);
+		}
 	}
 
 	void Jump() {
@@ -53,6 +64,12 @@ public class SMBPlayer : MonoBehaviour {
 		Vector2 currentVelocity = _rigidbody.velocity;
 		currentVelocity.x = (xSpeed * side) * Time.fixedDeltaTime;
 		_rigidbody.velocity = currentVelocity;
+
+		if (side == (float)MoveDirection.Forward)
+			_renderer.flipX = false;
+
+		if (side == (float)MoveDirection.Backward)
+			_renderer.flipX = true;
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
