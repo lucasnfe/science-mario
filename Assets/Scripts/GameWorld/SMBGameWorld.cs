@@ -24,6 +24,13 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 		// Instantiate the parsed level
 		InstantiateLevel(tileMap);
+
+		// Create colliders for this level
+		GameObject levelColliders = new GameObject ();
+		levelColliders.name = "SMBColliders";
+		levelColliders.transform.parent = transform;
+
+		SMBLevelPosProcessing.CreateColliders(tileMap, levelColliders.transform);
 	}
 
 	void InstantiateLevel(int[,] tileMap) {
@@ -43,7 +50,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 				int tileID = tileMap [i, j];
 
-				Vector2 position = new Vector2 (tileMap.GetLength(1) - j, tileMap.GetLength(0) - i) * SMBConstants.tileSize;
+				Vector2 position = new Vector2 (j, tileMap.GetLength(0) - i) * SMBConstants.tileSize;
 
 				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID] != null) {
 
