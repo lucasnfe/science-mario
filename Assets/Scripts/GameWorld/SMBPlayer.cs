@@ -78,7 +78,10 @@ public class SMBPlayer : MonoBehaviour {
 
 			foreach (ContactPoint2D contact in coll.contacts) {
 				if (contact.normal == Vector2.up) {
+
 					_isOnGround = true;
+					_animator.SetBool ("isJumping", false);
+
 					break;
 				}
 			}
@@ -91,7 +94,10 @@ public class SMBPlayer : MonoBehaviour {
 
 			foreach (ContactPoint2D contact in coll.contacts) {
 				if (contact.normal == Vector2.up) {
+
 					_isOnGround = false;
+					_animator.SetBool ("isJumping", true);
+
 					break;
 				}
 			}
