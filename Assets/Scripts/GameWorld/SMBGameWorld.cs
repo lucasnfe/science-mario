@@ -3,14 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+[System.Serializable]
+public class TilesetMapEntry {
+
+	public int tileID;
+	public GameObject prefab;
+}
+
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
-	[System.Serializable]
-	public class TilesetMapEntry {
+	public SMBCamera _camera;
+	public SMBPlayer _player;
 
-		public int tileID;
-		public GameObject prefab;
-	}
+	public float LockLeftX  { get; set; }
+	public float LockRightX { get; set; }
+	public float LockUpY    { get; set; }
+	public float LockDownY  { get; set; }
 
 	public TilesetMapEntry[] _tilesetMapping;
 
@@ -31,6 +39,12 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		levelColliders.transform.parent = transform;
 
 		SMBLevelPosProcessing.CreateColliders(tileMap, levelColliders.transform);
+
+		// Set camera locking positions
+		int levelWidth = tileMap.GetLength(1);
+
+		LockLeftX = SMBConstants.tileSize * 0.5f;
+		LockRightX = ((float)levelWidth - 1.5f) * SMBConstants.tileSize;
 	}
 
 	void InstantiateLevel(int[,] tileMap) {

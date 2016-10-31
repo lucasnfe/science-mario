@@ -3,9 +3,16 @@ using System.Collections;
 
 public class SMBCamera : MonoBehaviour {
 
+	private Camera _camera;
+
 	public GameObject player;
 	public float cameraSpeed = 5.0f;
 	public float deltaFromPlayer = 0f;
+
+	void Awake() {
+
+		_camera = GetComponent<Camera> ();
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -13,13 +20,19 @@ public class SMBCamera : MonoBehaviour {
 		if (!player)
 			return;
 
-		// X position follow
-		Vector3 camPos = transform.position;
-		camPos.x = player.transform.position.x;
-		transform.position = Vector3.Lerp (transform.position, camPos, cameraSpeed * Time.fixedDeltaTime);
+		Vector3 cameraZPos = Vector3.forward * transform.position.z;
+		transform.position = Vector2.Lerp (transform.position, player.transform.position, cameraSpeed * Time.fixedDeltaTime);
+		transform.position += cameraZPos;
 
-		// Y position follow
-		camPos.y = player.transform.position.y ;
-		transform.position = Vector3.Lerp (transform.position, camPos, 7.0f * Time.fixedDeltaTime);
+		// Lock camera x position
+		Vector3 cameraPos = transform.position;
+
+		float camHeight = 2f * _camera.orthographicSize;
+		float camWidth = camHeight * _camera.aspect;
+
+		cameraPos.x = Mathf.Clamp (cameraPos.x, camWidth * 0.5f - SMBGameWorld.Instance.LockLeftX, 
+			SMBGameWorld.Instance.LockRightX - camWidth * 0.5f);
+		transform.position = cameraPos;
 	}
+		
 }

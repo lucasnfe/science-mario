@@ -3,22 +3,17 @@ using System.Collections;
 
 public class SMBPlayer : MonoBehaviour {
 
-	enum MoveDirection {
-		Forward  =  1,
-		Backward = -1
-	}
-
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
 
 	private bool _isOnGround = false;
 
 	// Custom components
-	private Rigidbody2D    _rigidbody;
 	private Animator       _animator;
+	private Rigidbody2D    _rigidbody;
 	private SpriteRenderer _renderer;
 
-	void Start() {
+	void Awake() {
 
 		_rigidbody = GetComponent<Rigidbody2D> ();
 		_animator = GetComponent<Animator> ();
@@ -33,13 +28,13 @@ public class SMBPlayer : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
-			Move ((float)MoveDirection.Backward);
+			Move ((float)SMBConstants.MoveDirection.Backward);
 			_animator.SetBool ("isMoving", true);
 		}
 
 		if (Input.GetKey (KeyCode.RightArrow)) {
 
-			Move ((float)MoveDirection.Forward);
+			Move ((float)SMBConstants.MoveDirection.Forward);
 			_animator.SetBool ("isMoving", true);
 		}
 
@@ -65,11 +60,17 @@ public class SMBPlayer : MonoBehaviour {
 		currentVelocity.x = (xSpeed * side) * Time.fixedDeltaTime;
 		_rigidbody.velocity = currentVelocity;
 
-		if (side == (float)MoveDirection.Forward)
+		if (side == (float)SMBConstants.MoveDirection.Forward)
 			_renderer.flipX = false;
 
-		if (side == (float)MoveDirection.Backward)
+		if (side == (float)SMBConstants.MoveDirection.Backward)
 			_renderer.flipX = true;
+
+		// Lock player x position
+		Vector3 playerPos = transform.position;
+		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBConstants.tileSize, 
+			SMBGameWorld.Instance.LockRightX);
+		transform.position = playerPos;
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {

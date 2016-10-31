@@ -12,16 +12,12 @@ public static class SMBLevelPosProcessing {
 		for (int i = 0; i < height; i++) {
 
 			int groundTilesSoFar = 0;
-			int tileStart = 0;
 
 			for (int j = 0; j < width; j++) {
 
 				if (tileMap [i, j] == 1) {
 
 					groundTilesSoFar++;
-
-					if (j > 0 && tileMap [i, j - 1] == 0)
-						tileStart = i;
 				}
 				else if (tileMap [i, j] == 0) {
 			
