@@ -2,22 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class TilesetMapEntry {
+
+	public char tileID;
+	public GameObject prefab;
+}
 
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
-	[System.Serializable]
-	public class TilesetMapEntry {
+	public SMBCamera _camera;
+	private SMBPlayer _player;
 
-		public int tileID;
-		public GameObject prefab;
-	}
+	public float LockLeftX  { get; set; }
+	public float LockRightX { get; set; }
+	public float LockUpY    { get; set; }
+	public float LockDownY  { get; set; }
 
 	public TilesetMapEntry[] _tilesetMapping;
 
 	// Use this for initialization
 	void Start () {
 
-		int[,] tileMap = SMBLevelParser.Parse (SMBConstants.LevelFilename);
+		char[,] tileMap = SMBLevelParser.Parse (SMBConstants.LevelFilename);
 
 		if (tileMap == null)
 			return;
@@ -25,18 +32,34 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		// Instantiate the parsed level
 		InstantiateLevel(tileMap);
 
+		// Camera follow player
+		_camera.player = _player.gameObject;
+
 		// Create colliders for this level
 		GameObject levelColliders = new GameObject ();
 		levelColliders.name = "SMBColliders";
 		levelColliders.transform.parent = transform;
 
-		SMBLevelPosProcessing.CreateColliders(tileMap, levelColliders.transform);
+		SMBLevelParser.CreateColliders(tileMap, levelColliders.transform);
+
+		// Set Camera position to the players poitions
+		_camera.SetCameraPos(_player.transform.position);
+
+		// Set camera locking positions
+		int levelWidth = tileMap.GetLength(1);
+		int levelHeight = tileMap.GetLength(0);
+
+		LockLeftX = SMBConstants.tileSize * 0.5f;
+		LockRightX = ((float)levelWidth - 1.5f) * SMBConstants.tileSize;
+
+		LockDownY = -SMBConstants.tileSize * 0.5f;
+		LockUpY = (float)levelHeight * SMBConstants.tileSize;
 	}
 
-	void InstantiateLevel(int[,] tileMap) {
+	void InstantiateLevel(char[,] tileMap) {
 
 		// Transfroming array of Dictionaries into a Dictionary
-		Dictionary<int, GameObject> tilesetMapping = new Dictionary<int, GameObject>();
+		Dictionary<char, GameObject> tilesetMapping = new Dictionary<char, GameObject>();
 		foreach (TilesetMapEntry entry in _tilesetMapping)
 			tilesetMapping [entry.tileID] = entry.prefab;
 
@@ -48,7 +71,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 			for (int j = 0; j < tileMap.GetLength(1); j++) {
 
-				int tileID = tileMap [i, j];
+				char tileID = tileMap [i, j];
 
 				Vector2 position = new Vector2 (j, tileMap.GetLength(0) - i) * SMBConstants.tileSize;
 
@@ -56,6 +79,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 					GameObject newTile = Instantiate (tilesetMapping [tileID], position, Quaternion.identity) as GameObject;
 					newTile.transform.parent = levelParent.transform;
+
+					if (tileID == 'm')
+						_player = newTile.GetComponent<SMBPlayer> ();
 				}
 			}
 		}
