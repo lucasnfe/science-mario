@@ -13,4 +13,7 @@ public static class SMBConstants {
 
 	// Tilsesize in units (1 unit = 100 pixels)
 	public static readonly float  tileSize = 0.16f;
+
+	// One way platform angle of collision
+	public static readonly float  platformCollisionAngle = 160f;
 }

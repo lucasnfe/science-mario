@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,8 +12,9 @@ public class TilesetMapEntry {
 
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
-	public SMBCamera _camera;
+	private SMBCamera _camera;
 	private SMBPlayer _player;
+	private char[,] tileMap;
 
 	public float LockLeftX  { get; set; }
 	public float LockRightX { get; set; }
@@ -24,8 +26,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	// Use this for initialization
 	void Start () {
 
-		char[,] tileMap = SMBLevelParser.Parse (SMBConstants.LevelFilename);
-
+		tileMap = SMBLevelParser.Parse (SMBConstants.LevelFilename);
 		if (tileMap == null)
 			return;
 
@@ -33,6 +34,10 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		InstantiateLevel(tileMap);
 
 		// Camera follow player
+		_camera = FindObjectOfType<SMBCamera>();
+		if (_camera == null)
+			return;
+		
 		_camera.player = _player.gameObject;
 
 		// Create colliders for this level
@@ -54,6 +59,14 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 		LockDownY = -SMBConstants.tileSize * 0.5f;
 		LockUpY = (float)levelHeight * SMBConstants.tileSize;
+	}
+
+	void Update() {
+
+		// Kill the player if it is below the camera y limits
+		if (_player.transform.position.y < 0.0f)
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+
 	}
 
 	void InstantiateLevel(char[,] tileMap) {

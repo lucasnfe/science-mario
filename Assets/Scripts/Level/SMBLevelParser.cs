@@ -44,7 +44,7 @@ public class SMBLevelParser {
 	public static void CreateColliders(char[,] tileMap, Transform collidersParent) {
 
 		int height = tileMap.GetLength (0);
-		int width = tileMap.GetLength (1);
+		int width  = tileMap.GetLength (1);
 
 		for (int i = 0; i < height; i++) {
 
@@ -73,7 +73,7 @@ public class SMBLevelParser {
 
 						box.usedByEffector = true;
 						PlatformEffector2D effector = newBoxObject.AddComponent<PlatformEffector2D> ();
-						effector.surfaceArc = 150f;
+						effector.surfaceArc = SMBConstants.platformCollisionAngle;
 					}
 
 					groundTilesSoFar = 0;
