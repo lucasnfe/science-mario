@@ -68,7 +68,7 @@ public class SMBPlayer : MonoBehaviour {
 
 		// Lock player x position
 		Vector3 playerPos = transform.position;
-		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBConstants.tileSize, 
+		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileMap.size, 
 			SMBGameWorld.Instance.LockRightX);
 		transform.position = playerPos;
 	}

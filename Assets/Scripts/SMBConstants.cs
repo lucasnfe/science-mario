@@ -9,10 +9,9 @@ public static class SMBConstants {
 		Backward = -1
 	}
 
-	public static readonly string LevelFilename = "Levels/Level1";
+	public static readonly string levelFilename = "Levels/level1";
 
-	// Tilsesize in units (1 unit = 100 pixels)
-	public static readonly float  tileSize = 0.16f;
+	public static readonly string tilesDescrition = "tiles";
 
 	// One way platform angle of collision
 	public static readonly float  platformCollisionAngle = 160f;

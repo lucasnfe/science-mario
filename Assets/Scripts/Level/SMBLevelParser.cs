@@ -1,9 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
+public class SMBTile {
+
+	public string id;
+	public string prefab;
+}
+
+[System.Serializable]
+public class SMBTileMap {
+
+	public float size;
+	public SMBTile []tiles;
+}
+
+
 public class SMBLevelParser {
 
-	public static char[,] Parse(string filename) {
+	public static SMBTileMap ParseTileMap(string filename) {
+
+		TextAsset levelfile = Resources.Load<TextAsset> (filename);
+		SMBTileMap tileMap = JsonUtility.FromJson<SMBTileMap>(levelfile.text);
+
+		// In the json file, size is in pixels, here we converting it to units 
+		// (1 pixel = 100 units)
+		tileMap.size *= 0.01f;
+
+		return tileMap;
+	}
+
+	public static char[,] ParseLevel(string filename) {
 
 		int width = 0;
 		int height = 0;
@@ -41,7 +68,7 @@ public class SMBLevelParser {
 		return tileMap;
 	}
 
-	public static void CreateColliders(char[,] tileMap, Transform collidersParent) {
+	public static void CreateColliders(char[,] tileMap, float tileSize, Transform collidersParent) {
 
 		int height = tileMap.GetLength (0);
 		int width  = tileMap.GetLength (1);
@@ -68,8 +95,8 @@ public class SMBLevelParser {
 						float offsetX = ((float)j - (float)groundTilesSoFar / 2f) - 0.5f;
 
 						BoxCollider2D box = newBoxObject.AddComponent<BoxCollider2D> (); 
-						box.size = new Vector2(groundTilesSoFar, 1f) * SMBConstants.tileSize;
-						box.offset = new Vector2(offsetX, (height - i)) * SMBConstants.tileSize;
+						box.size = new Vector2(groundTilesSoFar, 1f) * tileSize;
+						box.offset = new Vector2(offsetX, (height - i)) * tileSize;
 
 						box.usedByEffector = true;
 						PlatformEffector2D effector = newBoxObject.AddComponent<PlatformEffector2D> ();
