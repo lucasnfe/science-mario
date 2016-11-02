@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class SMBTile {
@@ -7,6 +8,7 @@ public class SMBTile {
 	public string id;
 	public string prefab;
 	public bool isPlayer;
+	public bool hasCollider;
 }
 
 [System.Serializable]
@@ -46,12 +48,12 @@ public class SMBLevelParser {
 		string text = levelfile.text.Remove (levelfile.text.Length - 1);
 		string[] lines = text.Split ('\n');
 
-		width = lines [0].Length;
+		width = lines [0].Length - 1;
 		height = lines.Length;
 
 		foreach (string line in lines) {
 
-			if (line.Length != width) {
+			if (line.Length - 1 != width) {
 				Debug.LogError ("Level row has different width, they all have to have the same amount of tiles!");
 				return null;
 			}
@@ -62,7 +64,7 @@ public class SMBLevelParser {
 		for (int i = 0; i < height; i++) {
 
 			char[] row = lines [i].ToCharArray ();
-			for (int j = 0; j < width-1; j++)
+			for (int j = 0; j < width; j++)
 				tileMap[i,j] = row[j];
 		}
 
@@ -74,17 +76,20 @@ public class SMBLevelParser {
 		int height = tileMap.GetLength (0);
 		int width  = tileMap.GetLength (1);
 
+		// Transfroming array of Dictionaries into a Dictionary
+		Dictionary<string, SMBTile> tilesetMapping = new Dictionary<string, SMBTile>();
+		foreach (SMBTile tile in SMBGameWorld.Instance.TileMap.tiles)
+			tilesetMapping [tile.id] = tile;
+
 		for (int i = 0; i < height; i++) {
 
 			int groundTilesSoFar = 0;
 
 			for (int j = 0; j < width; j++) {
 
-				if (tileMap [i, j] == '1') {
+				string tileID = tileMap [i, j].ToString();
 
-					groundTilesSoFar++;
-				}
-				else if (tileMap [i, j] == '0' || j == width - 1) {
+				if (!tilesetMapping[tileID].hasCollider || j == width - 1) {
 
 					if (groundTilesSoFar > 0) {
 
@@ -93,9 +98,17 @@ public class SMBLevelParser {
 						newBoxObject.transform.parent = collidersParent;
 						newBoxObject.tag = "Platform";
 
-						float offsetX = ((float)j - (float)groundTilesSoFar / 2f) - 0.5f;
+						float lastTileOffset = 0f;
+						if (j == width - 1)
+							lastTileOffset = 0.5f;
+
+						float offsetX = (((float)j + lastTileOffset) - (float)groundTilesSoFar / 2f) - 0.5f;
 
 						BoxCollider2D box = newBoxObject.AddComponent<BoxCollider2D> (); 
+
+						if (j == width - 1)
+							groundTilesSoFar++;
+
 						box.size = new Vector2(groundTilesSoFar, 1f) * tileSize;
 						box.offset = new Vector2(offsetX, (height - i)) * tileSize;
 
@@ -105,6 +118,10 @@ public class SMBLevelParser {
 					}
 
 					groundTilesSoFar = 0;
+				}
+				else {
+
+					groundTilesSoFar++;
 				}
 			}
 		}
