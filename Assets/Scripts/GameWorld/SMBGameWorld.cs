@@ -72,9 +72,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void InstantiateLevel() {
 
 		// Transfroming array of Dictionaries into a Dictionary
-		Dictionary<string, GameObject> tilesetMapping = new Dictionary<string, GameObject>();
+		Dictionary<string, SMBTile> tilesetMapping = new Dictionary<string, SMBTile>();
 		foreach (SMBTile tile in TileMap.tiles)
-			tilesetMapping [tile.id] = Resources.Load<GameObject>(tile.prefab);
+			tilesetMapping [tile.id] = tile;
 
 		GameObject levelParent = new GameObject ();
 		levelParent.name = "LevelTiles";
@@ -88,12 +88,14 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 				Vector2 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
 
-				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID] != null) {
+				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID].prefab != "") {
 
-					GameObject newTile = Instantiate (tilesetMapping [tileID], position, Quaternion.identity) as GameObject;
+					GameObject prefab = Resources.Load<GameObject> (tilesetMapping [tileID].prefab);
+					GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+
 					newTile.transform.parent = levelParent.transform;
 
-					if (tileID == "m")
+					if (tilesetMapping [tileID].isPlayer)
 						_player = newTile.GetComponent<SMBPlayer> ();
 				}
 			}

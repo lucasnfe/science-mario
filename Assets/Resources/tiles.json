@@ -1,12 +1,12 @@
 {
 	"size": 16,
 	"tiles": [
-      		{"id": "0", "prefab": ""},
-      		{"id": "1", "prefab": "Prefab/Ground"},
-      		{"id": "2", "prefab": "Prefab/Coin"},
-	  		{"id": "3", "prefab": "Prefab/Ground_Background"},
-	  		{"id": "m", "prefab": "Prefab/Player"},
-	  		{"id": "p", "prefab": "Prefab/PipeBody"},
+      		{"id": "0", "prefab": "" },
+      		{"id": "1", "prefab": "Prefab/Ground" },
+      		{"id": "2", "prefab": "Prefab/Coin" },
+	  		{"id": "3", "prefab": "Prefab/Ground_Background" },
+	  		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true },
+	  		{"id": "p", "prefab": "Prefab/PipeBody" },
 	  		{"id": "t", "prefab": "Prefab/PipeTop"}
    		]
 }

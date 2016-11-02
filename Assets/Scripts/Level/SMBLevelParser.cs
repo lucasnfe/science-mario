@@ -6,6 +6,7 @@ public class SMBTile {
 
 	public string id;
 	public string prefab;
+	public bool isPlayer;
 }
 
 [System.Serializable]
