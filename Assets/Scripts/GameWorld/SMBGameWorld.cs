@@ -16,6 +16,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	public char[,]    Level   { get; set; }
 	public SMBTileMap TileMap { get; set; }
 
+	public PhysicsMaterial2D _defaultPhysicsMaterial;
+
 	// Use this for initialization
 	void Start () {
 
@@ -45,7 +47,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		levelColliders.name = "SMBColliders";
 		levelColliders.transform.parent = transform;
 
-		SMBLevelParser.CreateColliders(Level, TileMap.size, levelColliders.transform);
+		SMBLevelParser.CreateColliders(Level, TileMap.size, levelColliders.transform, _defaultPhysicsMaterial);
 
 		// Set Camera position to the players poitions
 		_camera.SetCameraPos(_player.transform.position);
@@ -87,6 +89,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				string tileID = Level[i, j].ToString();
 
 				Vector2 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
+				if (tilesetMapping [tileID].width > 1)
+					position.x += tilesetMapping [tileID].width * 0.25f * TileMap.size;
 
 				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID].prefab != "") {
 

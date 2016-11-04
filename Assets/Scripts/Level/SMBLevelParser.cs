@@ -7,8 +7,10 @@ public class SMBTile {
 
 	public string id;
 	public string prefab;
-	public bool isPlayer;
-	public bool hasCollider;
+	public bool   isPlayer;
+	public bool   hasCollider;
+	public int    width = 1;
+	public float  collisionAngle = 360f;
 }
 
 [System.Serializable]
@@ -71,7 +73,7 @@ public class SMBLevelParser {
 		return tileMap;
 	}
 
-	public static void CreateColliders(char[,] tileMap, float tileSize, Transform collidersParent) {
+	public static void CreateColliders(char[,] tileMap, float tileSize, Transform collidersParent, PhysicsMaterial2D material) {
 
 		int height = tileMap.GetLength (0);
 		int width  = tileMap.GetLength (1);
@@ -84,12 +86,15 @@ public class SMBLevelParser {
 		for (int i = 0; i < height; i++) {
 
 			int groundTilesSoFar = 0;
+			int currentTileWidth = 1;
+			float currentCollisionAngle = 360f;
 
 			for (int j = 0; j < width; j++) {
 
 				string tileID = tileMap [i, j].ToString();
 
-				if (!tilesetMapping[tileID].hasCollider || j == width - 1) {
+				if (!tilesetMapping[tileID].hasCollider || 
+					 tilesetMapping[tileID].collisionAngle != currentCollisionAngle || j == width - 1) {
 
 					if (groundTilesSoFar > 0) {
 
@@ -98,30 +103,40 @@ public class SMBLevelParser {
 						newBoxObject.transform.parent = collidersParent;
 						newBoxObject.tag = "Platform";
 
-						float lastTileOffset = 0f;
-						if (j == width - 1)
-							lastTileOffset = 0.5f;
+						float offsetX = (float)j - (float)groundTilesSoFar * 0.5f - 0.5f;
 
-						float offsetX = (((float)j + lastTileOffset) - (float)groundTilesSoFar / 2f) - 0.5f;
+						BoxCollider2D box = newBoxObject.AddComponent<BoxCollider2D> ();
+						box.sharedMaterial = material;
 
-						BoxCollider2D box = newBoxObject.AddComponent<BoxCollider2D> (); 
-
-						if (j == width - 1)
+						if (j == width - 1) {
+							offsetX += 0.5f;
 							groundTilesSoFar++;
+						}
+
+						if (currentTileWidth > 1) {
+							offsetX += currentTileWidth * 0.25f;
+							groundTilesSoFar += currentTileWidth - 1; 
+						}
 
 						box.size = new Vector2(groundTilesSoFar, 1f) * tileSize;
 						box.offset = new Vector2(offsetX, (height - i)) * tileSize;
 
-						box.usedByEffector = true;
-						PlatformEffector2D effector = newBoxObject.AddComponent<PlatformEffector2D> ();
-						effector.surfaceArc = SMBConstants.platformCollisionAngle;
-					}
+						if (currentCollisionAngle < 360.0f) {
 
-					groundTilesSoFar = 0;
+							box.usedByEffector = true;
+							PlatformEffector2D effector = newBoxObject.AddComponent<PlatformEffector2D> ();
+							effector.surfaceArc = currentCollisionAngle;
+						}
+
+						groundTilesSoFar = 0;
+					}
 				}
-				else {
+
+				if (tilesetMapping[tileID].hasCollider) {
 
 					groundTilesSoFar++;
+					currentTileWidth = tilesetMapping[tileID].width;
+					currentCollisionAngle = tilesetMapping[tileID].collisionAngle;
 				}
 			}
 		}

@@ -2,11 +2,12 @@
 	"size": 16,
 	"tiles": [
       		{"id": "0", "prefab": "" },
-      		{"id": "1", "prefab": "Prefab/Ground", "hasCollider": true },
+      		{"id": "4", "prefab": "Prefab/BlockStone", "hasCollider": true },
       		{"id": "2", "prefab": "Prefab/Coin" },
-	  		{"id": "3", "prefab": "Prefab/Ground_Background" },
-	  		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true },
-	  		{"id": "p", "prefab": "Prefab/PipeBody", "hasCollider": true },
-	  		{"id": "t", "prefab": "Prefab/PipeTop", "hasCollider": true }
+			{"id": "1", "prefab": "Prefab/Ground", "hasCollider": true, "collisionAngle": 160 },
+	  		{"id": "3", "prefab": "Prefab/GroundBackground" },
+	  		{"id": "p", "prefab": "Prefab/PipeBody", "hasCollider": true, "width": 2 },
+	  		{"id": "t", "prefab": "Prefab/PipeTop",  "hasCollider": true, "width": 2 },
+	  		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true }
    		]
 }
