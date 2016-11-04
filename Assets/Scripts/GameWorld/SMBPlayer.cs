@@ -11,11 +11,13 @@ public class SMBPlayer : MonoBehaviour {
 	// Custom components
 	private Animator       _animator;
 	private Rigidbody2D    _rigidbody;
+	private BoxCollider2D  _collider;
 	private SpriteRenderer _renderer;
 
 	void Awake() {
 
 		_rigidbody = GetComponent<Rigidbody2D> ();
+		_collider = GetComponent<BoxCollider2D> ();
 		_animator = GetComponent<Animator> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 	}
@@ -77,14 +79,28 @@ public class SMBPlayer : MonoBehaviour {
 
 		if (coll.gameObject.tag == "Platform") {
 
-			foreach (ContactPoint2D contact in coll.contacts) {
-				if (contact.normal == Vector2.up) {
+			Vector3 contactPoint = coll.collider.bounds.center;
+			Vector3 center = _collider.bounds.center;
 
-					_isOnGround = true;
-					_animator.SetBool ("isJumping", false);
+			if (center.y > contactPoint.y) {
 
-					break;
-				}
+				_isOnGround = true;
+				_animator.SetBool ("isJumping", false);
+			}
+		}
+	}
+
+	void OnCollisionStay2D(Collision2D coll) {
+
+		if (coll.gameObject.tag == "Platform") {
+
+			Vector3 contactPoint = coll.collider.bounds.center;
+			Vector3 center = _collider.bounds.center;
+
+			if (center.y > contactPoint.y) {
+
+				_isOnGround = true;
+				_animator.SetBool ("isJumping", false);
 			}
 		}
 	}
@@ -93,15 +109,16 @@ public class SMBPlayer : MonoBehaviour {
 
 		if (coll.gameObject.tag == "Platform") {
 
-			foreach (ContactPoint2D contact in coll.contacts) {
-				if (contact.normal == Vector2.up) {
+			Vector3 contactPoint = coll.collider.bounds.center;
+			Vector3 center = _collider.bounds.center;
 
-					_isOnGround = false;
-					_animator.SetBool ("isJumping", true);
+			if (center.y > contactPoint.y) {
 
-					break;
-				}
+				_isOnGround = false;
+				_animator.SetBool ("isJumping", true);
 			}
+
+			Debug.Log ("Jump!");
 		}
 	}
 }
