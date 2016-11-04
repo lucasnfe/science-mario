@@ -90,21 +90,6 @@ public class SMBPlayer : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionStay2D(Collision2D coll) {
-
-		if (coll.gameObject.tag == "Platform") {
-
-			Vector3 contactPoint = coll.collider.bounds.center;
-			Vector3 center = _collider.bounds.center;
-
-			if (center.y > contactPoint.y) {
-
-				_isOnGround = true;
-				_animator.SetBool ("isJumping", false);
-			}
-		}
-	}
-
 	void OnCollisionExit2D(Collision2D coll) {
 
 		if (coll.gameObject.tag == "Platform") {
@@ -117,8 +102,6 @@ public class SMBPlayer : MonoBehaviour {
 				_isOnGround = false;
 				_animator.SetBool ("isJumping", true);
 			}
-
-			Debug.Log ("Jump!");
 		}
 	}
 }
