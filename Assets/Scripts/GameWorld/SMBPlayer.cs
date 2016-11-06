@@ -16,17 +16,20 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Awake() {
 
+		_animator = GetComponent<Animator> ();
 		_rigidbody = GetComponent<Rigidbody2D> ();
 		_collider = GetComponent<BoxCollider2D> ();
-		_animator = GetComponent<Animator> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetKeyDown(KeyCode.Z))
-			Jump();
+		_isOnGround = IsOnGround ();
+		_animator.SetBool ("isJumping", !_isOnGround);
+
+		if (Input.GetKeyDown (KeyCode.Z))
+			Jump ();
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
@@ -52,8 +55,10 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Jump() {
 
-		if(_isOnGround)
+		if (_isOnGround) {
+			
 			_rigidbody.velocity += Vector2.up * ySpeed * Time.fixedDeltaTime;
+		}
 	}
 
 	void Move(float side) {
@@ -75,33 +80,12 @@ public class SMBPlayer : MonoBehaviour {
 		transform.position = playerPos;
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) {
+	bool IsOnGround() {
 
-		if (coll.gameObject.tag == "Platform") {
+		Vector2 rayOrigin = _collider.bounds.center;
+		rayOrigin.y -= _collider.bounds.extents.y + 0.01f;
+		RaycastHit2D ray = Physics2D.Raycast(rayOrigin, -Vector2.up, 0.01f);
 
-			Vector3 contactPoint = coll.collider.bounds.center;
-			Vector3 center = _collider.bounds.center;
-
-			if (center.y > contactPoint.y) {
-
-				_isOnGround = true;
-				_animator.SetBool ("isJumping", false);
-			}
-		}
-	}
-
-	void OnCollisionExit2D(Collision2D coll) {
-
-		if (coll.gameObject.tag == "Platform") {
-
-			Vector3 contactPoint = coll.collider.bounds.center;
-			Vector3 center = _collider.bounds.center;
-
-			if (center.y > contactPoint.y) {
-
-				_isOnGround = false;
-				_animator.SetBool ("isJumping", true);
-			}
-		}
+		return (ray.collider && ray.collider.tag == "Platform");
 	}
 }

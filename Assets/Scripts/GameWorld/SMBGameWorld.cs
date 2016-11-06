@@ -88,9 +88,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 				string tileID = Level[i, j].ToString();
 
-				Vector2 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
+				Vector3 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
 				if (tilesetMapping [tileID].width > 1)
 					position.x += tilesetMapping [tileID].width * 0.25f * TileMap.size;
+
+				position.z = (float)tilesetMapping [tileID].layer;
 
 				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID].prefab != "") {
 

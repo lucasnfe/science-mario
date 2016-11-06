@@ -10,6 +10,7 @@ public class SMBTile {
 	public bool   isPlayer;
 	public bool   hasCollider;
 	public int    width = 1;
+	public int    layer = 0;
 	public float  collisionAngle = 360f;
 }
 
