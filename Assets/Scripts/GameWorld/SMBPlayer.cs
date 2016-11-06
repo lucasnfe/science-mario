@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (Animator))]
+[RequireComponent (typeof (Rigidbody2D))]
+[RequireComponent (typeof (BoxCollider2D))]
+[RequireComponent (typeof (SpriteRenderer))]
 public class SMBPlayer : MonoBehaviour {
 
 	public float xSpeed = 1f;
