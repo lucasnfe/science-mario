@@ -82,10 +82,20 @@ public class SMBPlayer : MonoBehaviour {
 
 	bool IsOnGround() {
 
-		Vector2 rayOrigin = _collider.bounds.center;
-		rayOrigin.y -= _collider.bounds.extents.y + 0.01f;
-		RaycastHit2D ray = Physics2D.Raycast(rayOrigin, -Vector2.up, 0.01f);
+		Vector2 rayOrigin = _collider.bounds.min;
+		rayOrigin.y -= 0.01f;
 
-		return (ray.collider && ray.collider.tag == "Platform");
+		for (int i = 0; i < 3; i++) {
+
+			RaycastHit2D ray = Physics2D.Raycast(rayOrigin, -Vector2.up, 0.01f);
+			Debug.DrawRay (rayOrigin, -Vector2.up);
+
+			if (ray.collider && ray.collider.tag == "Platform")
+				return true;
+
+			rayOrigin.x += _collider.bounds.size.x / 2f;
+		}
+
+		return false;
 	}
 }
