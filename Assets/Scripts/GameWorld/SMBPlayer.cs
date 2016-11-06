@@ -13,6 +13,7 @@ public class SMBPlayer : MonoBehaviour {
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
 	public float longJumpTime = 1f;
+	public float longJumpWeight = 0.1f;
 
 	// Custom components
 	private Animator       _animator;
@@ -33,7 +34,6 @@ public class SMBPlayer : MonoBehaviour {
 
 		_isOnGround = IsOnGround ();
 		_animator.SetBool ("isJumping", !_isOnGround);
-
 
 		Jump ();
 
@@ -78,7 +78,7 @@ public class SMBPlayer : MonoBehaviour {
 
 				_jumpTimer -= Time.fixedDeltaTime;
 				if (_jumpTimer <= longJumpTime/2f)
-					_rigidbody.velocity += Vector2.up * ySpeed * 0.1f * Time.fixedDeltaTime;
+					_rigidbody.velocity += Vector2.up * ySpeed * longJumpWeight * Time.fixedDeltaTime;
 			}
 		}
 
