@@ -11,20 +11,25 @@ public class SMBPlayer : MonoBehaviour {
 	// Custom components
 	private Animator       _animator;
 	private Rigidbody2D    _rigidbody;
+	private BoxCollider2D  _collider;
 	private SpriteRenderer _renderer;
 
 	void Awake() {
 
-		_rigidbody = GetComponent<Rigidbody2D> ();
 		_animator = GetComponent<Animator> ();
+		_rigidbody = GetComponent<Rigidbody2D> ();
+		_collider = GetComponent<BoxCollider2D> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetKeyDown(KeyCode.Z))
-			Jump();
+		_isOnGround = IsOnGround ();
+		_animator.SetBool ("isJumping", !_isOnGround);
+
+		if (Input.GetKeyDown (KeyCode.Z))
+			Jump ();
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
@@ -50,8 +55,10 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Jump() {
 
-		if(_isOnGround)
+		if (_isOnGround) {
+			
 			_rigidbody.velocity += Vector2.up * ySpeed * Time.fixedDeltaTime;
+		}
 	}
 
 	void Move(float side) {
@@ -68,40 +75,17 @@ public class SMBPlayer : MonoBehaviour {
 
 		// Lock player x position
 		Vector3 playerPos = transform.position;
-		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBConstants.tileSize, 
+		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileMap.size, 
 			SMBGameWorld.Instance.LockRightX);
 		transform.position = playerPos;
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) {
+	bool IsOnGround() {
 
-		if (coll.gameObject.tag == "Platform") {
+		Vector2 rayOrigin = _collider.bounds.center;
+		rayOrigin.y -= _collider.bounds.extents.y + 0.01f;
+		RaycastHit2D ray = Physics2D.Raycast(rayOrigin, -Vector2.up, 0.01f);
 
-			foreach (ContactPoint2D contact in coll.contacts) {
-				if (contact.normal == Vector2.up) {
-
-					_isOnGround = true;
-					_animator.SetBool ("isJumping", false);
-
-					break;
-				}
-			}
-		}
-	}
-
-	void OnCollisionExit2D(Collision2D coll) {
-
-		if (coll.gameObject.tag == "Platform") {
-
-			foreach (ContactPoint2D contact in coll.contacts) {
-				if (contact.normal == Vector2.up) {
-
-					_isOnGround = false;
-					_animator.SetBool ("isJumping", true);
-
-					break;
-				}
-			}
-		}
+		return (ray.collider && ray.collider.tag == "Platform");
 	}
 }

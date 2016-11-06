@@ -1,38 +1,45 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class TilesetMapEntry {
-
-	public char tileID;
-	public GameObject prefab;
-}
-
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
-	public SMBCamera _camera;
-	private SMBPlayer _player;
+	private SMBCamera  _camera;
+	private SMBPlayer  _player;
 
 	public float LockLeftX  { get; set; }
 	public float LockRightX { get; set; }
 	public float LockUpY    { get; set; }
 	public float LockDownY  { get; set; }
 
-	public TilesetMapEntry[] _tilesetMapping;
+	public char[,]    Level   { get; set; }
+	public SMBTileMap TileMap { get; set; }
+
+	public PhysicsMaterial2D _defaultPhysicsMaterial;
 
 	// Use this for initialization
 	void Start () {
 
-		char[,] tileMap = SMBLevelParser.Parse (SMBConstants.LevelFilename);
+		TileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
+		if (TileMap == null)
+			return;
 
-		if (tileMap == null)
+		Level = SMBLevelParser.ParseLevel (SMBConstants.levelFilename);
+		if (Level == null)
 			return;
 
 		// Instantiate the parsed level
-		InstantiateLevel(tileMap);
+		InstantiateLevel();
+
+		if (_player == null)
+			return;
 
 		// Camera follow player
+		_camera = FindObjectOfType<SMBCamera>();
+		if (_camera == null)
+			return;
+		
 		_camera.player = _player.gameObject;
 
 		// Create colliders for this level
@@ -40,47 +47,61 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		levelColliders.name = "SMBColliders";
 		levelColliders.transform.parent = transform;
 
-		SMBLevelParser.CreateColliders(tileMap, levelColliders.transform);
+		SMBLevelParser.CreateColliders(Level, TileMap.size, levelColliders.transform, _defaultPhysicsMaterial);
 
 		// Set Camera position to the players poitions
 		_camera.SetCameraPos(_player.transform.position);
 
 		// Set camera locking positions
-		int levelWidth = tileMap.GetLength(1);
-		int levelHeight = tileMap.GetLength(0);
+		int levelWidth = Level.GetLength(1);
+		int levelHeight = Level.GetLength(0);
 
-		LockLeftX = SMBConstants.tileSize * 0.5f;
-		LockRightX = ((float)levelWidth - 1.5f) * SMBConstants.tileSize;
+		LockLeftX = TileMap.size * 0.5f;
+		LockRightX = ((float)levelWidth - 1.5f) * TileMap.size;
 
-		LockDownY = -SMBConstants.tileSize * 0.5f;
-		LockUpY = (float)levelHeight * SMBConstants.tileSize;
+		LockDownY = -TileMap.size * 0.5f;
+		LockUpY = (float)levelHeight * TileMap.size;
 	}
 
-	void InstantiateLevel(char[,] tileMap) {
+	void Update() {
+
+		// Kill the player if it is below the camera y limits
+		if (_player.transform.position.y < 0.0f)
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+
+	}
+
+	void InstantiateLevel() {
 
 		// Transfroming array of Dictionaries into a Dictionary
-		Dictionary<char, GameObject> tilesetMapping = new Dictionary<char, GameObject>();
-		foreach (TilesetMapEntry entry in _tilesetMapping)
-			tilesetMapping [entry.tileID] = entry.prefab;
+		Dictionary<string, SMBTile> tilesetMapping = new Dictionary<string, SMBTile>();
+		foreach (SMBTile tile in TileMap.tiles)
+			tilesetMapping [tile.id] = tile;
 
 		GameObject levelParent = new GameObject ();
 		levelParent.name = "LevelTiles";
 		levelParent.transform.parent = transform.parent;
 
-		for (int i = 0; i < tileMap.GetLength(0); i++) {
+		for (int i = 0; i < Level.GetLength(0); i++) {
 
-			for (int j = 0; j < tileMap.GetLength(1); j++) {
+			for (int j = 0; j < Level.GetLength(1); j++) {
 
-				char tileID = tileMap [i, j];
+				string tileID = Level[i, j].ToString();
 
-				Vector2 position = new Vector2 (j, tileMap.GetLength(0) - i) * SMBConstants.tileSize;
+				Vector3 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
+				if (tilesetMapping [tileID].width > 1)
+					position.x += tilesetMapping [tileID].width * 0.25f * TileMap.size;
 
-				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID] != null) {
+				position.z = (float)tilesetMapping [tileID].layer;
 
-					GameObject newTile = Instantiate (tilesetMapping [tileID], position, Quaternion.identity) as GameObject;
+				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID].prefab != "") {
+
+					GameObject prefab = Resources.Load<GameObject> (tilesetMapping [tileID].prefab);
+					GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+
 					newTile.transform.parent = levelParent.transform;
 
-					if (tileID == 'm')
+					if (tilesetMapping [tileID].isPlayer)
 						_player = newTile.GetComponent<SMBPlayer> ();
 				}
 			}

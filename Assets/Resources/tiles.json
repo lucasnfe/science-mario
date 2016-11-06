@@ -1,0 +1,15 @@
+{
+	"size": 16,
+	"tiles": [
+      		{"id": "0", "prefab": "" },
+      		{"id": "4", "prefab": "Prefab/BlockStone", "hasCollider": true, "layer": 1},
+			{"id": "5", "prefab": "Prefab/BlockQuestion", "hasCollider": true , "layer": 1},
+			{"id": "6", "prefab": "Prefab/BlockGold", "hasCollider": true, "layer": 1},
+      		{"id": "2", "prefab": "Prefab/Coin" },
+			{"id": "1", "prefab": "Prefab/Ground", "hasCollider": true, "collisionAngle": 175 },
+	  		{"id": "3", "prefab": "Prefab/GroundBackground" },
+	  		{"id": "p", "prefab": "Prefab/PipeBody", "hasCollider": true, "width": 2 },
+	  		{"id": "t", "prefab": "Prefab/PipeTop",  "hasCollider": true, "width": 2 },
+	  		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true }
+   		]
+}
