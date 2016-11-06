@@ -7,10 +7,12 @@ using System.Collections;
 [RequireComponent (typeof (SpriteRenderer))]
 public class SMBPlayer : MonoBehaviour {
 
+	private float _jumpTimer;
+	private bool  _isOnGround;
+
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
-
-	private bool _isOnGround = false;
+	public float longJumpTime = 1f;
 
 	// Custom components
 	private Animator       _animator;
@@ -32,8 +34,8 @@ public class SMBPlayer : MonoBehaviour {
 		_isOnGround = IsOnGround ();
 		_animator.SetBool ("isJumping", !_isOnGround);
 
-		if (Input.GetKeyDown (KeyCode.Z))
-			Jump ();
+
+		Jump ();
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
@@ -59,10 +61,27 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Jump() {
 
-		if (_isOnGround) {
-			
-			_rigidbody.velocity += Vector2.up * ySpeed * Time.fixedDeltaTime;
+		if (_isOnGround && Input.GetKeyDown(KeyCode.Z)){
+
+			_jumpTimer = longJumpTime;
+			_rigidbody.velocity = Vector2.up * ySpeed * Time.fixedDeltaTime;
 		}
+
+		if (_jumpTimer > 0f) {
+
+			if (Input.GetKeyUp(KeyCode.Z)) {
+
+				_jumpTimer = 0f;
+
+			}
+			else if(Input.GetKey(KeyCode.Z)) {
+
+				_jumpTimer -= Time.fixedDeltaTime;
+				if (_jumpTimer <= longJumpTime/2f)
+					_rigidbody.velocity += Vector2.up * ySpeed * 0.1f * Time.fixedDeltaTime;
+			}
+		}
+
 	}
 
 	void Move(float side) {

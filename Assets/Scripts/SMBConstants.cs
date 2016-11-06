@@ -12,7 +12,4 @@ public static class SMBConstants {
 	public static readonly string levelFilename = "Levels/level1";
 
 	public static readonly string tilesDescrition = "tiles";
-
-	// One way platform angle of collision
-	public static readonly float  platformCollisionAngle = 160f;
 }
