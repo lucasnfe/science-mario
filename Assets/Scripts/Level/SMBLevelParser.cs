@@ -8,9 +8,8 @@ public class SMBTile {
 	public string id;
 	public string prefab;
 	public bool   isPlayer;
-	public bool   hasCollider;
-	public int    width = 1;
 	public int    layer = 0;
+	public int 	  width = 1;
 	public float  collisionAngle = 360f;
 }
 
@@ -72,75 +71,6 @@ public class SMBLevelParser {
 		}
 
 		return tileMap;
-	}
-
-	public static void CreateColliders(char[,] tileMap, float tileSize, Transform collidersParent, PhysicsMaterial2D material) {
-
-		int height = tileMap.GetLength (0);
-		int width  = tileMap.GetLength (1);
-
-		// Transfroming array of Dictionaries into a Dictionary
-		Dictionary<string, SMBTile> tilesetMapping = new Dictionary<string, SMBTile>();
-		foreach (SMBTile tile in SMBGameWorld.Instance.TileMap.tiles)
-			tilesetMapping [tile.id] = tile;
-
-		for (int i = 0; i < height; i++) {
-
-			int groundTilesSoFar = 0;
-			int currentTileWidth = 1;
-			float currentCollisionAngle = 360f;
-
-			for (int j = 0; j < width; j++) {
-
-				string tileID = tileMap [i, j].ToString();
-
-				if (!tilesetMapping[tileID].hasCollider || 
-					 tilesetMapping[tileID].collisionAngle != currentCollisionAngle || j == width - 1) {
-
-					if (groundTilesSoFar > 0) {
-
-						GameObject newBoxObject = new GameObject ();
-						newBoxObject.name = "Collider_" + i + "_" + j;
-						newBoxObject.transform.parent = collidersParent;
-						newBoxObject.tag = "Platform";
-
-						float offsetX = (float)j - (float)groundTilesSoFar * 0.5f - 0.5f;
-
-						BoxCollider2D box = newBoxObject.AddComponent<BoxCollider2D> ();
-						box.sharedMaterial = material;
-
-						if (j == width - 1) {
-							offsetX += 0.5f;
-							groundTilesSoFar++;
-						}
-
-						if (currentTileWidth > 1) {
-							offsetX += currentTileWidth * 0.25f;
-							groundTilesSoFar += currentTileWidth - 1; 
-						}
-
-						box.size = new Vector2(groundTilesSoFar, 1f) * tileSize;
-						box.offset = new Vector2(offsetX, (height - i)) * tileSize;
-
-						if (currentCollisionAngle < 360.0f) {
-
-							box.usedByEffector = true;
-							PlatformEffector2D effector = newBoxObject.AddComponent<PlatformEffector2D> ();
-							effector.surfaceArc = currentCollisionAngle;
-						}
-
-						groundTilesSoFar = 0;
-					}
-				}
-
-				if (tilesetMapping[tileID].hasCollider) {
-
-					groundTilesSoFar++;
-					currentTileWidth = tilesetMapping[tileID].width;
-					currentCollisionAngle = tilesetMapping[tileID].collisionAngle;
-				}
-			}
-		}
 	}
 }
 

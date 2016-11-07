@@ -12,22 +12,17 @@ public abstract class SMBBlock : MonoBehaviour {
 
 		_animator = GetComponent<Animator> ();
 		_collider = GetComponent<BoxCollider2D> ();
-		_collider.isTrigger = true;
 	}
 
-	void OnTriggerEnter2D(Collider2D coll) {
+	void OnInteraction(Collider2D coll) {
 
 		if (coll.tag == "Player") {
-			
-			Vector2 rayOrigin = coll.bounds.center;
-			rayOrigin.y += coll.bounds.extents.y;
 
-			RaycastHit2D ray = Physics2D.Raycast (rayOrigin, Vector2.up, 0.01f);
-			if (ray.collider && ray.collider.tag == "Platform") {
+			float xDist = Mathf.Abs (coll.bounds.center.x - _collider.bounds.center.x);
+			float yDist = coll.bounds.center.y - _collider.bounds.center.y;
 
-				if(Mathf.Abs(rayOrigin.x - _collider.bounds.center.x) < _collider.bounds.extents.x)
-					DestroyBlock ();
-			}
+			if(xDist < coll.bounds.size.x && yDist < 0f)
+				DestroyBlock ();
 		}
 	}
 		

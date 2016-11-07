@@ -2,13 +2,16 @@
 using System.Collections;
 
 [RequireComponent (typeof (Animator))]
-[RequireComponent (typeof (Rigidbody2D))]
 [RequireComponent (typeof (BoxCollider2D))]
 [RequireComponent (typeof (SpriteRenderer))]
 public class SMBPlayer : MonoBehaviour {
 
+	private float _mass = 1f;
 	private float _jumpTimer;
 	private bool  _isOnGround;
+
+	private Vector2 _velocity;
+	private Vector2 _acceleration;
 
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
@@ -17,25 +20,21 @@ public class SMBPlayer : MonoBehaviour {
 
 	// Custom components
 	private Animator       _animator;
-	private Rigidbody2D    _rigidbody;
 	private BoxCollider2D  _collider;
 	private SpriteRenderer _renderer;
 
 	void Awake() {
 
 		_animator = GetComponent<Animator> ();
-		_rigidbody = GetComponent<Rigidbody2D> ();
 		_collider = GetComponent<BoxCollider2D> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 	}
-
+		
 	// Update is called once per frame
 	void Update () {
 
-		_isOnGround = IsOnGround ();
-		_animator.SetBool ("isJumping", !_isOnGround);
-
 		Jump ();
+		_animator.SetBool ("isJumping", !_isOnGround);
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
@@ -51,12 +50,136 @@ public class SMBPlayer : MonoBehaviour {
 
 		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp (KeyCode.RightArrow)) {
 
-			Vector2 currentVelocity = _rigidbody.velocity;
+			Vector2 currentVelocity = _velocity;
 			currentVelocity.x = 0f;
-			_rigidbody.velocity = currentVelocity;
+			_velocity = currentVelocity;
 
 			_animator.SetBool ("isMoving", false);
 		}
+			
+		UpdatePosition ();
+	}
+
+	void ApplyForce(Vector2 force) {
+
+		if(_mass != 0f)
+			force /= _mass;
+
+		_acceleration += force;
+	}
+
+	void CheckHorizontalCollision() {
+
+		float xDirection = _renderer.flipX ? -1f : 1f;
+		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max : 
+			_collider.bounds.max - Vector3.right * _collider.bounds.size.x;
+
+		xRayOrigin.y -= _collider.bounds.size.y / 3f;
+
+		for (int i = 0; i < 2; i++) {
+
+			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, 0.01f);
+//			Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+
+			if (xRay.collider) {
+
+				// Check if the collision was agains an interactable object
+				GameObject obj = xRay.collider.gameObject;
+				obj.SendMessage ("OnInteraction", _collider, SendMessageOptions.DontRequireReceiver);
+
+				if (xRay.collider.isTrigger)
+					return;
+
+				// Player collided on x axis, so stop it
+				_velocity.x = 0f;
+
+				// Fix player position after collision
+				float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
+
+				if (xRayOrigin.x - colBound < 0.01f) {
+
+					Vector3 currentPos = transform.position;
+					currentPos.x = colBound + _collider.bounds.extents.x * -xDirection;
+					transform.position = currentPos;
+				}
+
+				break;
+			}
+
+			xRayOrigin.y -= _collider.bounds.size.y / 3f;
+		}
+	}
+
+	void CheckVerticalCollision() {
+
+		float yDirection = Mathf.Sign (_velocity.y);
+		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max :
+			_collider.bounds.max - Vector3.up * _collider.bounds.size.y;
+
+		yRayOrigin.x -= _collider.bounds.size.x / 3f;
+
+		for (int i = 0; i < 2; i++) {
+
+			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, 0.01f);
+			if (yRay.collider) {
+
+				// Check if the collision was agains an interactable object
+				GameObject obj = yRay.collider.gameObject;
+				obj.SendMessage ("OnInteraction", _collider, SendMessageOptions.DontRequireReceiver);
+
+				if (yRay.collider.isTrigger)
+					return;
+
+				// Player collided on y axis, so stop it
+				_velocity.y = 0f;
+
+				// If the velocity was negative, player collided with the ground
+				if(yDirection == -1f)
+					_isOnGround = true;
+
+				// Fix player position after collision
+				float colBound = (yDirection == 1f) ? yRay.collider.bounds.min.y : yRay.collider.bounds.max.y;
+
+				if (yRayOrigin.y - colBound < 0.01f) {
+
+					Vector3 currentPos = transform.position;
+					currentPos.y = colBound + _collider.bounds.extents.y * -yDirection;
+					transform.position = currentPos;
+				}
+
+				return;
+			}
+
+			yRayOrigin.x -= _collider.bounds.size.x / 3f;
+		}
+
+		_isOnGround = false;
+	}
+
+	void UpdatePosition() {
+
+		// Apply gravity acceleration
+		ApplyForce (SMBConstants.gravity * Time.fixedDeltaTime);
+
+		// Update velocity using currently acceleration
+		_velocity += _acceleration;
+
+		// Clamp velocity
+		_velocity.x = Mathf.Clamp (_velocity.x, 
+			-SMBConstants.maxVelocityX, SMBConstants.maxVelocityX);
+
+		_velocity.y = Mathf.Clamp (_velocity.y, 
+			-SMBConstants.maxVelocityY, SMBConstants.maxVelocityY);
+
+		// ResolveCollision
+		CheckHorizontalCollision ();
+
+		CheckVerticalCollision ();
+
+		transform.Translate(_velocity * Time.fixedDeltaTime);
+
+		// Reset acceleration
+		_acceleration = Vector2.zero;
 	}
 
 	void Jump() {
@@ -64,7 +187,7 @@ public class SMBPlayer : MonoBehaviour {
 		if (_isOnGround && Input.GetKeyDown(KeyCode.Z)){
 
 			_jumpTimer = longJumpTime;
-			_rigidbody.velocity = Vector2.up * ySpeed * Time.fixedDeltaTime;
+			_velocity.y = ySpeed * Time.fixedDeltaTime;
 		}
 
 		if (_jumpTimer > 0f) {
@@ -78,7 +201,7 @@ public class SMBPlayer : MonoBehaviour {
 
 				_jumpTimer -= Time.fixedDeltaTime;
 				if (_jumpTimer <= longJumpTime/2f)
-					_rigidbody.velocity += Vector2.up * ySpeed * longJumpWeight * Time.fixedDeltaTime;
+					_velocity.y += ySpeed * longJumpWeight * Time.fixedDeltaTime;
 			}
 		}
 
@@ -86,9 +209,7 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Move(float side) {
 
-		Vector2 currentVelocity = _rigidbody.velocity;
-		currentVelocity.x = (xSpeed * side) * Time.fixedDeltaTime;
-		_rigidbody.velocity = currentVelocity;
+		_velocity.x = (xSpeed * side) * Time.fixedDeltaTime;
 
 		if (side == (float)SMBConstants.MoveDirection.Forward)
 			_renderer.flipX = false;
@@ -98,27 +219,8 @@ public class SMBPlayer : MonoBehaviour {
 
 		// Lock player x position
 		Vector3 playerPos = transform.position;
-		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileMap.size, 
+		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileSize, 
 			SMBGameWorld.Instance.LockRightX);
 		transform.position = playerPos;
-	}
-
-	bool IsOnGround() {
-
-		Vector2 rayOrigin = _collider.bounds.min;
-
-		for (int i = 0; i < 3; i++) {
-
-			RaycastHit2D ray = Physics2D.Raycast(rayOrigin, -Vector2.up, 0.01f);
-			if (ray.collider && ray.collider.tag == "Platform") {
-
-				if(Mathf.Abs(rayOrigin.y - ray.collider.bounds.max.y) < 0.01f)
-					return true;
-			}
-
-			rayOrigin.x += _collider.bounds.size.x / 2f;
-		}
-
-		return false;
 	}
 }
