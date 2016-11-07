@@ -79,8 +79,6 @@ public class SMBPlayer : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, 0.01f);
-//			Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
-
 			if (xRay.collider) {
 
 				// Check if the collision was agains an interactable object
@@ -171,9 +169,10 @@ public class SMBPlayer : MonoBehaviour {
 		_velocity.y = Mathf.Clamp (_velocity.y, 
 			-SMBConstants.maxVelocityY, SMBConstants.maxVelocityY);
 
-		// ResolveCollision
+		// Resolve x collision
 		CheckHorizontalCollision ();
 
+		// Resolve y collision
 		CheckVerticalCollision ();
 
 		transform.Translate(_velocity * Time.fixedDeltaTime);
