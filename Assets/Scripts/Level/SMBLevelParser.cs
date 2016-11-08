@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
+public class SMBCollision {
+
+	public bool top = true;
+	public bool right = true;
+	public bool bottom = true;
+	public bool left = true;
+}
+
+[System.Serializable]
 public class SMBTile {
 
 	public string id;
@@ -10,7 +19,7 @@ public class SMBTile {
 	public bool   isPlayer;
 	public int    layer = 0;
 	public int 	  width = 1;
-	public float  collisionAngle = 360f;
+	public SMBCollision collisions;
 }
 
 [System.Serializable]

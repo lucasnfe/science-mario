@@ -88,6 +88,10 @@ public class SMBPlayer : MonoBehaviour {
 				if (xRay.collider.isTrigger)
 					return;
 
+				string tileID = xRay.collider.name;
+				if(IsOneWayHorizontalCollision(xDirection, tileID))
+					return;
+
 				// Player collided on x axis, so stop it
 				_velocity.x = 0f;
 
@@ -128,6 +132,10 @@ public class SMBPlayer : MonoBehaviour {
 				if (yRay.collider.isTrigger)
 					return;
 
+				string tileID = yRay.collider.name;
+				if(IsOneWayVerticalCollision(yDirection, tileID))
+					return;
+
 				// Player collided on y axis, so stop it
 				_velocity.y = 0f;
 
@@ -154,6 +162,45 @@ public class SMBPlayer : MonoBehaviour {
 		_isOnGround = false;
 	}
 
+	bool IsOneWayHorizontalCollision(float direction, string tileID) {
+		
+		if (SMBGameWorld.Instance.TileMap.ContainsKey (tileID)) {
+
+			if (direction >= 1f) {
+
+				if (!SMBGameWorld.Instance.TileMap [tileID].collisions.left)
+					return true;
+			}
+			else if (direction == -1f) {
+
+				if (!SMBGameWorld.Instance.TileMap [tileID].collisions.right)
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool IsOneWayVerticalCollision(float direction, string tileID) {
+
+		if (SMBGameWorld.Instance.TileMap.ContainsKey (tileID)) {
+
+			if (direction == 1f) {
+
+				if (!SMBGameWorld.Instance.TileMap [tileID].collisions.bottom)
+					return true;
+			}
+
+			else if (direction == -1f) {
+
+				if (!SMBGameWorld.Instance.TileMap [tileID].collisions.top)
+					return true;
+			}
+		}
+
+		return false;
+	}
+		
 	void UpdatePosition() {
 
 		// Apply gravity acceleration

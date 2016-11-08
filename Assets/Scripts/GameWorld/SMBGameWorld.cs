@@ -105,12 +105,4 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 			}
 		}
 	}
-
-	public bool IsOneWayTile(string tileID) {
-
-		if (SMBGameWorld.Instance.TileMap.ContainsKey (tileID))
-			return (SMBGameWorld.Instance.TileMap [tileID].collisionAngle != 360f);
-
-		return false;
-	}
 }

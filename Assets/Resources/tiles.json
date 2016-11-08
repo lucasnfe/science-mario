@@ -6,10 +6,25 @@
 		{"id": "5", "prefab": "Prefab/BlockQuestion", "layer": 1},
 		{"id": "6", "prefab": "Prefab/BlockGold", "layer": 1},
 		{"id": "2", "prefab": "Prefab/Coin" },
-		{"id": "1", "prefab": "Prefab/GroundGrass", "collisionAngle": 160, "layer": 1},
+		{"id": "1", "prefab": "Prefab/GroundGrass",  "layer": 1, "collisions": {
+						"top": true, 
+					  "right": false, 
+				     "bottom": false, 
+				       "left": false }
+		},
 		{"id": "3", "prefab": "Prefab/GroundGrassBackground", "layer": 1 },
-		{"id": "a", "prefab": "Prefab/GroundGrassLeftCorner", "collisionAngle": 160, "layer": 1 },
-		{"id": "b", "prefab": "Prefab/GroundGrassRightCorner", "collisionAngle": 160, "layer": 1 },
+		{"id": "a", "prefab": "Prefab/GroundGrassLeftCorner", "layer": 1 , "collisions": {
+						"top": true, 
+					  "right": false, 
+				     "bottom": false, 
+				       "left": false }
+		},
+		{"id": "b", "prefab": "Prefab/GroundGrassRightCorner","layer": 1 , "collisions": {
+						"top": true, 
+					  "right": false, 
+				     "bottom": false, 
+				       "left": false }
+		},
 		{"id": "c", "prefab": "Prefab/GroundGrassLeftSide", "layer": 1 },
 		{"id": "d", "prefab": "Prefab/GroundGrassRightSide", "layer": 1 },
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2 },
