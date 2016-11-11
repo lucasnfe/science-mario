@@ -74,11 +74,12 @@ public class SMBPlayer : MonoBehaviour {
 		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max : 
 			_collider.bounds.max - Vector3.right * _collider.bounds.size.x;
 
-		xRayOrigin.y -= _collider.bounds.size.y / 3f;
+		xRayOrigin.y -= 0.1f;
 
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, 0.01f);
+			//Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 
 				// Check if the collision was agains an interactable object
@@ -108,21 +109,24 @@ public class SMBPlayer : MonoBehaviour {
 				break;
 			}
 
-			xRayOrigin.y -= _collider.bounds.size.y / 3f;
+			xRayOrigin.y -= _collider.bounds.size.y - 0.2f;
 		}
 	}
 
 	void CheckVerticalCollision() {
 
 		float yDirection = Mathf.Sign (_velocity.y);
+		Debug.Log (yDirection);
 		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max :
 			_collider.bounds.max - Vector3.up * _collider.bounds.size.y;
 
-		yRayOrigin.x -= _collider.bounds.size.x / 3f;
+		yRayOrigin.x -= 0.01f;
 
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, 0.01f);
+			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+
 			if (yRay.collider) {
 
 				// Check if the collision was agains an interactable object
@@ -156,7 +160,7 @@ public class SMBPlayer : MonoBehaviour {
 				return;
 			}
 
-			yRayOrigin.x -= _collider.bounds.size.x / 3f;
+			yRayOrigin.x -= _collider.bounds.size.x - 0.02f;
 		}
 
 		_isOnGround = false;
