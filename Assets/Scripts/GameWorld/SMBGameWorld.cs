@@ -13,17 +13,25 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	public float LockUpY    { get; set; }
 	public float LockDownY  { get; set; }
 
-	public char[,]    Level   { get; set; }
-	public SMBTileMap TileMap { get; set; }
+	public char[,]  Level   { get; set; }
+
+	public float TileSize { get; set; }
+	public Dictionary<string, SMBTile> TileMap { get; set; }
 
 	public PhysicsMaterial2D _defaultPhysicsMaterial;
 
 	// Use this for initialization
 	void Start () {
 
-		TileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
-		if (TileMap == null)
+		SMBTileMap tileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
+		if (tileMap == null)
 			return;
+
+		TileSize = tileMap.size;
+			
+		TileMap = new Dictionary<string, SMBTile>();
+		foreach (SMBTile tile in tileMap.tiles)
+			TileMap [tile.id] = tile;
 
 		Level = SMBLevelParser.ParseLevel (SMBConstants.levelFilename);
 		if (Level == null)
@@ -40,14 +48,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		if (_camera == null)
 			return;
 		
-		_camera.player = _player.gameObject;
-
-		// Create colliders for this level
-		GameObject levelColliders = new GameObject ();
-		levelColliders.name = "SMBColliders";
-		levelColliders.transform.parent = transform;
-
-		SMBLevelParser.CreateColliders(Level, TileMap.size, levelColliders.transform, _defaultPhysicsMaterial);
+		_camera.player = _player;
 
 		// Set Camera position to the players poitions
 		_camera.SetCameraPos(_player.transform.position);
@@ -56,11 +57,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		int levelWidth = Level.GetLength(1);
 		int levelHeight = Level.GetLength(0);
 
-		LockLeftX = TileMap.size * 0.5f;
-		LockRightX = ((float)levelWidth - 1.5f) * TileMap.size;
+		LockLeftX = TileSize * 0.5f;
+		LockRightX = ((float)levelWidth - 1.5f) * TileSize;
 
-		LockDownY = -TileMap.size * 0.5f;
-		LockUpY = (float)levelHeight * TileMap.size;
+		LockDownY = -TileSize * 0.5f;
+		LockUpY = ((float)levelHeight + 0.5f) * TileSize;
 	}
 
 	void Update() {
@@ -74,10 +75,6 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void InstantiateLevel() {
 
 		// Transfroming array of Dictionaries into a Dictionary
-		Dictionary<string, SMBTile> tilesetMapping = new Dictionary<string, SMBTile>();
-		foreach (SMBTile tile in TileMap.tiles)
-			tilesetMapping [tile.id] = tile;
-
 		GameObject levelParent = new GameObject ();
 		levelParent.name = "LevelTiles";
 		levelParent.transform.parent = transform.parent;
@@ -88,24 +85,24 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 				string tileID = Level[i, j].ToString();
 
-				Vector3 position = new Vector2 (j, Level.GetLength(0) - i) * TileMap.size;
-				if (tilesetMapping [tileID].width > 1)
-					position.x += tilesetMapping [tileID].width * 0.25f * TileMap.size;
+				Vector3 position = new Vector2 (j, Level.GetLength(0) - i) * TileSize;
+				if (TileMap [tileID].width > 1)
+					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				position.z = (float)tilesetMapping [tileID].layer;
+				position.z = (float)TileMap [tileID].layer;
 
-				if (tilesetMapping.ContainsKey(tileID) && tilesetMapping [tileID].prefab != "") {
+				if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
 
-					GameObject prefab = Resources.Load<GameObject> (tilesetMapping [tileID].prefab);
+					GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
 					GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+					newTile.name = tileID;
 
 					newTile.transform.parent = levelParent.transform;
 
-					if (tilesetMapping [tileID].isPlayer)
+					if (TileMap [tileID].isPlayer)
 						_player = newTile.GetComponent<SMBPlayer> ();
 				}
 			}
 		}
-
 	}
 }
