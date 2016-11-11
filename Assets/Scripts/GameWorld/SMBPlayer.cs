@@ -246,7 +246,7 @@ public class SMBPlayer : MonoBehaviour {
 				_jumpTimer = 0f;
 
 			}
-			else if(Input.GetKey(KeyCode.Z)) {
+			else if(_velocity.y > 0f && Input.GetKey(KeyCode.Z)) {
 
 				_jumpTimer -= Time.fixedDeltaTime;
 				if (_jumpTimer <= longJumpTime/2f)
