@@ -61,7 +61,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		LockRightX = ((float)levelWidth - 1.5f) * TileSize;
 
 		LockDownY = -TileSize * 0.5f;
-		LockUpY = (float)levelHeight * TileSize;
+		LockUpY = ((float)levelHeight + 0.5f) * TileSize;
 	}
 
 	void Update() {
