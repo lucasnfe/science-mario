@@ -7,7 +7,6 @@ public class SMBCamera : MonoBehaviour {
 
 	public GameObject player;
 	public float cameraSpeed = 5.0f;
-	public float deltaFromPlayer = 0f;
 
 	void Awake() {
 

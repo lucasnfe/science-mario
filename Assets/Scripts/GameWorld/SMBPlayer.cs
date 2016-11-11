@@ -116,7 +116,6 @@ public class SMBPlayer : MonoBehaviour {
 	void CheckVerticalCollision() {
 
 		float yDirection = Mathf.Sign (_velocity.y);
-		Debug.Log (yDirection);
 		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max :
 			_collider.bounds.max - Vector3.up * _collider.bounds.size.y;
 
