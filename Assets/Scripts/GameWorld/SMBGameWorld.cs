@@ -48,7 +48,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		if (_camera == null)
 			return;
 		
-		_camera.player = _player.gameObject;
+		_camera.player = _player;
 
 		// Set Camera position to the players poitions
 		_camera.SetCameraPos(_player.transform.position);

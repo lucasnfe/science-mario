@@ -11,7 +11,10 @@ public class SMBPlayer : MonoBehaviour {
 	private bool  _isOnGround;
 
 	private Vector2 _velocity;
+	public Vector2 Velocity { get { return _velocity; } }
+
 	private Vector2 _acceleration;
+	public Vector2 Acceleration { get { return _velocity; } }
 
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
@@ -271,5 +274,10 @@ public class SMBPlayer : MonoBehaviour {
 		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileSize, 
 			SMBGameWorld.Instance.LockRightX);
 		transform.position = playerPos;
+	}
+
+	public bool isFlipped() {
+
+		return _renderer.flipX;
 	}
 }

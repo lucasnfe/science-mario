@@ -13,9 +13,13 @@ public class PerfectOverride
 
 public class SMBCamera : MonoBehaviour {
 
-	private Camera _camera;
+	private float _width;
+	private float _height;
 
-	public GameObject player;
+	private Camera  _camera;
+	private Vector2 _velocity;
+
+	public SMBPlayer player;
 
 	public int referenceOrthographicSize;
 	public float referencePixelsPerUnit;
@@ -24,6 +28,12 @@ public class SMBCamera : MonoBehaviour {
 	void Awake() {
 
 		_camera = GetComponent<Camera> ();
+	}
+
+	void Start() {
+
+		_height = 2f * _camera.orthographicSize;
+		_width = _height * _camera.aspect;
 	}
 
 	void UpdateOrthoSize()
@@ -56,18 +66,15 @@ public class SMBCamera : MonoBehaviour {
 		Vector3 cameraZPos = Vector3.forward * transform.position.z;
 		transform.position = Vector2.Lerp (transform.position, player.transform.position, cameraSpeed * Time.fixedDeltaTime);
 		transform.position += cameraZPos;
-
+	
 		// Lock camera position
 		Vector3 cameraPos = transform.position;
 
-		float camHeight = 2f * _camera.orthographicSize;
-		float camWidth = camHeight * _camera.aspect;
+		cameraPos.x = Mathf.Clamp (cameraPos.x, _width * 0.5f - SMBGameWorld.Instance.LockLeftX, 
+			SMBGameWorld.Instance.LockRightX - _width * 0.5f);
 
-		cameraPos.x = Mathf.Clamp (cameraPos.x, camWidth * 0.5f - SMBGameWorld.Instance.LockLeftX, 
-			SMBGameWorld.Instance.LockRightX - camWidth * 0.5f);
-
-		cameraPos.y = Mathf.Clamp (cameraPos.y, camHeight * 0.5f - SMBGameWorld.Instance.LockDownY, 
-			SMBGameWorld.Instance.LockUpY - camHeight * 0.5f);
+		cameraPos.y = Mathf.Clamp (cameraPos.y, _height * 0.5f - SMBGameWorld.Instance.LockDownY, 
+			SMBGameWorld.Instance.LockUpY - _height * 0.5f);
 
 		transform.position = cameraPos;
 	}
