@@ -3,22 +3,34 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent (typeof (AudioSource))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
+	// Custom components
+	private AudioSource   _audio;
+
+	// Pointers to main game objects
 	private SMBCamera  _camera;
 	private SMBPlayer  _player;
 
+	public AudioClip []_soundEffecs;
+
+	// World boundaries
 	public float LockLeftX  { get; set; }
 	public float LockRightX { get; set; }
 	public float LockUpY    { get; set; }
 	public float LockDownY  { get; set; }
 
+	// Level representation
 	public char[,]  Level   { get; set; }
 
-	public float TileSize { get; set; }
+	public float TileSize   { get; set; }
 	public Dictionary<string, SMBTile> TileMap { get; set; }
 
-	public PhysicsMaterial2D _defaultPhysicsMaterial;
+	void Awake() {
+
+		_audio = GetComponent<AudioSource> ();
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -104,5 +116,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				}
 			}
 		}
+	}
+
+	public void PlaySoundEffect(int clip) {
+
+		if (clip < _soundEffecs.Length)
+			_audio.PlayOneShot (_soundEffecs[clip]);
 	}
 }

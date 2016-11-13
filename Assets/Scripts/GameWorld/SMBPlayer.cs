@@ -4,7 +4,12 @@ using System.Collections;
 [RequireComponent (typeof (Animator))]
 [RequireComponent (typeof (BoxCollider2D))]
 [RequireComponent (typeof (SpriteRenderer))]
+[RequireComponent (typeof (AudioSource))]
 public class SMBPlayer : MonoBehaviour {
+
+	enum SoundEffects {
+		Jump
+	}
 
 	private float _mass = 1f;
 	private float _jumpTimer;
@@ -20,8 +25,10 @@ public class SMBPlayer : MonoBehaviour {
 	public float ySpeed = 5f;
 	public float longJumpTime = 1f;
 	public float longJumpWeight = 0.1f;
+	public AudioClip[] soundEffects;
 
 	// Custom components
+	private AudioSource    _audio;
 	private Animator       _animator;
 	private BoxCollider2D  _collider;
 	private SpriteRenderer _renderer;
@@ -31,6 +38,7 @@ public class SMBPlayer : MonoBehaviour {
 		_animator = GetComponent<Animator> ();
 		_collider = GetComponent<BoxCollider2D> ();
 		_renderer = GetComponent<SpriteRenderer> ();
+		_audio    = GetComponent<AudioSource> ();
 	}
 		
 	// Update is called once per frame
@@ -240,6 +248,8 @@ public class SMBPlayer : MonoBehaviour {
 
 			_jumpTimer = longJumpTime;
 			_velocity.y = ySpeed * Time.fixedDeltaTime;
+
+			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Jump]);
 		}
 
 		if (_jumpTimer > 0f) {
