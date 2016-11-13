@@ -21,6 +21,9 @@ public class SMBPlayer : MonoBehaviour {
 	private Vector2 _acceleration;
 	public Vector2 Acceleration { get { return _velocity; } }
 
+	private SMBConstants.PlayerState _state;
+	public SMBConstants.PlayerState State { get { return _state; } }
+
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
 	public float longJumpTime = 1f;
@@ -39,6 +42,11 @@ public class SMBPlayer : MonoBehaviour {
 		_collider = GetComponent<BoxCollider2D> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 		_audio    = GetComponent<AudioSource> ();
+	}
+
+	void Start() {
+
+		_state = SMBConstants.PlayerState.Short;
 	}
 		
 	// Update is called once per frame
