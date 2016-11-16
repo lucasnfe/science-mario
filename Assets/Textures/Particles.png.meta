@@ -1,24 +1,21 @@
 fileFormatVersion: 2
-guid: 7776dc9115ccc4677aa2117e88c324f1
-timeCreated: 1477718735
+guid: dc56ada7b32074ec7b4aa908ffdf8bab
+timeCreated: 1478999944
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: TallMario_0
-    21300002: TallMario_1
-    21300004: TallMario_2
-    21300006: TallMario_3
-    21300008: TallMario_4
-    21300010: TallMario_5
-    21300012: TallMario_6
-    21300014: TallMario_7
-    21300016: TallMario_8
-    21300018: TallMario_9
-    21300020: TallMario_10
-    21300022: TallMario_11
-    21300024: TallMario_12
-    21300026: TallMario_13
-    21300028: TallMario_14
+    21300000: Particles_0
+    21300002: Particles_1
+    21300004: Particles_2
+    21300006: Particles_3
+    21300008: Particles_4
+    21300010: Particles_5
+    21300012: Particles_6
+    21300014: Particles_7
+    21300016: Particles_8
+    21300018: Particles_9
+    21300020: Particles_10
+    21300022: Particles_11
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -65,169 +62,136 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: TallMario_0
+    - name: Particles_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 0
-        width: 14
-        height: 27
+        x: 0
+        y: 56
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_1
+    - name: Particles_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 0
-        width: 16
-        height: 27
+        x: 8
+        y: 56
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_2
+    - name: Particles_2
       rect:
         serializedVersion: 2
-        x: 72
-        y: 1
-        width: 16
-        height: 26
+        x: 0
+        y: 48
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_3
+    - name: Particles_3
       rect:
         serializedVersion: 2
-        x: 101
-        y: 0
-        width: 19
-        height: 27
+        x: 8
+        y: 48
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_4
+    - name: Particles_4
       rect:
         serializedVersion: 2
-        x: 133
-        y: 0
-        width: 19
-        height: 27
+        x: 16
+        y: 48
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_5
+    - name: Particles_5
       rect:
         serializedVersion: 2
-        x: 165
-        y: 1
-        width: 19
-        height: 26
+        x: 0
+        y: 40
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_6
+    - name: Particles_6
       rect:
         serializedVersion: 2
-        x: 200
-        y: 1
-        width: 16
-        height: 26
+        x: 8
+        y: 40
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_7
+    - name: Particles_7
       rect:
         serializedVersion: 2
-        x: 229
-        y: 2
-        width: 19
-        height: 26
+        x: 16
+        y: 40
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_8
+    - name: Particles_8
       rect:
         serializedVersion: 2
-        x: 261
-        y: 0
-        width: 16
-        height: 26
+        x: 0
+        y: 32
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_9
+    - name: Particles_9
       rect:
         serializedVersion: 2
-        x: 296
-        y: 0
-        width: 16
-        height: 28
+        x: 8
+        y: 32
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_10
+    - name: Particles_10
       rect:
         serializedVersion: 2
-        x: 330
-        y: 0
-        width: 14
-        height: 27
+        x: 16
+        y: 32
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: TallMario_11
+    - name: Particles_11
       rect:
         serializedVersion: 2
-        x: 361
-        y: 0
-        width: 15
-        height: 27
+        x: 24
+        y: 32
+        width: 8
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: TallMario_12
-      rect:
-        serializedVersion: 2
-        x: 392
-        y: 1
-        width: 16
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: TallMario_13
-      rect:
-        serializedVersion: 2
-        x: 424
-        y: 0
-        width: 21
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: TallMario_14
-      rect:
-        serializedVersion: 2
-        x: 457
-        y: 0
-        width: 14
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

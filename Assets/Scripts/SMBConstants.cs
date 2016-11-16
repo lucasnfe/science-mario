@@ -9,6 +9,16 @@ public static class SMBConstants {
 		Backward = -1
 	}
 
+	public enum PlayerState {
+		Short,
+		Tall,
+		Fire
+	}
+
+	public enum GameWorldSoundEffects {
+		Coin
+	}
+		
 	public static readonly float maxVelocityX = 5f;
 	public static readonly float maxVelocityY = 3f;
 
