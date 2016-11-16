@@ -5,21 +5,15 @@ using System.Collections;
 [RequireComponent (typeof (BoxCollider2D))]
 [RequireComponent (typeof (SpriteRenderer))]
 [RequireComponent (typeof (AudioSource))]
+[RequireComponent (typeof (SMBPhysicalBody))]
 public class SMBPlayer : MonoBehaviour {
 
 	enum SoundEffects {
 		Jump
 	}
-
-	private float _mass = 1f;
+		
 	private float _jumpTimer;
 	private bool  _isOnGround;
-
-	private Vector2 _velocity;
-	public Vector2 Velocity { get { return _velocity; } }
-
-	private Vector2 _acceleration;
-	public Vector2 Acceleration { get { return _velocity; } }
 
 	private SMBConstants.PlayerState _state;
 	public SMBConstants.PlayerState State { get { return _state; } }
@@ -37,6 +31,7 @@ public class SMBPlayer : MonoBehaviour {
 	private Animator       _animator;
 	private BoxCollider2D  _collider;
 	private SpriteRenderer _renderer;
+	private SMBPhysicalBody   _body;
 
 	void Awake() {
 
@@ -44,6 +39,7 @@ public class SMBPlayer : MonoBehaviour {
 		_collider = GetComponent<BoxCollider2D> ();
 		_renderer = GetComponent<SpriteRenderer> ();
 		_audio    = GetComponent<AudioSource> ();
+		_body     = GetComponent<SMBPhysicalBody> ();
 	}
 
 	void Start() {
@@ -61,16 +57,16 @@ public class SMBPlayer : MonoBehaviour {
 
 			Move ((float)SMBConstants.MoveDirection.Backward);
 
-			if (Mathf.Abs (_velocity.x) > 0f) {
+			if (Mathf.Abs (_body.velocity.x) > 0f) {
 
 				_animator.SetBool ("isMoving", true);
 				_animator.SetBool ("isRunning", false);
 			}
 
-			if(Mathf.Abs(_velocity.x) > 1.25f)
+			if(Mathf.Abs(_body.velocity.x) > 1.25f)
 				_animator.SetBool ("isRunning", true);
 
-			if(Mathf.Abs(_velocity.x) > 0.5f && Mathf.Sign(_velocity.x) == 1f)
+			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == 1f)
 				_animator.SetBool ("isCoasting", true);
 
 		} 
@@ -78,49 +74,40 @@ public class SMBPlayer : MonoBehaviour {
 
 			Move ((float)SMBConstants.MoveDirection.Forward);
 
-			if (Mathf.Abs (_velocity.x) > 0f) {
+			if (Mathf.Abs (_body.velocity.x) > 0f) {
 
 				_animator.SetBool ("isMoving", true);
 				_animator.SetBool ("isRunning", false);
 			}
 
-			if(Mathf.Abs(_velocity.x) > 1.25f)
+			if(Mathf.Abs(_body.velocity.x) > 1.25f)
 				_animator.SetBool ("isRunning", true);
 
-			if(Mathf.Abs(_velocity.x) > 0.5f && Mathf.Sign(_velocity.x) == -1f)
+			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == -1f)
 				_animator.SetBool ("isCoasting", true);
 		} 
 		else {
 
-			_velocity.x = Mathf.Lerp (_velocity.x, 0f, momentumReduction * Time.fixedDeltaTime);
+			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentumReduction * Time.fixedDeltaTime);
 
-			if (Mathf.Abs (_velocity.x) < 1.25f)
+			if (Mathf.Abs (_body.velocity.x) < 1.25f)
 				_animator.SetBool ("isRunning", false);
 
-			if (Mathf.Abs (_velocity.x) <= 0.1f) {
+			if (Mathf.Abs (_body.velocity.x) <= 0.1f) {
 
 				_animator.SetBool ("isMoving", false);
-				_velocity.x = 0f;
+				_body.velocity.x = 0f;
 			}
 		}
 
-		if (Mathf.Abs (_velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
+		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
 			_animator.SetBool ("isCoasting", false);
 
-		UpdatePosition ();
-	}
-
-	void ApplyForce(Vector2 force) {
-
-		if(_mass != 0f)
-			force /= _mass;
-
-		_acceleration += force;
 	}
 
 	void CheckHorizontalCollision() {
 
-		float xDirection = Mathf.Sign(_velocity.x);
+		float xDirection = Mathf.Sign(_body.velocity.x);
 		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max : 
 			_collider.bounds.max - Vector3.right * _collider.bounds.size.x;
 
@@ -144,7 +131,7 @@ public class SMBPlayer : MonoBehaviour {
 					return;
 
 				// Player collided on x axis, so stop it
-				_velocity.x = 0f;
+				_body.velocity.x = 0f;
 
 				// Fix player position after collision
 				float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
@@ -165,7 +152,7 @@ public class SMBPlayer : MonoBehaviour {
 
 	void CheckVerticalCollision() {
 
-		float yDirection = Mathf.Sign (_velocity.y);
+		float yDirection = Mathf.Sign (_body.velocity.y);
 		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max :
 			_collider.bounds.max - Vector3.up * _collider.bounds.size.y;
 
@@ -190,7 +177,7 @@ public class SMBPlayer : MonoBehaviour {
 					return;
 
 				// Player collided on y axis, so stop it
-				_velocity.y = 0f;
+				_body.velocity.y = 0f;
 
 				// If the velocity was negative, player collided with the ground
 				if(yDirection == -1f)
@@ -253,40 +240,13 @@ public class SMBPlayer : MonoBehaviour {
 
 		return false;
 	}
-
-	void UpdatePosition() {
-
-		// Apply gravity acceleration
-		ApplyForce (SMBConstants.gravity * Time.fixedDeltaTime);
-
-		// Update velocity using currently acceleration
-		_velocity += _acceleration;
-
-		// Clamp velocity
-		_velocity.x = Mathf.Clamp (_velocity.x, 
-			-SMBConstants.maxVelocityX, SMBConstants.maxVelocityX);
-
-		_velocity.y = Mathf.Clamp (_velocity.y, 
-			-SMBConstants.maxVelocityY, SMBConstants.maxVelocityY);
-
-		// Resolve x collision
-		CheckHorizontalCollision ();
-
-		// Resolve y collision
-		CheckVerticalCollision ();
-
-		transform.Translate(_velocity * Time.fixedDeltaTime);
-
-		// Reset acceleration
-		_acceleration = Vector2.zero;
-	}
-
+		
 	void Jump() {
 
 		if (_isOnGround && Input.GetKeyDown(KeyCode.S)){
 
 			_jumpTimer = longJumpTime;
-			_velocity.y = ySpeed * Time.fixedDeltaTime;
+			_body.velocity.y = ySpeed * Time.fixedDeltaTime;
 
 			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Jump]);
 		}
@@ -298,11 +258,11 @@ public class SMBPlayer : MonoBehaviour {
 				_jumpTimer = 0f;
 
 			}
-			else if(_velocity.y > 0f && Input.GetKey(KeyCode.S)) {
+			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.S)) {
 
 				_jumpTimer -= Time.fixedDeltaTime;
 				if (_jumpTimer <= longJumpTime/2f)
-					_velocity.y += ySpeed * longJumpWeight * Time.fixedDeltaTime;
+					_body.velocity.y += ySpeed * longJumpWeight * Time.fixedDeltaTime;
 			}
 		}
 
@@ -314,7 +274,7 @@ public class SMBPlayer : MonoBehaviour {
 		if (Input.GetKey (KeyCode.A))
 			speed *= runningMultiplyer;
 
-		_velocity.x = Mathf.Lerp (_velocity.x, speed * Time.fixedDeltaTime, momentumReduction * Time.fixedDeltaTime);
+		_body.velocity.x = Mathf.Lerp (_body.velocity.x, speed * Time.fixedDeltaTime, momentumReduction * Time.fixedDeltaTime);
 
 		if (side == (float)SMBConstants.MoveDirection.Forward)
 			_renderer.flipX = false;
