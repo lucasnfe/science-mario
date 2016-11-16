@@ -28,6 +28,7 @@ public class SMBPlayer : MonoBehaviour {
 	public float ySpeed = 5f;
 	public float longJumpTime = 1f;
 	public float longJumpWeight = 0.1f;
+	public float momentumReduction = 3f;
 	public AudioClip[] soundEffects;
 
 	// Custom components
@@ -48,7 +49,7 @@ public class SMBPlayer : MonoBehaviour {
 
 		_state = SMBConstants.PlayerState.Short;
 	}
-		
+
 	// Update is called once per frame
 	void Update () {
 
@@ -59,23 +60,33 @@ public class SMBPlayer : MonoBehaviour {
 
 			Move ((float)SMBConstants.MoveDirection.Backward);
 			_animator.SetBool ("isMoving", true);
-		}
 
-		if (Input.GetKey (KeyCode.RightArrow)) {
+			if(Mathf.Abs(_velocity.x) > 0.5f && Mathf.Sign(_velocity.x) == 1f)
+				_animator.SetBool ("isCoasting", true);
+
+		} 
+		else if (Input.GetKey (KeyCode.RightArrow)) {
 
 			Move ((float)SMBConstants.MoveDirection.Forward);
 			_animator.SetBool ("isMoving", true);
+
+			if(Mathf.Abs(_velocity.x) > 0.5f && Mathf.Sign(_velocity.x) == -1f)
+				_animator.SetBool ("isCoasting", true);
+		} 
+		else {
+
+			_velocity.x = Mathf.Lerp (_velocity.x, 0f, momentumReduction * Time.fixedDeltaTime);
+
+			if (Mathf.Abs (_velocity.x) <= 0.1f) {
+
+				_animator.SetBool ("isMoving", false);
+				_velocity.x = 0f;
+			}
 		}
 
-		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp (KeyCode.RightArrow)) {
+		if (Mathf.Abs (_velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
+			_animator.SetBool ("isCoasting", false);
 
-			Vector2 currentVelocity = _velocity;
-			currentVelocity.x = 0f;
-			_velocity = currentVelocity;
-
-			_animator.SetBool ("isMoving", false);
-		}
-			
 		UpdatePosition ();
 	}
 
@@ -89,7 +100,7 @@ public class SMBPlayer : MonoBehaviour {
 
 	void CheckHorizontalCollision() {
 
-		float xDirection = _renderer.flipX ? -1f : 1f;
+		float xDirection = Mathf.Sign(_velocity.x);
 		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max : 
 			_collider.bounds.max - Vector3.right * _collider.bounds.size.x;
 
@@ -98,7 +109,7 @@ public class SMBPlayer : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, 0.01f);
-			//Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+			Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 
 				// Check if the collision was agains an interactable object
@@ -143,7 +154,7 @@ public class SMBPlayer : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, 0.01f);
-			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+			Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
 
@@ -185,7 +196,7 @@ public class SMBPlayer : MonoBehaviour {
 	}
 
 	bool IsOneWayHorizontalCollision(float direction, string tileID) {
-		
+
 		if (SMBGameWorld.Instance.TileMap.ContainsKey (tileID)) {
 
 			if (direction >= 1f) {
@@ -222,7 +233,7 @@ public class SMBPlayer : MonoBehaviour {
 
 		return false;
 	}
-		
+
 	void UpdatePosition() {
 
 		// Apply gravity acceleration
@@ -244,6 +255,7 @@ public class SMBPlayer : MonoBehaviour {
 		// Resolve y collision
 		CheckVerticalCollision ();
 
+		Debug.Log (_velocity.x);
 		transform.Translate(_velocity * Time.fixedDeltaTime);
 
 		// Reset acceleration
@@ -279,7 +291,7 @@ public class SMBPlayer : MonoBehaviour {
 
 	void Move(float side) {
 
-		_velocity.x = (xSpeed * side) * Time.fixedDeltaTime;
+		_velocity.x = Mathf.Lerp (_velocity.x, (xSpeed * side) * Time.fixedDeltaTime, momentumReduction * Time.fixedDeltaTime);
 
 		if (side == (float)SMBConstants.MoveDirection.Forward)
 			_renderer.flipX = false;
