@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SMBPhysicalBody : MonoBehaviour {
+public class SMBRigidBody : MonoBehaviour {
 
 	public bool applyGravity = true;
 
@@ -32,10 +32,6 @@ public class SMBPhysicalBody : MonoBehaviour {
 
 		velocity.y = Mathf.Clamp (velocity.y, 
 			-SMBConstants.maxVelocityY, SMBConstants.maxVelocityY);
-
-		SendMessage ("CheckHorizontalCollision", SendMessageOptions.DontRequireReceiver);
-
-		SendMessage ("CheckVerticalCollision", SendMessageOptions.DontRequireReceiver);
 
 		// Update position using currently velocity
 		transform.Translate(velocity * Time.fixedDeltaTime);

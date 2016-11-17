@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (SpriteRenderer))]
-public class SMBParticle : SMBPhysicalBody {
+public class SMBParticle : SMBRigidBody {
 
 	private float _lifetime;
 	private bool  _isDying;
