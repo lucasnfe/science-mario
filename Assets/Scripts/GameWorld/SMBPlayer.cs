@@ -47,6 +47,9 @@ public class SMBPlayer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if (_state == SMBConstants.PlayerState.Dead)
+			return;
+
 		Jump ();
 		_animator.SetBool ("isJumping", !_isOnGround);
 
@@ -100,6 +103,19 @@ public class SMBPlayer : MonoBehaviour {
 		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
 			_animator.SetBool ("isCoasting", false);
 
+
+		if (transform.position.y < 0f)
+			Die ();
+	}
+
+	void Die() {
+
+		_body.velocity = Vector2.zero;
+		_body.applyGravity = false;
+
+		_state = SMBConstants.PlayerState.Dead;
+
+		SMBGameWorld.Instance.KillPlayer ();
 	}
 
 	void OnVerticalCollisionEnter() {
@@ -146,7 +162,8 @@ public class SMBPlayer : MonoBehaviour {
 		if (Input.GetKey (KeyCode.A))
 			speed *= runningMultiplyer;
 
-		_body.velocity.x = Mathf.Lerp (_body.velocity.x, speed * Time.fixedDeltaTime, momentumReduction * Time.fixedDeltaTime);
+		_body.velocity.x = Mathf.Lerp (_body.velocity.x, speed * Time.fixedDeltaTime, 
+			momentumReduction * Time.fixedDeltaTime);
 
 		if (side == (float)SMBConstants.MoveDirection.Forward)
 			_renderer.flipX = false;

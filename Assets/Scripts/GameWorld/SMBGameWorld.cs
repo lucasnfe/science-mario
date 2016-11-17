@@ -75,13 +75,16 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		LockDownY = -TileSize * 0.5f;
 		LockUpY = ((float)levelHeight + 0.5f) * TileSize;
 	}
+		
+	public void KillPlayer() {
 
-	void Update() {
+		PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
+		Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
+	}
 
-		// Kill the player if it is below the camera y limits
-		if (_player.transform.position.y < 0.0f)
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	public void ReloadLevel() {
 
+		SMBSceneManager.Instance.LoadScene (SceneManager.GetActiveScene ().name);
 	}
 
 	void InstantiateLevel() {
