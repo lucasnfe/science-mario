@@ -12,10 +12,7 @@ public class SMBParticle : SMBPhysicalBody {
 
 	public void Create (SMBParticleSystem emitter) {
 
-		mass = 0.15f;
-
 		_renderer = GetComponent<SpriteRenderer> ();
-
 		_emitter = emitter;
 	}
 
@@ -40,11 +37,12 @@ public class SMBParticle : SMBPhysicalBody {
 		}
 	}
 
-	public void Shoot(Vector2 velocity, float lifetime, bool applyGravity, bool addNoise) {
+	public void Shoot(Vector2 velocity, float lifetime, bool applyGravity, float gravityFactor, bool addNoise) {
 
 		_isDying = false;
 
 		this.velocity = velocity;
+		this.gravityFactor = gravityFactor;
 		this.applyGravity = applyGravity;
 
 		Vector3 noise = Vector3.zero;
@@ -56,9 +54,6 @@ public class SMBParticle : SMBPhysicalBody {
 		}
 
 		transform.position = _emitter.transform.position + noise;
-
-		float rot = Random.Range (0f, 360f);
-		transform.rotation = Quaternion.Euler (transform.rotation.x, transform.rotation.y, rot);
 
 		gameObject.SetActive (true);
 

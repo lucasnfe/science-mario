@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class SMBParticleSystem : MonoBehaviour {
 
-	public int		  _minVel, _maxVel;
-	public int 		  _minAngle, _maxAngle;
+	public float      _minVel, _maxVel;
+	public float      _minAngle, _maxAngle;
 	public float	  _minMass, _maxMass;
 	public float 	  _minLifetime, _maxLifetime;
-	public float 	  _systemLifetime;
-	public float 	  _shootingRate;
+	public float 	  _systemLifetime = 1f;
+	public float 	  _shootingRate   = 1f;
+	public float 	  _gravityFactor  = 1f;
 
 	public bool 	  _addNoise;
 	public bool 	  _applyGravity;
@@ -64,15 +65,13 @@ public class SMBParticleSystem : MonoBehaviour {
 
 		if (inactiveParticle != null) {
 
-			float mass = Random.Range (_minMass, _maxMass);
 			float randVel = Random.Range (_minVel, _maxVel);
 			float randAng = Random.Range (_minAngle, _maxAngle) * Mathf.Deg2Rad;
 			float lifetime = Random.Range (_minLifetime, _maxLifetime);
 
 			Vector2 velocity = new Vector2 (Mathf.Cos(randAng), Mathf.Sin(randAng)) * randVel;
 
-			inactiveParticle.mass = mass;
-			inactiveParticle.Shoot (velocity, lifetime, _applyGravity, _addNoise);
+			inactiveParticle.Shoot (velocity, lifetime, _applyGravity, _gravityFactor, _addNoise);
 		}
 
 		return inactiveParticle;

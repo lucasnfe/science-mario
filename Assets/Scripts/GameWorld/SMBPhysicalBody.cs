@@ -6,6 +6,8 @@ public class SMBPhysicalBody : MonoBehaviour {
 	public bool applyGravity = true;
 
 	public float mass = 1f;
+	public float gravityFactor = 1f;
+
 	public Vector2 velocity;
 	public Vector2 acceleration;
 
@@ -19,7 +21,7 @@ public class SMBPhysicalBody : MonoBehaviour {
 
 		// Apply acceleration
 		if (applyGravity)
-			ApplyForce (SMBConstants.gravity * Time.fixedDeltaTime);
+			ApplyForce (SMBConstants.gravity * gravityFactor * Time.fixedDeltaTime);
 
 		// Update velocity using currently acceleration
 		velocity += acceleration;
@@ -45,7 +47,9 @@ public class SMBPhysicalBody : MonoBehaviour {
 
 	public void ApplyForce(Vector2 force) {
 
-		force /= mass;
+		if(mass != 0f)
+			force /= mass;
+		
 		acceleration += force;
 	}
 }
