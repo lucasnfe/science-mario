@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (SpriteRenderer))]
+[RequireComponent (typeof (AudioSource))]
+[RequireComponent (typeof (SMBRigidBody))]
 [RequireComponent (typeof (SMBCollider))]
+[RequireComponent (typeof (Animator))]
+[RequireComponent (typeof (SpriteRenderer))]
 public class SMBCharacter : MonoBehaviour {
 
 	protected bool  _isOnGround;

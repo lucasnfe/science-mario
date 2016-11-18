@@ -104,9 +104,7 @@ public class SMBPlayer : SMBCharacter {
 		_body.acceleration = Vector2.zero;
 		_body.applyGravity = false;
 
-		_animator.SetBool ("isRunning", false);
-		_animator.SetBool ("isMoving", false);
-		_animator.SetBool ("isJumping", true);
+		_animator.SetTrigger ("triggerDie");
 
 		Invoke("PlayDeadAnimation", timeToDie);
 	}
@@ -144,10 +142,14 @@ public class SMBPlayer : SMBCharacter {
 		}
 	}
 
+	void SolveVerticalCollision(Collider2D collider) {
 
-	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
+		if (collider.tag == "Block") {
 
-		if (collider.tag == "Enemy") {
+			if (collider.bounds.center.y > transform.position.y)
+				collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+		}
+		else if (collider.tag == "Enemy") {
 
 			_body.acceleration = Vector2.zero;
 
@@ -158,29 +160,36 @@ public class SMBPlayer : SMBCharacter {
 
 			return;
 		}
+	}
+		
+	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
 
+		SolveVerticalCollision (collider);
 		base.OnHalfVerticalCollisionEnter (collider);
 	}
 
-
 	override protected void OnFullVerticalCollisionEnter(Collider2D collider) {
 
-		if (collider.tag == "Enemy") {
-
-			_body.acceleration = Vector2.zero;
-
-			_body.ApplyForce (Vector2.up * 2.5f);
-			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
-
-			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
-
-			return;
-		}
-
+		SolveVerticalCollision (collider);
 		base.OnFullVerticalCollisionEnter (collider);
 	}
 
+	void OnVerticalTriggerEnter(Collider2D collider) {
+
+		if (collider.tag == "Coin")
+			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+	}
+
+	void OnHorizontalTriggerEnter(Collider2D collider) {
+
+		if (collider.tag == "Coin")
+			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+	}
+
 	void OnHorizontalCollisionEnter(Collider2D collider) {
+
+		if (collider.tag == "Coin")
+			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
 
 		float dist = Mathf.Abs (collider.bounds.center.y - transform.position.y);
 

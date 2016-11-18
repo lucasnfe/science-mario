@@ -3,6 +3,9 @@ using System.Collections;
 
 public class SMBRigidBody : MonoBehaviour {
 
+	private float side;
+	public float Side { get { return side; }}
+
 	public bool applyGravity = true;
 
 	public float mass = 1f;
@@ -32,6 +35,9 @@ public class SMBRigidBody : MonoBehaviour {
 
 		velocity.y = Mathf.Clamp (velocity.y, 
 			-SMBConstants.maxVelocityY, SMBConstants.maxVelocityY);
+
+		if(velocity.x != 0f)
+			side = Mathf.Sign (velocity.x);
 
 		// Update position using currently velocity
 		transform.Translate(velocity * Time.fixedDeltaTime);

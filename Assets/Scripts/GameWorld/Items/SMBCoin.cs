@@ -3,9 +3,9 @@ using System.Collections;
 
 public class SMBCoin : SMBItem {
 
-	override protected void OnInteraction(Collider2D coll) {
+	override protected void OnInteraction() {
 
 		SMBGameWorld.Instance.PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Coin);
-		base.OnInteraction (coll);
+		base.OnInteraction ();
 	}
 }
