@@ -29,6 +29,7 @@
 		{"id": "d", "prefab": "Prefab/GroundGrassRightSide", "layer": 1 },
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2 },
 		{"id": "t", "prefab": "Prefab/PipeTop",  "width": 2 },
-		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true }
+		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true },
+		{"id": "g", "prefab": "Prefab/EnemyGoomba"}
    	]
 }

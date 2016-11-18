@@ -1,47 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (Animator))]
-[RequireComponent (typeof (SpriteRenderer))]
-[RequireComponent (typeof (AudioSource))]
-[RequireComponent (typeof (SMBRigidBody))]
-[RequireComponent (typeof (SMBCollider))]
-public class SMBPlayer : MonoBehaviour {
+public class SMBPlayer : SMBCharacter {
 
 	enum SoundEffects {
-		Jump
+		Jump,
+		Kick
 	}
-
-	// Custom components
-	private AudioSource     _audio;
-	private Animator        _animator;
-	private SpriteRenderer  _renderer;
-	private SMBRigidBody    _body;
-	private SMBCollider     _collider;
 		
 	private float _jumpTimer;
-	private bool  _isOnGround;
 
 	private SMBConstants.PlayerState _state;
 	public SMBConstants.PlayerState State { get { return _state; } }
 
-	public float xSpeed = 1f;
-	public float ySpeed = 5f;
-	public float runningMultiplyer = 2f;
 	public float longJumpTime = 1f;
 	public float longJumpWeight = 0.1f;
-	public float momentumReduction = 3f;
+	public float runningMultiplyer = 2f;
 
 	public AudioClip[] soundEffects;
-
-	void Awake() {
-
-		_audio    = GetComponent<AudioSource> ();
-		_body     = GetComponent<SMBRigidBody> ();
-		_collider = GetComponent<SMBCollider> ();
-		_animator = GetComponent<Animator> ();
-		_renderer = GetComponent<SpriteRenderer> ();
-	}
 
 	void Start() {
 
@@ -57,9 +33,13 @@ public class SMBPlayer : MonoBehaviour {
 		Jump ();
 		_animator.SetBool ("isJumping", !_isOnGround);
 
+		float speed = xSpeed;
+		if (Input.GetKey (KeyCode.A))
+			speed *= runningMultiplyer;
+
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
-			Move ((float)SMBConstants.MoveDirection.Backward);
+			Move (speed * (float)SMBConstants.MoveDirection.Backward);
 
 			if (Mathf.Abs (_body.velocity.x) > 0f) {
 
@@ -76,7 +56,7 @@ public class SMBPlayer : MonoBehaviour {
 		} 
 		else if (Input.GetKey (KeyCode.RightArrow)) {
 
-			Move ((float)SMBConstants.MoveDirection.Forward);
+			Move (speed * (float)SMBConstants.MoveDirection.Forward);
 
 			if (Mathf.Abs (_body.velocity.x) > 0f) {
 
@@ -92,7 +72,7 @@ public class SMBPlayer : MonoBehaviour {
 		} 
 		else {
 
-			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentumReduction * Time.fixedDeltaTime);
+			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentum * Time.fixedDeltaTime);
 
 			if (Mathf.Abs (_body.velocity.x) < 1.3f)
 				_animator.SetBool ("isRunning", false);
@@ -107,39 +87,37 @@ public class SMBPlayer : MonoBehaviour {
 		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
 			_animator.SetBool ("isCoasting", false);
 
-
-		if (transform.position.y < 0f) {
-
-			_state = SMBConstants.PlayerState.Dead;
-
-			_collider.applyHorizCollision = false;
-			_collider.applyVertCollision = false;
-
-			_body.velocity = Vector2.zero;
-			_body.applyGravity = false;
-
-			Invoke("Die", 0.4f);
-		}
+		if (transform.position.y < 0f)
+			Die (0.4f);
 	}
 
-	void Die() {
+	void Die(float timeToDie) {
+
+		_state = SMBConstants.PlayerState.Dead;
+
+		_collider.applyHorizCollision = false;
+		_collider.applyVertCollision = false;
+
+		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
+
+		_body.velocity = Vector2.zero;
+		_body.acceleration = Vector2.zero;
+		_body.applyGravity = false;
+
+		_animator.SetBool ("isRunning", false);
+		_animator.SetBool ("isMoving", false);
+		_animator.SetBool ("isJumping", true);
+
+		Invoke("PlayDeadAnimation", timeToDie);
+	}
+
+	void PlayDeadAnimation() {
 
 		_body.applyGravity = true;
 		_body.gravityFactor = 0.5f;
 		_body.ApplyForce (Vector2.up * 2.5f);
 	}
-
-	void OnVerticalCollisionEnter() {
-
-		if(Mathf.Sign(_body.velocity.y) == -1f)
-			_isOnGround = true;
-	}
-
-	void OnVerticalCollisionExit() {
-
-		_isOnGround = false;
-	}
-		
+				
 	void Jump() {
 
 		if (_isOnGround && Input.GetKeyDown(KeyCode.S)){
@@ -164,33 +142,47 @@ public class SMBPlayer : MonoBehaviour {
 					_body.velocity.y += ySpeed * longJumpWeight * Time.fixedDeltaTime;
 			}
 		}
-
 	}
 
-	void Move(float side) {
 
-		float speed = xSpeed * side;
-		if (Input.GetKey (KeyCode.A))
-			speed *= runningMultiplyer;
+	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
 
-		_body.velocity.x = Mathf.Lerp (_body.velocity.x, speed * Time.fixedDeltaTime, 
-			momentumReduction * Time.fixedDeltaTime);
+		if (collider.tag == "Enemy") {
 
-		if (side == (float)SMBConstants.MoveDirection.Forward)
-			_renderer.flipX = false;
+			_body.acceleration = Vector2.zero;
 
-		if (side == (float)SMBConstants.MoveDirection.Backward)
-			_renderer.flipX = true;
+			_body.ApplyForce (Vector2.up * 2.5f);
+			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 
-		// Lock player x position
-		Vector3 playerPos = transform.position;
-		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileSize, 
-			SMBGameWorld.Instance.LockRightX);
-		transform.position = playerPos;
+			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
+
+			return;
+		}
+
+		base.OnHalfVerticalCollisionEnter (collider);
 	}
 
-	public bool isFlipped() {
 
-		return _renderer.flipX;
+	override protected void OnFullVerticalCollisionEnter(Collider2D collider) {
+
+		if (collider.tag == "Enemy") {
+
+			_body.acceleration = Vector2.zero;
+
+			_body.ApplyForce (Vector2.up * 2.5f);
+			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
+
+			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
+
+			return;
+		}
+
+		base.OnFullVerticalCollisionEnter (collider);
+	}
+
+	void OnHorizontalCollisionEnter(Collider2D collider) {
+
+		if (collider.tag == "Enemy")
+			Die (0.2f);
 	}
 }

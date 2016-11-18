@@ -9,6 +9,11 @@ public static class SMBConstants {
 		Backward = -1
 	}
 
+	public enum EnemyState {
+		Move,
+		Dead
+	}
+
 	public enum PlayerState {
 		Short,
 		Tall,

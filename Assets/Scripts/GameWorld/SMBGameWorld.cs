@@ -11,7 +11,13 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	// Pointers to main game objects
 	private SMBCamera  _camera;
+	public SMBCamera Camera { get { return _camera; }}
+
 	private SMBPlayer  _player;
+	public SMBPlayer Player { get { return _player; }}
+
+	private bool _isPaused;
+	public bool IsPaused { get { return _isPaused; }}
 
 	private bool _isReloadingLevel;
 
@@ -81,6 +87,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void Update() {
 
 		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
+
+			_isPaused = true;
 
 			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
 			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
