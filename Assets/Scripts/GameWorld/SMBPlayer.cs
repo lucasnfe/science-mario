@@ -5,11 +5,19 @@ using System.Collections;
 [RequireComponent (typeof (SpriteRenderer))]
 [RequireComponent (typeof (AudioSource))]
 [RequireComponent (typeof (SMBRigidBody))]
+[RequireComponent (typeof (SMBCollider))]
 public class SMBPlayer : MonoBehaviour {
 
 	enum SoundEffects {
 		Jump
 	}
+
+	// Custom components
+	private AudioSource     _audio;
+	private Animator        _animator;
+	private SpriteRenderer  _renderer;
+	private SMBRigidBody    _body;
+	private SMBCollider     _collider;
 		
 	private float _jumpTimer;
 	private bool  _isOnGround;
@@ -23,20 +31,16 @@ public class SMBPlayer : MonoBehaviour {
 	public float longJumpTime = 1f;
 	public float longJumpWeight = 0.1f;
 	public float momentumReduction = 3f;
-	public AudioClip[] soundEffects;
 
-	// Custom components
-	private AudioSource       _audio;
-	private Animator          _animator;
-	private SpriteRenderer    _renderer;
-	private SMBRigidBody   _body;
+	public AudioClip[] soundEffects;
 
 	void Awake() {
 
-		_animator = GetComponent<Animator> ();
-		_renderer = GetComponent<SpriteRenderer> ();
 		_audio    = GetComponent<AudioSource> ();
 		_body     = GetComponent<SMBRigidBody> ();
+		_collider = GetComponent<SMBCollider> ();
+		_animator = GetComponent<Animator> ();
+		_renderer = GetComponent<SpriteRenderer> ();
 	}
 
 	void Start() {
@@ -63,7 +67,7 @@ public class SMBPlayer : MonoBehaviour {
 				_animator.SetBool ("isRunning", false);
 			}
 
-			if(Mathf.Abs(_body.velocity.x) > 1.25f)
+			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
 			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == 1f)
@@ -80,7 +84,7 @@ public class SMBPlayer : MonoBehaviour {
 				_animator.SetBool ("isRunning", false);
 			}
 
-			if(Mathf.Abs(_body.velocity.x) > 1.25f)
+			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
 			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == -1f)
@@ -90,7 +94,7 @@ public class SMBPlayer : MonoBehaviour {
 
 			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentumReduction * Time.fixedDeltaTime);
 
-			if (Mathf.Abs (_body.velocity.x) < 1.25f)
+			if (Mathf.Abs (_body.velocity.x) < 1.3f)
 				_animator.SetBool ("isRunning", false);
 
 			if (Mathf.Abs (_body.velocity.x) <= 0.1f) {
@@ -104,18 +108,25 @@ public class SMBPlayer : MonoBehaviour {
 			_animator.SetBool ("isCoasting", false);
 
 
-		if (transform.position.y < 0f)
-			Die ();
+		if (transform.position.y < 0f) {
+
+			_state = SMBConstants.PlayerState.Dead;
+
+			_collider.applyHorizCollision = false;
+			_collider.applyVertCollision = false;
+
+			_body.velocity = Vector2.zero;
+			_body.applyGravity = false;
+
+			Invoke("Die", 0.4f);
+		}
 	}
 
 	void Die() {
 
-		_body.velocity = Vector2.zero;
-		_body.applyGravity = false;
-
-		_state = SMBConstants.PlayerState.Dead;
-
-		SMBGameWorld.Instance.KillPlayer ();
+		_body.applyGravity = true;
+		_body.gravityFactor = 0.5f;
+		_body.ApplyForce (Vector2.up * 2.5f);
 	}
 
 	void OnVerticalCollisionEnter() {

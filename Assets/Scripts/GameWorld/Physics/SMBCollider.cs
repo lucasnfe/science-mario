@@ -8,6 +8,9 @@ public class SMBCollider : MonoBehaviour {
 	private SMBRigidBody _body;
 	private BoxCollider2D  _collider;
 
+	public bool applyHorizCollision = true;
+	public bool applyVertCollision = true;
+
 	void Awake() {
 
 		_body = GetComponent<SMBRigidBody> ();
@@ -16,9 +19,11 @@ public class SMBCollider : MonoBehaviour {
 
 	void LateUpdate () {
 
-		CheckHorizontalCollision ();
+		if(applyHorizCollision)
+			CheckHorizontalCollision ();
 
-		CheckVerticalCollision ();
+		if(applyVertCollision)
+			CheckVerticalCollision ();
 	}
 
 	bool CheckHorizontalCollision() {

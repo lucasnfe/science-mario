@@ -13,6 +13,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	private SMBCamera  _camera;
 	private SMBPlayer  _player;
 
+	private bool _isReloadingLevel;
+
 	public AudioClip []_soundEffecs;
 
 	// World boundaries
@@ -75,11 +77,16 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		LockDownY = -TileSize * 0.5f;
 		LockUpY = ((float)levelHeight + 0.5f) * TileSize;
 	}
-		
-	public void KillPlayer() {
 
-		PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
-		Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
+	void Update() {
+
+		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
+
+			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
+			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
+
+			_isReloadingLevel = true;
+		}
 	}
 
 	public void ReloadLevel() {
