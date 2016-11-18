@@ -26,14 +26,18 @@ public class SMBEnemy : SMBCharacter {
 	void Die() {
 
 		_body.velocity = Vector2.zero;
+		_body.ApplyForce (Vector2.up);
+		_body.ApplyForce (Vector2.right * Random.Range(-1f, 1f));
+
 		_collider.applyHorizCollision = false;
+		_collider.applyVertCollision = false;
 
 		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
 
 		_state = SMBConstants.EnemyState.Dead;
-
 		_animator.SetTrigger ("triggerDie");
-		Invoke ("DestroyEnemy", 0.5f);
+
+		Invoke ("DestroyEnemy", 4f);
 	}
 
 	void DestroyEnemy() {

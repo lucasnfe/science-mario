@@ -182,7 +182,9 @@ public class SMBPlayer : SMBCharacter {
 
 	void OnHorizontalCollisionEnter(Collider2D collider) {
 
-		if (collider.tag == "Enemy")
+		float dist = Mathf.Abs (collider.bounds.center.y - transform.position.y);
+
+		if (collider.tag == "Enemy" && dist < 0.05f)
 			Die (0.2f);
 	}
 }
