@@ -49,7 +49,7 @@ public class SMBParticle : SMBRigidBody {
 
 		if (addNoise) {
 
-			noise = Random.onUnitSphere * 0.25f;
+			noise = Random.onUnitSphere * 0.1f;
 			noise.z = 0f;
 		}
 

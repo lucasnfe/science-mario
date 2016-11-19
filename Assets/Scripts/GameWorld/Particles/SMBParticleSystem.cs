@@ -37,10 +37,8 @@ public class SMBParticleSystem : MonoBehaviour {
 				_selfDestructionTimer += Time.deltaTime;
 				if (_selfDestructionTimer >= _systemLifetime) {
 
+					_selfDestructionTimer = 0f;
 					_shootParticles = false;
-
-					if (_particles.GetUsedObjects ().Count == 0)
-						Destroy (this);
 				}
 			}
 

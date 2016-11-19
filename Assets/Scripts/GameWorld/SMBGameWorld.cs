@@ -4,10 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof (AudioSource))]
+[RequireComponent(typeof(SMBParticleSystem))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	// Custom components
-	private AudioSource   _audio;
+	private AudioSource    	  _audio;
+	private SMBParticleSystem _particleSystem;
 
 	// Pointers to main game objects
 	private SMBCamera  _camera;
@@ -38,10 +40,13 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void Awake() {
 
 		_audio = GetComponent<AudioSource> ();
+		_particleSystem = GetComponent<SMBParticleSystem> ();
 	}
 
 	// Use this for initialization
 	void Start () {
+
+		_particleSystem._shootParticles = false;
 
 		SMBTileMap tileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
 		if (tileMap == null)
@@ -134,6 +139,12 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				}
 			}
 		}
+	}
+
+	public void PlayParticle(Vector3 position) {
+	
+		_particleSystem.transform.position = position;
+		_particleSystem._shootParticles = true;
 	}
 
 	public void PlaySoundEffect(int clip) {
