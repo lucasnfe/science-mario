@@ -23,6 +23,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	private bool _isReloadingLevel;
 
+	public AudioSource _theme;
 	public AudioClip []_soundEffecs;
 
 	// World boundaries
@@ -94,6 +95,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
 
 			_isPaused = true;
+
+			_theme.Stop ();
 
 			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
 			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
