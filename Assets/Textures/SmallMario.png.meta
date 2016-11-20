@@ -1,20 +1,28 @@
 fileFormatVersion: 2
-guid: c37dcb45d36cb4be58aff39948bce91e
-timeCreated: 1477718716
+guid: 383b338d6d8cd4d17b62fb44206c3239
+timeCreated: 1479621441
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: SmallMario_0
-    21300002: SmallMario_1
-    21300004: SmallMario_2
-    21300006: SmallMario_3
-    21300008: SmallMario_4
-    21300010: SmallMario_5
-    21300012: SmallMario_6
-    21300014: SmallMario_7
-    21300016: SmallMario_8
-    21300018: SmallMario_9
-    21300020: SmallMario_10
+    21300000: MarioWorld_0
+    21300002: MarioWorld_1
+    21300004: MarioWorld_2
+    21300006: MarioWorld_3
+    21300008: MarioWorld_4
+    21300010: MarioWorld_5
+    21300012: MarioWorld_6
+    21300014: MarioWorld_7
+    21300016: MarioWorld_8
+    21300018: MarioWorld_9
+    21300020: MarioWorld_10
+    21300022: MarioWorld_11
+    21300024: MarioWorld_12
+    21300026: MarioWorld_13
+    21300028: MarioWorld_14
+    21300030: MarioWorld_15
+    21300032: MarioWorld_16
+    21300034: MarioWorld_17
+    21300036: MarioWorld_18
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -61,125 +69,213 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: SmallMario_0
+    - name: MarioWorld_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_1
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 1
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_2
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 0
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_3
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_4
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 0
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_5
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 1
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_6
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 1
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_7
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 2
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_8
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 0
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_9
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 0
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MarioWorld_10
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 0
         width: 16
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_1
+    - name: MarioWorld_11
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 186
+        y: 1
         width: 16
-        height: 16
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_2
+    - name: MarioWorld_12
       rect:
         serializedVersion: 2
-        x: 32
+        x: 204
         y: 0
-        width: 16
-        height: 16
+        width: 14
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_3
+    - name: MarioWorld_13
       rect:
         serializedVersion: 2
-        x: 48
+        x: 221
         y: 0
-        width: 16
-        height: 16
+        width: 14
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_4
+    - name: MarioWorld_14
       rect:
         serializedVersion: 2
-        x: 64
+        x: 237
         y: 0
         width: 16
-        height: 16
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_5
+    - name: MarioWorld_15
       rect:
         serializedVersion: 2
-        x: 80
+        x: 254
         y: 0
-        width: 16
-        height: 16
+        width: 15
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_6
+    - name: MarioWorld_16
       rect:
         serializedVersion: 2
-        x: 96
-        y: 0
+        x: 271
+        y: 1
         width: 16
-        height: 16
+        height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_7
+    - name: MarioWorld_17
       rect:
         serializedVersion: 2
-        x: 112
-        y: 0
-        width: 16
-        height: 16
+        x: 288
+        y: 1
+        width: 15
+        height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: SmallMario_8
+    - name: MarioWorld_18
       rect:
         serializedVersion: 2
-        x: 128
+        x: 304
         y: 0
         width: 16
-        height: 16
+        height: 23
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: SmallMario_9
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-    - name: SmallMario_10
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     outline: []

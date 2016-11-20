@@ -9,18 +9,27 @@ public static class SMBConstants {
 		Backward = -1
 	}
 
+	public enum EnemyState {
+		Move,
+		Dead
+	}
+
 	public enum PlayerState {
 		Short,
 		Tall,
-		Fire
+		Fire,
+		Dead
 	}
 
 	public enum GameWorldSoundEffects {
-		Coin
+		Coin,
+		Death
 	}
 		
 	public static readonly float maxVelocityX = 5f;
 	public static readonly float maxVelocityY = 3f;
+	public static readonly float timeToReloadAfterDeath = 3.5f;
+	public static readonly float playerSkin = 0.01f;
 
 	public static readonly Vector2 gravity = new Vector2(0f, -7f);
 

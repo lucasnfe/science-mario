@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SMBItem : MonoBehaviour {
 
-	virtual protected void OnInteraction(Collider2D coll) {
+	virtual protected void OnInteraction() {
 
 		Destroy (gameObject);
 	}

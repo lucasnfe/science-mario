@@ -4,16 +4,30 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof (AudioSource))]
+[RequireComponent(typeof(SMBParticleSystem))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	// Custom components
-	private AudioSource   _audio;
+	private AudioSource    	  _audio;
+	private SMBParticleSystem _particleSystem;
 
 	// Pointers to main game objects
 	private SMBCamera  _camera;
-	private SMBPlayer  _player;
+	public SMBCamera Camera { get { return _camera; }}
 
-	public AudioClip []_soundEffecs;
+	private SMBPlayer  _player;
+	public SMBPlayer Player { get { return _player; }}
+
+	private bool _isPaused;
+	public bool IsPaused { get { return _isPaused; }}
+
+	private bool _isReloadingLevel;
+
+	// Custom parameters
+	public AudioSource  _theme;
+	public AudioClip  []_soundEffecs;
+
+	public GameObject _background;
 
 	// World boundaries
 	public float LockLeftX  { get; set; }
@@ -30,10 +44,13 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void Awake() {
 
 		_audio = GetComponent<AudioSource> ();
+		_particleSystem = GetComponent<SMBParticleSystem> ();
 	}
 
 	// Use this for initialization
 	void Start () {
+
+		_particleSystem._shootParticles = false;
 
 		SMBTileMap tileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
 		if (tileMap == null)
@@ -78,10 +95,22 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void Update() {
 
-		// Kill the player if it is below the camera y limits
-		if (_player.transform.position.y < 0.0f)
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
 
+			_isPaused = true;
+
+			_theme.Stop ();
+
+			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
+			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
+
+			_isReloadingLevel = true;
+		}
+	}
+
+	public void ReloadLevel() {
+
+		SMBSceneManager.Instance.LoadScene (SceneManager.GetActiveScene ().name);
 	}
 
 	void InstantiateLevel() {
@@ -116,6 +145,35 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				}
 			}
 		}
+
+		PlaceBackground ();
+	}
+
+	void PlaceBackground() {
+
+		float levelWidth = Level.GetLength(1) * TileSize;
+
+		float backgroundWidth = _background.GetComponent<SpriteRenderer> ().bounds.size.x;
+		float backgroundHeight = _background.GetComponent<SpriteRenderer> ().bounds.size.y;
+
+		float rate = levelWidth / backgroundWidth;
+		int amount = (int)rate + 1;
+
+		Vector3 pos = _background.transform.position;
+		pos.x = 0f;
+		pos.y = backgroundHeight / 2f + TileSize / 2f;
+
+		for (int i = 0; i < amount; i++) {
+
+			Instantiate (_background, pos, Quaternion.identity);
+			pos += Vector3.right * backgroundWidth; 
+		}
+	}
+
+	public void PlayParticle(Vector3 position) {
+	
+		_particleSystem.transform.position = position;
+		_particleSystem._shootParticles = true;
 	}
 
 	public void PlaySoundEffect(int clip) {
