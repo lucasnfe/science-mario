@@ -107,13 +107,15 @@ public class SMBPlayer : SMBCharacter {
 			_particleSystem._shootParticles = false;
 		}
 
-		if (transform.position.y < 0f)
+		if (transform.position.y < -0.2f)
 			Die (0.4f);
 	}
 
 	void Die(float timeToDie) {
 
 		_state = SMBConstants.PlayerState.Dead;
+
+		_particleSystem._shootParticles = false;
 
 		_collider.applyHorizCollision = false;
 		_collider.applyVertCollision = false;
@@ -207,6 +209,11 @@ public class SMBPlayer : SMBCharacter {
 	}
 
 	void OnHorizontalCollisionEnter(Collider2D collider) {
+		
+		if (collider.tag == "Enemy") {
+			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
+				Die (0.2f);
+		}
 
 		if (collider.tag == "Coin")
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
