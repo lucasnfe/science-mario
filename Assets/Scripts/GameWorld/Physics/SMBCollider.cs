@@ -14,8 +14,7 @@ public class SMBCollider : MonoBehaviour {
 	void Awake() {
 
 		_body = GetComponent<SMBRigidBody> ();
-		_collider = GetComponent<BoxCollider2D> ();
-	}
+		_collider = GetComponent<BoxCollider2D> ();}
 
 	void LateUpdate () {
 
@@ -37,7 +36,7 @@ public class SMBCollider : MonoBehaviour {
 
 		for (int i = 0; i < 2; i++) {
 
-			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.player_skin);
+			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin);
 			// Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
@@ -58,7 +57,7 @@ public class SMBCollider : MonoBehaviour {
 				// Fix player position after collision
 				float distance = Mathf.Abs (xRayOrigin.x - xRay.point.x);
 
-				if (distance <= SMBConstants.player_skin) {
+				if (distance <= SMBConstants.playerSkin) {
 
 					Vector3 currentPos = transform.position;
 					float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
@@ -90,7 +89,7 @@ public class SMBCollider : MonoBehaviour {
 
 		for (int i = 0; i < 2; i++) {
 
-			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.player_skin);
+			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin);
 			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
@@ -134,7 +133,7 @@ public class SMBCollider : MonoBehaviour {
 		_body.velocity.y = 0f;
 
 		// Fix player position after collision
-		if (yRayOrigin.y - colBound < SMBConstants.player_skin) {
+		if (yRayOrigin.y - colBound < SMBConstants.playerSkin) {
 
 			Vector3 currentPos = transform.position;
 			currentPos.y = colBound + _collider.bounds.extents.y * -yDirection;

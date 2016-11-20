@@ -37,7 +37,7 @@ public class SMBParticle : SMBRigidBody {
 		}
 	}
 
-	public void Shoot(Vector2 velocity, float lifetime, bool applyGravity, float gravityFactor, bool addNoise) {
+	public void Shoot(Vector2 velocity, float lifetime, bool applyGravity, float gravityFactor, Bounds bounds) {
 
 		_isDying = false;
 
@@ -46,14 +46,10 @@ public class SMBParticle : SMBRigidBody {
 		this.applyGravity = applyGravity;
 
 		Vector3 noise = Vector3.zero;
+		noise.x = Random.Range(bounds.min.x, bounds.max.x);
+		noise.y = Random.Range(bounds.min.y, bounds.max.y);
 
-		if (addNoise) {
-
-			noise = Random.onUnitSphere * 0.1f;
-			noise.z = 0f;
-		}
-
-		transform.position = _emitter.transform.position + noise;
+		transform.position = _emitter.transform.position + bounds.center + noise;
 
 		gameObject.SetActive (true);
 

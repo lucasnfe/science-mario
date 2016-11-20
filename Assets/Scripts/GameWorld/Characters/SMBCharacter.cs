@@ -22,7 +22,7 @@ public class SMBCharacter : MonoBehaviour {
 
 	public float momentum = 3f;
 
-	void Awake() {
+	virtual protected void Awake() {
 
 		_audio    = GetComponent<AudioSource> ();
 		_body     = GetComponent<SMBRigidBody> ();

@@ -53,7 +53,7 @@ public class SMBEnemy : SMBCharacter {
 		if(isFlipped())
 			side = (float)SMBConstants.MoveDirection.Backward;
 
-		transform.position = transform.position - Vector3.right * side * 0.01f;
+		transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;
 
 		_renderer.flipX = !_renderer.flipX;
 
@@ -62,7 +62,12 @@ public class SMBEnemy : SMBCharacter {
 
 	void OnHorizontalCollisionEnter(Collider2D collider) {
 
-		if(collider.tag != "Player")
+		if (collider.tag != "Player")
 			_renderer.flipX = !_renderer.flipX;
+		else {
+			
+			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
+				collider.SendMessage("Die", 0.2f, SendMessageOptions.RequireReceiver);
+		}
 	}
 }

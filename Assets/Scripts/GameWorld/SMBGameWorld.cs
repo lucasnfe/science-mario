@@ -23,8 +23,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	private bool _isReloadingLevel;
 
-	public AudioSource _theme;
-	public AudioClip []_soundEffecs;
+	// Custom parameters
+	public AudioSource  _theme;
+	public AudioClip  []_soundEffecs;
+
+	public GameObject _background;
 
 	// World boundaries
 	public float LockLeftX  { get; set; }
@@ -141,6 +144,29 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 						_player = newTile.GetComponent<SMBPlayer> ();
 				}
 			}
+		}
+
+		PlaceBackground ();
+	}
+
+	void PlaceBackground() {
+
+		float levelWidth = Level.GetLength(1) * TileSize;
+
+		float backgroundWidth = _background.GetComponent<SpriteRenderer> ().bounds.size.x;
+		float backgroundHeight = _background.GetComponent<SpriteRenderer> ().bounds.size.y;
+
+		float rate = levelWidth / backgroundWidth;
+		int amount = (int)rate + 1;
+
+		Vector3 pos = _background.transform.position;
+		pos.x = 0f;
+		pos.y = backgroundHeight / 2f + TileSize / 2f;
+
+		for (int i = 0; i < amount; i++) {
+
+			Instantiate (_background, pos, Quaternion.identity);
+			pos += Vector3.right * backgroundWidth; 
 		}
 	}
 

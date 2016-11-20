@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof (SMBParticleSystem))]
 public class SMBPlayer : SMBCharacter {
 
 	enum SoundEffects {
 		Jump,
 		Kick
 	}
+
+	private SMBParticleSystem _particleSystem;
 		
 	private float _jumpTimer;
 
@@ -19,9 +22,16 @@ public class SMBPlayer : SMBCharacter {
 
 	public AudioClip[] soundEffects;
 
+	override protected void Awake() {
+
+		_particleSystem = GetComponent<SMBParticleSystem> ();
+		base.Awake ();
+	}
+
 	void Start() {
 
 		_state = SMBConstants.PlayerState.Short;
+		_particleSystem._shootParticles = false;
 	}
 
 	// Update is called once per frame
@@ -50,8 +60,12 @@ public class SMBPlayer : SMBCharacter {
 			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
-			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == 1f)
+			if (Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == 1f) {
 				_animator.SetBool ("isCoasting", true);
+
+				if(_isOnGround)
+					_particleSystem._shootParticles = true;
+			}
 
 		} 
 		else if (Input.GetKey (KeyCode.RightArrow)) {
@@ -67,8 +81,12 @@ public class SMBPlayer : SMBCharacter {
 			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
-			if(Mathf.Abs(_body.velocity.x) > 0.5f && Mathf.Sign(_body.velocity.x) == -1f)
+			if (Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == -1f) {
 				_animator.SetBool ("isCoasting", true);
+
+				if(_isOnGround)
+					_particleSystem._shootParticles = true;
+			}
 		} 
 		else {
 
@@ -84,8 +102,10 @@ public class SMBPlayer : SMBCharacter {
 			}
 		}
 
-		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool("isCoasting"))
+		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool ("isCoasting")) {
 			_animator.SetBool ("isCoasting", false);
+			_particleSystem._shootParticles = false;
+		}
 
 		if (transform.position.y < 0f)
 			Die (0.4f);
@@ -190,10 +210,5 @@ public class SMBPlayer : SMBCharacter {
 
 		if (collider.tag == "Coin")
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
-
-		float dist = Mathf.Abs (collider.bounds.center.y - transform.position.y);
-
-		if (collider.tag == "Enemy" && dist < 0.05f)
-			Die (0.2f);
 	}
 }
