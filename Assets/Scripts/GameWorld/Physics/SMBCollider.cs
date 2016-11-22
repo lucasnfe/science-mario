@@ -57,7 +57,7 @@ public class SMBCollider : MonoBehaviour {
 				// Fix player position after collision
 				float distance = Mathf.Abs (xRayOrigin.x - xRay.point.x);
 
-				if (distance < SMBConstants.playerSkin) {
+				if (distance < SMBConstants.playerSkin * 0.1f) {
 
 					Vector3 currentPos = transform.position;
 					float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
@@ -133,7 +133,7 @@ public class SMBCollider : MonoBehaviour {
 		_body.velocity.y = 0f;
 
 		// Fix player position after collision
-		if (yRayOrigin.y - colBound < SMBConstants.playerSkin) {
+		if (yRayOrigin.y - colBound < SMBConstants.playerSkin * 0.1f) {
 
 			Vector3 currentPos = transform.position;
 			currentPos.y = colBound + _collider.bounds.extents.y * -yDirection;
