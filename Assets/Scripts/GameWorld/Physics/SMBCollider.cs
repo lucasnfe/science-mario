@@ -18,21 +18,21 @@ public class SMBCollider : MonoBehaviour {
 
 	void LateUpdate () {
 
-		if(applyVertCollision)
-			CheckVerticalCollision ();
-
 		if(applyHorizCollision)
 			CheckHorizontalCollision ();
+
+		if(applyVertCollision)
+			CheckVerticalCollision ();
 	}
 
 	bool CheckHorizontalCollision() {
 
 		float xDirection = Mathf.Sign (_body.velocity.x);
 			
-		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * SMBConstants.playerSkin:
+		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * SMBConstants.playerSkin :
 			_collider.bounds.max - Vector3.right * _collider.bounds.size.x - Vector3.right * SMBConstants.playerSkin;
 
-		xRayOrigin.y -= SMBConstants.playerSkin;
+		xRayOrigin.y -= SMBConstants.playerSkin * 2f;
 
 		for (int i = 0; i < 2; i++) {
 
@@ -68,7 +68,7 @@ public class SMBCollider : MonoBehaviour {
 				return true;
 			}
 
-			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 2f;
+			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 4f;
 		}
 
 		SendMessage ("OnHorizontalCollisionExit", SendMessageOptions.DontRequireReceiver);
