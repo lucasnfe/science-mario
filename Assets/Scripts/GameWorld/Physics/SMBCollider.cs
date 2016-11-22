@@ -18,11 +18,11 @@ public class SMBCollider : MonoBehaviour {
 
 	void LateUpdate () {
 
-		if(applyHorizCollision)
-			CheckHorizontalCollision ();
-
 		if(applyVertCollision)
 			CheckVerticalCollision ();
+
+		if(applyHorizCollision)
+			CheckHorizontalCollision ();
 	}
 
 	bool CheckHorizontalCollision() {
