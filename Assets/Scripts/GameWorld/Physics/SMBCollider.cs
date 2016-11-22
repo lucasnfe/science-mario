@@ -37,7 +37,7 @@ public class SMBCollider : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin);
-			 Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+			// Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
 				if (xRay.collider.isTrigger) {
@@ -90,7 +90,7 @@ public class SMBCollider : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin);
-			 Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
 
