@@ -18,26 +18,26 @@ public class SMBCollider : MonoBehaviour {
 
 	void LateUpdate () {
 
-		if(applyHorizCollision)
-			CheckHorizontalCollision ();
-
 		if(applyVertCollision)
 			CheckVerticalCollision ();
+
+		if(applyHorizCollision)
+			CheckHorizontalCollision ();
 	}
 
 	bool CheckHorizontalCollision() {
 
 		float xDirection = Mathf.Sign (_body.velocity.x);
 			
-		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * 0.001f:
-			_collider.bounds.max - Vector3.right * _collider.bounds.size.x - Vector3.right * 0.001f;
+		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * SMBConstants.playerSkin:
+			_collider.bounds.max - Vector3.right * _collider.bounds.size.x - Vector3.right * SMBConstants.playerSkin;
 
-		xRayOrigin.y -= 0.1f;
+		xRayOrigin.y -= SMBConstants.playerSkin;
 
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin);
-			// Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+			 Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
 				if (xRay.collider.isTrigger) {
@@ -57,7 +57,7 @@ public class SMBCollider : MonoBehaviour {
 				// Fix player position after collision
 				float distance = Mathf.Abs (xRayOrigin.x - xRay.point.x);
 
-				if (distance <= SMBConstants.playerSkin) {
+				if (distance < SMBConstants.playerSkin) {
 
 					Vector3 currentPos = transform.position;
 					float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
@@ -68,7 +68,7 @@ public class SMBCollider : MonoBehaviour {
 				return true;
 			}
 
-			xRayOrigin.y -= _collider.bounds.size.y - 0.2f;
+			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 2f;
 		}
 
 		SendMessage ("OnHorizontalCollisionExit", SendMessageOptions.DontRequireReceiver);
@@ -78,10 +78,10 @@ public class SMBCollider : MonoBehaviour {
 	bool CheckVerticalCollision() {
 
 		float yDirection = Mathf.Sign (_body.velocity.y);
-		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max + Vector3.up * 0.001f :
-			_collider.bounds.max - Vector3.up * _collider.bounds.size.y - Vector3.up * 0.001f;
+		Vector2 yRayOrigin = (yDirection == 1f) ? _collider.bounds.max + Vector3.up * SMBConstants.playerSkin :
+			_collider.bounds.max - Vector3.up * _collider.bounds.size.y - Vector3.up * SMBConstants.playerSkin;
 
-		yRayOrigin.x -= 0.01f;
+		yRayOrigin.x -= SMBConstants.playerSkin;
 
 		int collisions = 0;
 		float colBound = 0f;
@@ -90,7 +90,7 @@ public class SMBCollider : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin);
-			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+			 Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
 
@@ -114,7 +114,7 @@ public class SMBCollider : MonoBehaviour {
 				collisions++;
 			}
 
-			yRayOrigin.x -= _collider.bounds.size.x - 0.02f;
+			yRayOrigin.x -= _collider.bounds.size.x - SMBConstants.playerSkin * 2f;
 		}
 
 		if (collisions == 0) {
