@@ -29,15 +29,15 @@ public class SMBCollider : MonoBehaviour {
 
 		float xDirection = Mathf.Sign (_body.velocity.x);
 			
-		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * SMBConstants.playerSkin:
+		Vector2 xRayOrigin = (xDirection == 1f) ? _collider.bounds.max + Vector3.right * SMBConstants.playerSkin :
 			_collider.bounds.max - Vector3.right * _collider.bounds.size.x - Vector3.right * SMBConstants.playerSkin;
 
-		xRayOrigin.y -= SMBConstants.playerSkin;
+		xRayOrigin.y -= SMBConstants.playerSkin * 2f;
 
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin);
-			 Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+			// Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
 				if (xRay.collider.isTrigger) {
@@ -57,7 +57,7 @@ public class SMBCollider : MonoBehaviour {
 				// Fix player position after collision
 				float distance = Mathf.Abs (xRayOrigin.x - xRay.point.x);
 
-				if (distance < SMBConstants.playerSkin) {
+				if (distance < SMBConstants.playerSkin * 0.1f) {
 
 					Vector3 currentPos = transform.position;
 					float colBound = (xDirection == 1f) ? xRay.collider.bounds.min.x : xRay.collider.bounds.max.x;
@@ -68,7 +68,7 @@ public class SMBCollider : MonoBehaviour {
 				return true;
 			}
 
-			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 2f;
+			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 4f;
 		}
 
 		SendMessage ("OnHorizontalCollisionExit", SendMessageOptions.DontRequireReceiver);
@@ -90,7 +90,7 @@ public class SMBCollider : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin);
-			 Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
 
@@ -133,7 +133,7 @@ public class SMBCollider : MonoBehaviour {
 		_body.velocity.y = 0f;
 
 		// Fix player position after collision
-		if (yRayOrigin.y - colBound < SMBConstants.playerSkin) {
+		if (yRayOrigin.y - colBound < SMBConstants.playerSkin * 0.1f) {
 
 			Vector3 currentPos = transform.position;
 			currentPos.y = colBound + _collider.bounds.extents.y * -yDirection;
