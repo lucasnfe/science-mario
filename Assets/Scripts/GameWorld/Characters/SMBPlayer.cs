@@ -171,17 +171,6 @@ public class SMBPlayer : SMBCharacter {
 			if (collider.bounds.center.y > transform.position.y)
 				collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
 		}
-		else if (collider.tag == "Enemy") {
-
-			_body.acceleration = Vector2.zero;
-
-			_body.ApplyForce (Vector2.up * 2.5f);
-			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
-
-			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
-
-			return;
-		}
 	}
 		
 	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
@@ -198,24 +187,32 @@ public class SMBPlayer : SMBCharacter {
 
 	void OnVerticalTriggerEnter(Collider2D collider) {
 
-		if (collider.tag == "Coin")
+		if (collider.tag == "Item") {
+
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+		}
+		else if (collider.tag == "Enemy") {
+
+			_body.acceleration = Vector2.zero;
+			_body.velocity.y = 0f;
+
+			_body.ApplyForce (Vector2.up * 2.5f);
+			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
+
+			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
+
+			return;
+		}
 	}
 
 	void OnHorizontalTriggerEnter(Collider2D collider) {
 
-		if (collider.tag == "Coin")
+		if (collider.tag == "Item")
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
-	}
 
-	void OnHorizontalCollisionEnter(Collider2D collider) {
-		
 		if (collider.tag == "Enemy") {
 			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
 				Die (0.2f);
 		}
-
-		if (collider.tag == "Coin")
-			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
 	}
 }

@@ -51,11 +51,15 @@ public class SMBBlock : MonoBehaviour {
 
 		if (_bounceState == BounceState.Up) {
 
-			if (currentPos.y <= _posBeforeBounce.y + _bounceYDist)
+			if (currentPos.y <= _posBeforeBounce.y + _bounceYDist) {
 
 				transform.Translate (_bounceVelocity * Vector2.up * Time.fixedDeltaTime);
-			else
+			}
+			else 
+			{
+				GivePrize ();
 				_bounceState = BounceState.Down;
+			}
 		}
 		else if (_bounceState == BounceState.Down) {
 
@@ -73,5 +77,9 @@ public class SMBBlock : MonoBehaviour {
 		
 	protected virtual void DestroyBlock () {
 		
+	}
+
+	protected virtual void GivePrize () {
+
 	}
 }

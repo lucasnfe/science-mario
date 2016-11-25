@@ -7,6 +7,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SMBParticleSystem))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
+	private GameObject _levelParent;
+
 	// Custom components
 	private AudioSource    	  _audio;
 	private SMBParticleSystem _particleSystem;
@@ -66,6 +68,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		if (Level == null)
 			return;
 
+		// Level parents object
+		_levelParent = new GameObject ();
+		_levelParent.name = "LevelTiles";
+		_levelParent.transform.parent = transform.parent;
+
 		// Instantiate the parsed level
 		InstantiateLevel();
 
@@ -115,11 +122,6 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void InstantiateLevel() {
 
-		// Transfroming array of Dictionaries into a Dictionary
-		GameObject levelParent = new GameObject ();
-		levelParent.name = "LevelTiles";
-		levelParent.transform.parent = transform.parent;
-
 		for (int i = 0; i < Level.GetLength(0); i++) {
 
 			for (int j = 0; j < Level.GetLength(1); j++) {
@@ -130,23 +132,32 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				position.z = (float)TileMap [tileID].layer;
-
-				if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
-
-					GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
-					GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
-					newTile.name = tileID;
-
-					newTile.transform.parent = levelParent.transform;
-
-					if (TileMap [tileID].isPlayer)
-						_player = newTile.GetComponent<SMBPlayer> ();
-				}
+				InstantiateTile (position, tileID);
 			}
 		}
 
 		PlaceBackground ();
+	}
+
+	public GameObject InstantiateTile(Vector3 position, string tileID) {
+
+		GameObject newTile = null;
+
+		if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
+
+			position.z = (float)TileMap [tileID].layer;
+
+			GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
+			newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+			newTile.name = tileID;
+
+			newTile.transform.parent = _levelParent.transform;
+
+			if (TileMap [tileID].isPlayer)
+				_player = newTile.GetComponent<SMBPlayer> ();
+		}
+
+		return newTile;
 	}
 
 	void PlaceBackground() {
