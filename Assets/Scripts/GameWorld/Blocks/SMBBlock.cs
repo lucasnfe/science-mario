@@ -57,7 +57,6 @@ public class SMBBlock : MonoBehaviour {
 			}
 			else 
 			{
-				GivePrize ();
 				_bounceState = BounceState.Down;
 			}
 		}
@@ -71,6 +70,8 @@ public class SMBBlock : MonoBehaviour {
 
 				_bounceState = BounceState.None;
 				transform.position = _posBeforeBounce;
+
+				GivePrize ();
 			}
 		}
 	}

@@ -3,6 +3,11 @@ using System.Collections;
 
 public class SMBCoin : SMBItem {
 
+	void OnSpawnStart() {
+
+		transform.position += Vector3.up * 0.15f;
+	}
+
 	void OnSpawn() {
 
 		_body.applyGravity = true;

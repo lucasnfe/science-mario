@@ -6,7 +6,7 @@ public class SMBItem : MonoBehaviour {
 
 	protected SMBRigidBody _body;
 
-	void Awake() {
+	virtual protected void Awake() {
 
 		_body = GetComponent<SMBRigidBody> ();
 	}

@@ -8,9 +8,12 @@ public class SMBBlockQuestion : SMBBlock {
 
 	void Start() {
 
-		_prizeObject = SMBGameWorld.Instance.InstantiateTile (transform.position + Vector3.up * 0.15f, prize);
-		if (_prizeObject != null)
+		_prizeObject = SMBGameWorld.Instance.InstantiateTile (transform.position, prize);
+
+		if (_prizeObject != null) {
+			_prizeObject.SendMessage ("OnSpawnStart", SendMessageOptions.DontRequireReceiver);
 			_prizeObject.SetActive (false);
+		}
 	}
 
 	override protected void DestroyBlock () {
