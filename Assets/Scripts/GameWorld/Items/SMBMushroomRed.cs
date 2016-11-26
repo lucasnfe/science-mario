@@ -6,6 +6,7 @@ public class SMBMushroomRed : SMBItem {
 
 	public float xSpeed = 1f;
 	public float ySpeed = 1f;
+	public float timeToSpawn = 1f;
 
 	protected SMBCollider _collider;
 
@@ -27,8 +28,9 @@ public class SMBMushroomRed : SMBItem {
 	void OnSpawn() {
 
 		_body.velocity.y = ySpeed * Time.fixedDeltaTime;
+		_audio.Play ();
 
-		Invoke ("MoveRandomDirection", 0.7f);
+		Invoke ("MoveRandomDirection", timeToSpawn);
 	}
 
 	void MoveRandomDirection () {

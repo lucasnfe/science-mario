@@ -3,17 +3,21 @@ using System.Collections;
 
 public class SMBCoin : SMBItem {
 
+	public float spawnForce = 1f;
+	public float posVertDelta = 0.25f;
+	public float timeToDestroy = 0.25f;
+
 	void OnSpawnStart() {
 
-		transform.position += Vector3.up * 0.15f;
+		transform.position += Vector3.up * posVertDelta;
 	}
 
 	void OnSpawn() {
 
 		_body.applyGravity = true;
-		_body.ApplyForce (Vector2.up * 5f);
+		_body.ApplyForce (Vector2.up * spawnForce);
 
-		Invoke ("DestroyAfterSpawn", 0.25f);
+		Invoke ("DestroyAfterSpawn", timeToDestroy);
 	}
 		
 	void DestroyAfterSpawn() {
