@@ -8,6 +8,8 @@ public class SMBMushroomRed : SMBItem {
 	public float ySpeed = 1f;
 	public float timeToSpawn = 1f;
 
+	private float _side;
+
 	protected SMBCollider _collider;
 
 	override protected void Awake() {
@@ -33,14 +35,30 @@ public class SMBMushroomRed : SMBItem {
 		Invoke ("MoveRandomDirection", timeToSpawn);
 	}
 
+	// Update is called once per frame
+	void Update () {
+
+		_body.velocity.x = xSpeed * _side * Time.fixedDeltaTime;
+	}
+
 	void MoveRandomDirection () {
 
 		_body.applyGravity = true;
 		_collider.applyHorizCollision = true;
 		_collider.applyVertCollision = true;
 
-		float randomSide = (Random.value < 0.5f ? -1f : 1f);
-		_body.velocity.x = xSpeed * randomSide * Time.fixedDeltaTime;
+		_side = (Random.value < 0.5f ? (float)SMBConstants.MoveDirection.Backward : 
+			(float)SMBConstants.MoveDirection.Forward);
+		
+		_body.velocity.x = xSpeed * _side * Time.fixedDeltaTime;
 		_body.velocity.y = 0f;
+	}
+
+	void OnHorizontalCollisionEnter(Collider2D collider) {
+
+		if (collider.tag != "Player") {
+
+			_side *= -1f;
+		}
 	}
 }
