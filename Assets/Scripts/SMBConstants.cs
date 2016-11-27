@@ -16,7 +16,7 @@ public static class SMBConstants {
 
 	public enum PlayerState {
 		Short,
-		Tall,
+		GrownUp,
 		Fire,
 		Dead
 	}

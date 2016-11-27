@@ -5,11 +5,11 @@
 		{"id": "4", "prefab": "Prefab/BlockStone", "layer": 1},
 		{"id": "5", "prefab": "Prefab/BlockQuestion", "layer": 1},
 		{"id": "6", "prefab": "Prefab/BlockQuestionCoin", "layer": 1},
-		{"id": "7", "prefab": "Prefab/BlockQuestionMushroomRed", "layer": 1},
+		{"id": "7", "prefab": "Prefab/BlockQuestionMushroomRed", "layer": -2},
 		{"id": "8", "prefab": "Prefab/BlockQuestionMushroomGreen", "layer": 1},
 		{"id": "9", "prefab": "Prefab/BlockQuestionFlower", "layer": 1},
 		{"id": "2", "prefab": "Prefab/ItemCoin", "layer": 4 },
-		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": 2 },
+		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": -1 },
 		{"id": "1", "prefab": "Prefab/GroundGrass", "layer": 1, "collisions": {
 						"top": true, 
 					  "right": false, 

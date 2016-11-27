@@ -64,8 +64,7 @@ public class SMBEnemy : SMBCharacter {
 
 		if (collider.tag == "Player") {
 
-			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
-				collider.SendMessage("Die", 0.2f, SendMessageOptions.RequireReceiver);
+			collider.SendMessage("Die", 0.2f, SendMessageOptions.RequireReceiver);
 		}
 		else {
 			

@@ -54,11 +54,27 @@ public class SMBMushroomRed : SMBItem {
 		_body.velocity.y = 0f;
 	}
 
+	void SolveCollision(Collider2D collider) {
+
+		if (collider.tag == "Player")
+			collider.gameObject.SendMessage ("GrowUp");
+	}
+
+	void OnHalfVerticalCollisionEnter(Collider2D collider) {
+
+		SolveCollision (collider);
+	}
+
+	void OnFullVerticalCollisionEnter(Collider2D collider) {
+
+		SolveCollision (collider);
+	}
+
 	void OnHorizontalCollisionEnter(Collider2D collider) {
 
-		if (collider.tag != "Player") {
+		SolveCollision (collider);
 
+		if (collider.tag != "Player")
 			_side *= -1f;
-		}
 	}
 }

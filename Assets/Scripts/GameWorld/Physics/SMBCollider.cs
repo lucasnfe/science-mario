@@ -14,7 +14,8 @@ public class SMBCollider : MonoBehaviour {
 	void Awake() {
 
 		_body = GetComponent<SMBRigidBody> ();
-		_collider = GetComponent<BoxCollider2D> ();}
+		_collider = GetComponent<BoxCollider2D> ();
+	}
 
 	void LateUpdate () {
 
@@ -34,10 +35,10 @@ public class SMBCollider : MonoBehaviour {
 
 		xRayOrigin.y -= SMBConstants.playerSkin * 2f;
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 
 			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin);
-			// Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
+			Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
 				if (xRay.collider.isTrigger) {
@@ -68,7 +69,7 @@ public class SMBCollider : MonoBehaviour {
 				return true;
 			}
 
-			xRayOrigin.y -= _collider.bounds.size.y - SMBConstants.playerSkin * 4f;
+			xRayOrigin.y -= (_collider.bounds.size.y / 3f + SMBConstants.playerSkin * 0.5f);
 		}
 
 		SendMessage ("OnHorizontalCollisionExit", SendMessageOptions.DontRequireReceiver);
@@ -90,7 +91,7 @@ public class SMBCollider : MonoBehaviour {
 		for (int i = 0; i < 2; i++) {
 
 			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin);
-			// Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
+			Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {
 
@@ -180,5 +181,10 @@ public class SMBCollider : MonoBehaviour {
 		}
 
 		return false;
+	}
+
+	public void SetSize(Vector2 size) {
+
+		_collider.size = size;
 	}
 }

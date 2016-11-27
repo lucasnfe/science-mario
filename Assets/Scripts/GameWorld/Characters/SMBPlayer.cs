@@ -6,12 +6,14 @@ public class SMBPlayer : SMBCharacter {
 
 	enum SoundEffects {
 		Jump,
-		Kick
+		Kick,
+		GrowUp
 	}
 
 	private SMBParticleSystem _particleSystem;
 		
-	private float _jumpTimer;
+	private bool    _lockController;
+	private float   _jumpTimer;
 
 	private SMBConstants.PlayerState _state;
 	public SMBConstants.PlayerState State { get { return _state; } }
@@ -19,6 +21,8 @@ public class SMBPlayer : SMBCharacter {
 	public float longJumpTime = 1f;
 	public float longJumpWeight = 0.1f;
 	public float runningMultiplyer = 2f;
+
+	public Vector2 grownUpColliderSize;
 
 	public AudioClip[] soundEffects;
 
@@ -37,7 +41,7 @@ public class SMBPlayer : SMBCharacter {
 	// Update is called once per frame
 	void Update () {
 
-		if (_state == SMBConstants.PlayerState.Dead)
+		if (_lockController)
 			return;
 
 		Jump ();
@@ -60,11 +64,9 @@ public class SMBPlayer : SMBCharacter {
 			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
-			if (Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == 1f) {
+			if (_isOnGround && Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == 1f) {
 				_animator.SetBool ("isCoasting", true);
-
-				if(_isOnGround)
-					_particleSystem._shootParticles = true;
+				_particleSystem._shootParticles = true;
 			}
 
 		} 
@@ -81,11 +83,9 @@ public class SMBPlayer : SMBCharacter {
 			if(Mathf.Abs(_body.velocity.x) > 1.3f)
 				_animator.SetBool ("isRunning", true);
 
-			if (Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == -1f) {
+			if (_isOnGround && Mathf.Abs (_body.velocity.x) > 0.5f && Mathf.Sign (_body.velocity.x) == -1f) {
 				_animator.SetBool ("isCoasting", true);
-
-				if(_isOnGround)
-					_particleSystem._shootParticles = true;
+				_particleSystem._shootParticles = true;
 			}
 		} 
 		else {
@@ -114,6 +114,8 @@ public class SMBPlayer : SMBCharacter {
 	void Die(float timeToDie) {
 
 		_state = SMBConstants.PlayerState.Dead;
+
+		_lockController = true;
 
 		_particleSystem._shootParticles = false;
 
@@ -164,6 +166,29 @@ public class SMBPlayer : SMBCharacter {
 		}
 	}
 
+	void GrowUp() {
+
+		if (_state == SMBConstants.PlayerState.GrownUp)
+			return;
+
+		_animator.SetTrigger("triggerGrownUp");
+		_collider.SetSize (grownUpColliderSize);
+
+		_lockController = true;
+		_body.applyGravity = false;
+		_body.velocity = Vector2.zero;
+
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.GrowUp]);
+
+		_state = SMBConstants.PlayerState.GrownUp;
+	}
+
+	void UnlockController() {
+
+		_lockController = false;
+		_body.applyGravity = true;
+	}
+
 	void SolveVerticalCollision(Collider2D collider) {
 
 		if (collider.tag == "Block") {
@@ -190,6 +215,9 @@ public class SMBPlayer : SMBCharacter {
 		if (collider.tag == "Item") {
 
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+
+			if (collider.name == "r")
+				GrowUp ();
 		}
 		else if (collider.tag == "Enemy") {
 
@@ -207,12 +235,15 @@ public class SMBPlayer : SMBCharacter {
 
 	void OnHorizontalTriggerEnter(Collider2D collider) {
 
-		if (collider.tag == "Item")
+		if (collider.tag == "Item") {
 			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
 
+			if (collider.name == "r")
+				GrowUp ();
+		}
+
 		if (collider.tag == "Enemy") {
-			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
-				Die (0.2f);
+			Die (0.2f);
 		}
 	}
 }
