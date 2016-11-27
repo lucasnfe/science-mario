@@ -56,8 +56,11 @@ public class SMBMushroomRed : SMBItem {
 
 	void SolveCollision(Collider2D collider) {
 
-		if (collider.tag == "Player")
+		if (collider.tag == "Player") {
+
 			collider.gameObject.SendMessage ("GrowUp");
+			OnInteraction ();
+		}
 	}
 
 	void OnHalfVerticalCollisionEnter(Collider2D collider) {
