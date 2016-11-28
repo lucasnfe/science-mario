@@ -40,7 +40,7 @@ public class SMBPlayer : SMBCharacter {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	override protected void Update () {
 
 		if (_lockController)
 			return;
@@ -110,6 +110,8 @@ public class SMBPlayer : SMBCharacter {
 
 		if (transform.position.y < -0.2f)
 			Die (0.4f);
+
+		base.Update ();
 	}
 
 	void Die(float timeToDie) {
@@ -171,6 +173,9 @@ public class SMBPlayer : SMBCharacter {
 
 		if (_state == SMBConstants.PlayerState.GrownUp)
 			return;	
+
+		if (_isOnGround)
+			transform.position += Vector3.up * 0.05f;
 
 		SMBGameWorld.Instance.PauseGame (false);
 

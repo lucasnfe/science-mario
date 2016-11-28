@@ -43,6 +43,9 @@ public class SMBCharacter : MonoBehaviour {
 
 		if (side == (float)SMBConstants.MoveDirection.Backward)
 			_renderer.flipX = true;
+	}
+
+	virtual protected void Update() {
 
 		// Lock player x position
 		Vector3 playerPos = transform.position;

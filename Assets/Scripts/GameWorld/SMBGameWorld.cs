@@ -136,9 +136,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				GameObject obj = InstantiateTile (position, tileID);
-				if (obj != null && obj.tag != "Untagged")
-					_gameObjecs.Add (obj);
+				InstantiateTile (position, tileID);
 			}
 		}
 
@@ -190,6 +188,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 			if (TileMap [tileID].isPlayer)
 				_player = newTile.GetComponent<SMBPlayer> ();
+
+			if (newTile.tag != "Untagged")
+				_gameObjecs.Add (newTile);
 		}
 
 		return newTile;

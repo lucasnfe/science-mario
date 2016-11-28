@@ -11,7 +11,7 @@ public class SMBEnemy : SMBCharacter {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	override protected void Update () {
 
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
@@ -21,6 +21,8 @@ public class SMBEnemy : SMBCharacter {
 			side = SMBConstants.MoveDirection.Backward;
 		
 		Move (xSpeed * (float)side);
+
+		base.Update ();
 	}
 
 	void Die() {
