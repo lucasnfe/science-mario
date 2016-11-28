@@ -14,6 +14,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	private SMBParticleSystem _particleSystem;
 
 	// Pointers to main game objects
+	private List<GameObject> _gameObjecs;
+
 	private SMBCamera  _camera;
 	public SMBCamera Camera { get { return _camera; }}
 
@@ -104,9 +106,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
 
-			_isPaused = true;
-
 			_theme.Stop ();
+
+			PauseGame (false);
 
 			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
 			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
@@ -122,6 +124,8 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void InstantiateLevel() {
 
+		_gameObjecs = new List<GameObject> ();
+
 		for (int i = 0; i < Level.GetLength(0); i++) {
 
 			for (int j = 0; j < Level.GetLength(1); j++) {
@@ -132,11 +136,42 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				InstantiateTile (position, tileID);
+				GameObject obj = InstantiateTile (position, tileID);
+				if (obj != null && obj.tag != "Untagged")
+					_gameObjecs.Add (obj);
 			}
 		}
 
 		PlaceBackground ();
+	}
+
+	public void PauseGame(bool pausePlayer = true) {
+
+		foreach (GameObject go in _gameObjecs) {
+
+			if (go == null)
+				continue;
+
+			if (!pausePlayer && go.tag == "Player")
+				continue;
+				
+			go.SendMessage ("OnPauseGame", SendMessageOptions.DontRequireReceiver);
+		}
+
+		_isPaused = true;
+	}
+
+	public void ResumeGame() {
+
+		foreach (GameObject go in _gameObjecs) {
+
+			if (go == null)
+				continue;
+			
+			go.SendMessage ("OnResumeGame", SendMessageOptions.DontRequireReceiver);
+		}
+
+		_isPaused = false;
 	}
 
 	public GameObject InstantiateTile(Vector3 position, string tileID) {

@@ -83,4 +83,14 @@ public class SMBBlock : MonoBehaviour {
 	protected virtual void GivePrize () {
 
 	}
+
+	void OnPauseGame() {
+
+		_animator.enabled = false;
+	}
+
+	void OnResumeGame() {
+
+		_animator.enabled = true;
+	}
 }

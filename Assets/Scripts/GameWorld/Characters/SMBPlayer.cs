@@ -14,6 +14,7 @@ public class SMBPlayer : SMBCharacter {
 		
 	private bool    _lockController;
 	private float   _jumpTimer;
+	private Vector2 _velocityBeforeGrowUp;
 
 	private SMBConstants.PlayerState _state;
 	public SMBConstants.PlayerState State { get { return _state; } }
@@ -169,10 +170,14 @@ public class SMBPlayer : SMBCharacter {
 	void GrowUp() {
 
 		if (_state == SMBConstants.PlayerState.GrownUp)
-			return;
+			return;	
+
+		SMBGameWorld.Instance.PauseGame (false);
 
 		_animator.SetTrigger("triggerGrownUp");
 		_collider.SetSize (grownUpColliderSize);
+
+		_velocityBeforeGrowUp = _body.velocity;
 
 		_lockController = true;
 		_body.applyGravity = false;
@@ -187,6 +192,10 @@ public class SMBPlayer : SMBCharacter {
 
 		_lockController = false;
 		_body.applyGravity = true;
+
+		_body.velocity = _velocityBeforeGrowUp;
+
+		SMBGameWorld.Instance.ResumeGame();
 	}
 
 	void SolveVerticalCollision(Collider2D collider) {

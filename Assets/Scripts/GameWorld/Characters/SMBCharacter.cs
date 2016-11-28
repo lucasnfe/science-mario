@@ -68,6 +68,20 @@ public class SMBCharacter : MonoBehaviour {
 		_isOnGround = false;
 	}
 
+	virtual protected void OnPauseGame() {
+
+		_body.enabled = false;
+		_collider.enabled = false;
+		_animator.enabled = false;
+	}
+
+	virtual protected void OnResumeGame() {
+
+		_body.enabled = true;
+		_collider.enabled = true;
+		_animator.enabled = true;
+	}
+
 	public bool isFlipped() {
 
 		return _renderer.flipX;
