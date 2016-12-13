@@ -66,11 +66,9 @@ public class SMBEnemy : SMBCharacter {
 
 		if (collider.tag == "Player") {
 
-			collider.SendMessage("Die", 0.2f, SendMessageOptions.RequireReceiver);
+			collider.SendMessage("OnHorizontalTriggerEnter", _collider.GetComponent<BoxCollider2D>(), SendMessageOptions.RequireReceiver);
 		}
-		else {
-			
+		else
 			_renderer.flipX = !_renderer.flipX;
-		}
 	}
 }
