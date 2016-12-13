@@ -196,9 +196,10 @@ public class SMBCollider : MonoBehaviour {
 		_collider.isTrigger = isTrigger;
 	}
 
-	public void SetSize(Vector2 size) {
+	public void SetSize(Bounds bounds) {
 
-		_collider.size = size;
+		_collider.size = bounds.size;
+		_collider.offset = bounds.center;
 	}
 
 	public bool GetTrigger(bool isTrigger) {
@@ -206,8 +207,8 @@ public class SMBCollider : MonoBehaviour {
 		return _collider.isTrigger;
 	}
 
-	public Vector2 GetSize() {
+	public Bounds GetSize() {
 
-		return _collider.size;
+		return _collider.bounds;
 	}
 }

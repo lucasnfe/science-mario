@@ -18,7 +18,7 @@ public class SMBPlayer : SMBCharacter {
 	private float   _jumpTimer;
 	private float   _blinkTimer;
 	private int     _blinkAmount;
-	private Vector2 _originalCollider;
+	private Bounds  _originalCollider;
 	private Vector2 _velocityBeforeGrowUp;
 
 	private SMBConstants.PlayerState _state;
@@ -29,7 +29,7 @@ public class SMBPlayer : SMBCharacter {
 	public float longJumpWeight = 0.1f;
 	public float runningMultiplyer = 2f;
 
-	public Vector2 grownUpColliderSize;
+	public Bounds grownUpColliderSize;
 
 	public AudioClip[] soundEffects;
 
@@ -43,7 +43,9 @@ public class SMBPlayer : SMBCharacter {
 
 		_state = SMBConstants.PlayerState.Short;
 		_particleSystem._shootParticles = false;
+
 		_originalCollider = _collider.GetSize();
+		_originalCollider.center = Vector3.zero;
 	}
 
 	// Update is called once per frame
@@ -133,7 +135,13 @@ public class SMBPlayer : SMBCharacter {
 			_blinkAmount++;
 		}
 
-		if (_blinkAmount >= 20) {
+		if (_blinkAmount == 10)
+			blinkTime *= 0.8f;
+
+		else if (_blinkAmount == 20)
+			blinkTime *= 0.8f;
+
+		else if (_blinkAmount >= 40) {
 
 			_blinkAmount = 0;
 			_blinkTimer = 0f;
@@ -222,9 +230,6 @@ public class SMBPlayer : SMBCharacter {
 		if (_state == SMBConstants.PlayerState.GrownUp)
 			return;	
 
-		if (_isOnGround)
-			transform.position += Vector3.up * 0.05f;
-
 		SMBGameWorld.Instance.PauseGame (false);
 
 		_animator.SetTrigger("triggerGrownUp");
@@ -243,16 +248,12 @@ public class SMBPlayer : SMBCharacter {
 
 	void TakeDamage() {
 
-		if(_isOnGround)
-			transform.position -= Vector3.up * 0.05f;
-
 		SMBGameWorld.Instance.PauseGame (false);
 
 		_animator.SetTrigger("triggerDamage");
 		_collider.SetSize (_originalCollider);
 
 		_lockController = true;
-		_isInvincible = true;
 
 		_body.applyGravity = false;
 		_body.velocity = Vector2.zero;
@@ -268,6 +269,9 @@ public class SMBPlayer : SMBCharacter {
 		_lockController = false;
 		_body.applyGravity = true;
 		_body.velocity = _velocityBeforeGrowUp;
+
+		if (_state == SMBConstants.PlayerState.Short)
+			_isInvincible = true;
 
 		SMBGameWorld.Instance.ResumeGame();
 	}
