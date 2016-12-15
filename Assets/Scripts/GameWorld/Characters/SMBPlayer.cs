@@ -258,6 +258,9 @@ public class SMBPlayer : SMBCharacter {
 		SMBGameWorld.Instance.PauseGame (false);
 
 		_animator.SetTrigger("triggerGrownUp");
+		_animator.SetLayerWeight (0, 0);
+		_animator.SetLayerWeight (1, 1);
+
 		_collider.SetSize (grownUpColliderSize);
 
 		_velocityBeforeGrowUp = _body.velocity;
@@ -276,6 +279,9 @@ public class SMBPlayer : SMBCharacter {
 		SMBGameWorld.Instance.PauseGame (false);
 
 		_animator.SetTrigger("triggerDamage");
+		_animator.SetLayerWeight (0, 1);
+		_animator.SetLayerWeight (1, 0);
+
 		_collider.SetSize (_originalCollider);
 
 		_lockController = true;
