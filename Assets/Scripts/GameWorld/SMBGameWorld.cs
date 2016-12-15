@@ -207,7 +207,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		int amount = (int)rate + 1;
 
 		Vector3 pos = _background.transform.position;
-		pos.x = 0f;
+		pos.x = backgroundWidth/3f;
 		pos.y = backgroundHeight / 2f + TileSize / 2f;
 
 		for (int i = 0; i < amount; i++) {
