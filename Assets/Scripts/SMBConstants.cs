@@ -27,7 +27,7 @@ public static class SMBConstants {
 	}
 
 	public static readonly int   maxLayers = 32;
-	public static readonly float maxVelocityX = 5f;
+	public static readonly float maxVelocityX = 10f;
 	public static readonly float maxVelocityY = 3f;
 	public static readonly float timeToReloadAfterDeath = 3.5f;
 	public static readonly float playerSkin = 0.01f;

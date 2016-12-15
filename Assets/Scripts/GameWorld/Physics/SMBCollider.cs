@@ -22,7 +22,10 @@ public class SMBCollider : MonoBehaviour {
 	void Start() {
 
 		for (int i = 0; i < SMBConstants.maxLayers; i++)
-			mask = mask | (1 << i);
+			mask |= (1 << i);
+
+		int ignoreLayer = LayerMask.NameToLayer ("Ignore Raycast");
+		mask &= ~(1 << ignoreLayer);
 	}
 
 	void LateUpdate () {

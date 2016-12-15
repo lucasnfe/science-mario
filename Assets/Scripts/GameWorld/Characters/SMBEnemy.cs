@@ -29,7 +29,7 @@ public class SMBEnemy : SMBCharacter {
 
 		_body.velocity = Vector2.zero;
 		_body.ApplyForce (Vector2.up);
-		_body.ApplyForce (Vector2.right * Random.Range(-1f, 1f));
+		_body.ApplyForce (Vector2.right * Random.Range(-2f, 2f) * Time.fixedDeltaTime);
 
 		_collider.applyHorizCollision = false;
 		_collider.applyVertCollision = false;
