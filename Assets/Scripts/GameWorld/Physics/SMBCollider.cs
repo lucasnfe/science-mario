@@ -11,7 +11,8 @@ public class SMBCollider : MonoBehaviour {
 	public bool applyHorizCollision = true;
 	public bool applyVertCollision = true;
 
-	public int mask { get; set; }
+	public int horizontalMask { get; set; }
+	public int verticalMask { get; set; }
 
 	void Awake() {
 
@@ -21,11 +22,14 @@ public class SMBCollider : MonoBehaviour {
 
 	void Start() {
 
-		for (int i = 0; i < SMBConstants.maxLayers; i++)
-			mask |= (1 << i);
+		for (int i = 0; i < SMBConstants.maxLayers; i++) {
+			horizontalMask |= (1 << i);
+			verticalMask |= (1 << i);
+		}
 
 		int ignoreLayer = LayerMask.NameToLayer ("Ignore Raycast");
-		mask &= ~(1 << ignoreLayer);
+		horizontalMask &= ~(1 << ignoreLayer);
+		verticalMask &= ~(1 << ignoreLayer);
 	}
 
 	void LateUpdate () {
@@ -48,7 +52,7 @@ public class SMBCollider : MonoBehaviour {
 
 		for (int i = 0; i < 3; i++) {
 
-			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin, mask);
+			RaycastHit2D xRay = Physics2D.Raycast (xRayOrigin, Vector2.right * xDirection, SMBConstants.playerSkin, horizontalMask);
 			Debug.DrawRay (xRayOrigin, Vector2.right * xDirection);
 			if (xRay.collider) {
 				 
@@ -101,7 +105,7 @@ public class SMBCollider : MonoBehaviour {
 
 		for (int i = 0; i < 2; i++) {
 
-			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin, mask);
+			RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.up * yDirection, SMBConstants.playerSkin, verticalMask);
 			Debug.DrawRay (yRayOrigin, Vector2.up * yDirection);
 
 			if (yRay.collider) {

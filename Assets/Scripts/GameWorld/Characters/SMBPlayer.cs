@@ -184,12 +184,12 @@ public class SMBPlayer : SMBCharacter {
 			Blink ();
 
 			_collider.SetIsTrigger (true);
-			_collider.mask &= ~(1 << enemies);
+			_collider.horizontalMask &= ~(1 << enemies);
 		} 
 		else {
 			
 			_collider.SetIsTrigger (false);
-			_collider.mask |= (1 << enemies);
+			_collider.horizontalMask |= (1 << enemies);
 		}
 			
 	}
