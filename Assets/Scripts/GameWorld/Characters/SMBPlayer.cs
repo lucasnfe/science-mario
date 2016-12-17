@@ -60,37 +60,19 @@ public class SMBPlayer : SMBCharacter {
 		Jump ();
 		_animator.SetBool ("isJumping", !_isOnGround);
 
-		float speed = xSpeed;
-		if (Input.GetKey (KeyCode.A)) {
-
-			speed *= runningMultiplyer;
-
-			if (_isOnGround)
-				_runningTimer += Time.fixedDeltaTime;
-
-			_runningTimer = Mathf.Clamp (_runningTimer, 0f, runTime);
-
-			if (_runningTimer >= runTime)
-				speed *= runningMultiplyer * 0.625f;
-		} 
-		else if (Input.GetKeyUp (KeyCode.A)) {
-
-			_runningTimer = 0f;
-		}
+		float speed = DefineMoveSpeed ();
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Backward);
 
-			if (Mathf.Abs (_body.velocity.x) > 0f) {
+			_animator.SetInteger ("move", 1);
 
-				_animator.SetBool ("isMoving", true);
-				_animator.SetBool ("isRunning", false);
+			if(speed > xSpeed)
+				_animator.SetInteger ("move", 2);
 
-				if (_runningTimer >= runTime)
-					_animator.SetBool ("isRunning", true);
-					
-			}
+			if (_runningTimer >= runTime)
+				_animator.SetInteger ("move", 3);
 
 			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == 1f) {
 
@@ -104,14 +86,13 @@ public class SMBPlayer : SMBCharacter {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Forward);
 
-			if (Mathf.Abs (_body.velocity.x) > 0f) {
+			_animator.SetInteger ("move", 1);
 
-				_animator.SetBool ("isMoving", true);
-				_animator.SetBool ("isRunning", false);
+			if(speed > xSpeed)
+				_animator.SetInteger ("move", 2);
 
-				if (_runningTimer >= runTime)
-					_animator.SetBool ("isRunning", true);
-			}
+			if (_runningTimer >= runTime)
+				_animator.SetInteger ("move", 3);			
 
 			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == -1f) {
 
@@ -123,12 +104,11 @@ public class SMBPlayer : SMBCharacter {
 		else {
 
 			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentum * Time.fixedDeltaTime);
-		
-			_animator.SetBool ("isRunning", false);
+			_animator.SetInteger ("move", 1);
 
 			if (Mathf.Abs (_body.velocity.x) <= 0.1f) {
 
-				_animator.SetBool ("isMoving", false);
+				_animator.SetInteger ("move", 0);
 				_body.velocity.x = 0f;
 			}
 
@@ -147,6 +127,29 @@ public class SMBPlayer : SMBCharacter {
 			Die (0.4f, false);
 
 		base.Update ();
+	}
+
+	float DefineMoveSpeed() {
+
+		float speed = xSpeed;
+		if (Input.GetKey (KeyCode.A)) {
+
+			speed *= runningMultiplyer;
+
+			if (_isOnGround)
+				_runningTimer += Time.fixedDeltaTime;
+
+			_runningTimer = Mathf.Clamp (_runningTimer, 0f, runTime);
+
+			if (_runningTimer >= runTime)
+				speed *= runningMultiplyer * 0.625f;
+		} 
+		else if (Input.GetKeyUp (KeyCode.A)) {
+
+			_runningTimer = 0f;
+		}
+
+		return speed;
 	}
 
 	void Blink() {
@@ -243,9 +246,13 @@ public class SMBPlayer : SMBCharacter {
 			}
 			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.S)) {
 
+				float runningBoost = 1f;
+				if (_runningTimer >= runTime)
+					runningBoost = 1.5f;
+
 				_jumpTimer -= Time.fixedDeltaTime;
 				if (_jumpTimer <= longJumpTime/2f)
-					_body.velocity.y += ySpeed * longJumpWeight * Time.fixedDeltaTime;
+					_body.velocity.y += ySpeed * longJumpWeight * runningBoost * Time.fixedDeltaTime;
 			}
 		}
 	}
@@ -285,6 +292,7 @@ public class SMBPlayer : SMBCharacter {
 		_collider.SetSize (_originalCollider);
 
 		_lockController = true;
+		_isInvincible = true;
 
 		_body.applyGravity = false;
 		_body.velocity = Vector2.zero;
@@ -300,9 +308,6 @@ public class SMBPlayer : SMBCharacter {
 		_lockController = false;
 		_body.applyGravity = true;
 		_body.velocity = _velocityBeforeGrowUp;
-
-		if (_state == SMBConstants.PlayerState.Short)
-			_isInvincible = true;
 
 		SMBGameWorld.Instance.ResumeGame();
 	}
