@@ -11,7 +11,7 @@ public class SMBEnemy : SMBCharacter {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	override protected void Update () {
 
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
@@ -21,13 +21,15 @@ public class SMBEnemy : SMBCharacter {
 			side = SMBConstants.MoveDirection.Backward;
 		
 		Move (xSpeed * (float)side);
+
+		base.Update ();
 	}
 
 	void Die() {
 
 		_body.velocity = Vector2.zero;
 		_body.ApplyForce (Vector2.up);
-		_body.ApplyForce (Vector2.right * Random.Range(-1f, 1f));
+		_body.ApplyForce (Vector2.right * Random.Range(-2f, 2f) * Time.fixedDeltaTime);
 
 		_collider.applyHorizCollision = false;
 		_collider.applyVertCollision = false;
@@ -64,12 +66,9 @@ public class SMBEnemy : SMBCharacter {
 
 		if (collider.tag == "Player") {
 
-			if (Mathf.Abs (collider.bounds.center.y - transform.position.y) < 0.05f)
-				collider.SendMessage("Die", 0.2f, SendMessageOptions.RequireReceiver);
+			collider.SendMessage("OnHorizontalTriggerEnter", _collider.GetComponent<BoxCollider2D>(), SendMessageOptions.RequireReceiver);
 		}
-		else {
-			
+		else
 			_renderer.flipX = !_renderer.flipX;
-		}
 	}
 }

@@ -7,11 +7,15 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SMBParticleSystem))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
+	private GameObject _levelParent;
+
 	// Custom components
 	private AudioSource    	  _audio;
 	private SMBParticleSystem _particleSystem;
 
 	// Pointers to main game objects
+	private List<GameObject> _gameObjecs;
+
 	private SMBCamera  _camera;
 	public SMBCamera Camera { get { return _camera; }}
 
@@ -66,6 +70,11 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		if (Level == null)
 			return;
 
+		// Level parents object
+		_levelParent = new GameObject ();
+		_levelParent.name = "LevelTiles";
+		_levelParent.transform.parent = transform.parent;
+
 		// Instantiate the parsed level
 		InstantiateLevel();
 
@@ -97,9 +106,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
 
-			_isPaused = true;
-
 			_theme.Stop ();
+
+			PauseGame (false);
 
 			PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Death);
 			Invoke ("ReloadLevel", SMBConstants.timeToReloadAfterDeath);
@@ -115,10 +124,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void InstantiateLevel() {
 
-		// Transfroming array of Dictionaries into a Dictionary
-		GameObject levelParent = new GameObject ();
-		levelParent.name = "LevelTiles";
-		levelParent.transform.parent = transform.parent;
+		_gameObjecs = new List<GameObject> ();
 
 		for (int i = 0; i < Level.GetLength(0); i++) {
 
@@ -130,23 +136,64 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				position.z = (float)TileMap [tileID].layer;
-
-				if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
-
-					GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
-					GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
-					newTile.name = tileID;
-
-					newTile.transform.parent = levelParent.transform;
-
-					if (TileMap [tileID].isPlayer)
-						_player = newTile.GetComponent<SMBPlayer> ();
-				}
+				InstantiateTile (position, tileID);
 			}
 		}
 
 		PlaceBackground ();
+	}
+
+	public void PauseGame(bool pausePlayer = true) {
+
+		foreach (GameObject go in _gameObjecs) {
+
+			if (go == null)
+				continue;
+
+			if (!pausePlayer && go.tag == "Player")
+				continue;
+				
+			go.SendMessage ("OnPauseGame", SendMessageOptions.DontRequireReceiver);
+		}
+
+		_isPaused = true;
+	}
+
+	public void ResumeGame() {
+
+		foreach (GameObject go in _gameObjecs) {
+
+			if (go == null)
+				continue;
+			
+			go.SendMessage ("OnResumeGame", SendMessageOptions.DontRequireReceiver);
+		}
+
+		_isPaused = false;
+	}
+
+	public GameObject InstantiateTile(Vector3 position, string tileID) {
+
+		GameObject newTile = null;
+
+		if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
+
+			position.z = (float)TileMap [tileID].layer;
+
+			GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
+			newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+			newTile.name = tileID;
+
+			newTile.transform.parent = _levelParent.transform;
+
+			if (TileMap [tileID].isPlayer)
+				_player = newTile.GetComponent<SMBPlayer> ();
+
+			if (newTile.tag != "Untagged")
+				_gameObjecs.Add (newTile);
+		}
+
+		return newTile;
 	}
 
 	void PlaceBackground() {
@@ -160,7 +207,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		int amount = (int)rate + 1;
 
 		Vector3 pos = _background.transform.position;
-		pos.x = 0f;
+		pos.x = backgroundWidth/3f;
 		pos.y = backgroundHeight / 2f + TileSize / 2f;
 
 		for (int i = 0; i < amount; i++) {

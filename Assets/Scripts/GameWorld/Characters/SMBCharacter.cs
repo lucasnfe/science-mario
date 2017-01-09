@@ -43,6 +43,9 @@ public class SMBCharacter : MonoBehaviour {
 
 		if (side == (float)SMBConstants.MoveDirection.Backward)
 			_renderer.flipX = true;
+	}
+
+	virtual protected void Update() {
 
 		// Lock player x position
 		Vector3 playerPos = transform.position;
@@ -66,6 +69,20 @@ public class SMBCharacter : MonoBehaviour {
 	virtual protected void OnVerticalCollisionExit() {
 
 		_isOnGround = false;
+	}
+
+	virtual protected void OnPauseGame() {
+
+		_body.enabled = false;
+		_collider.enabled = false;
+		_animator.enabled = false;
+	}
+
+	virtual protected void OnResumeGame() {
+
+		_body.enabled = true;
+		_collider.enabled = true;
+		_animator.enabled = true;
 	}
 
 	public bool isFlipped() {
