@@ -104,6 +104,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void Update() {
 
+		if (_player == null)
+			return;
+
 		if (_player.State == SMBConstants.PlayerState.Dead && !_isReloadingLevel) {
 
 			_theme.Stop ();
@@ -181,16 +184,19 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 			position.z = (float)TileMap [tileID].layer;
 
 			GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
-			newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
-			newTile.name = tileID;
+			if (prefab) {
 
-			newTile.transform.parent = _levelParent.transform;
+				newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+				newTile.name = tileID;
 
-			if (TileMap [tileID].isPlayer)
-				_player = newTile.GetComponent<SMBPlayer> ();
+				newTile.transform.parent = _levelParent.transform;
 
-			if (newTile.tag != "Untagged")
-				_gameObjecs.Add (newTile);
+				if (TileMap [tileID].isPlayer)
+					_player = newTile.GetComponent<SMBPlayer> ();
+
+				if (newTile.tag != "Untagged")
+					_gameObjecs.Add (newTile);
+			}
 		}
 
 		return newTile;

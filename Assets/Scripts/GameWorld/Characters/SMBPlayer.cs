@@ -57,6 +57,8 @@ public class SMBPlayer : SMBCharacter {
 		if (_lockController)
 			return;
 
+		SetInvincible (_isInvincible);
+
 		Jump ();
 		_animator.SetBool ("isJumping", !_isOnGround);
 
@@ -120,8 +122,6 @@ public class SMBPlayer : SMBCharacter {
 			_animator.SetBool ("isCoasting", false);
 			_particleSystem._shootParticles = false;
 		}
-
-		SetInvincible (_isInvincible);
 			
 		if (transform.position.y < -0.2f)
 			Die (0.4f, false);
@@ -132,7 +132,7 @@ public class SMBPlayer : SMBCharacter {
 	float DefineMoveSpeed() {
 
 		float speed = xSpeed;
-		if (Input.GetKey (KeyCode.A)) {
+		if (Input.GetKey (KeyCode.Z)) {
 
 			speed *= runningMultiplyer;
 
@@ -144,7 +144,7 @@ public class SMBPlayer : SMBCharacter {
 			if (_runningTimer >= runTime)
 				speed *= runningMultiplyer * 0.625f;
 		} 
-		else if (Input.GetKeyUp (KeyCode.A)) {
+		else if (Input.GetKeyUp (KeyCode.Z)) {
 
 			_runningTimer = 0f;
 		}
@@ -199,6 +199,9 @@ public class SMBPlayer : SMBCharacter {
 
 	void Die(float timeToDie, bool animate = true) {
 
+		if (_isInvincible)
+			return;
+
 		_state = SMBConstants.PlayerState.Dead;
 
 		_lockController = true;
@@ -229,7 +232,7 @@ public class SMBPlayer : SMBCharacter {
 				
 	void Jump() {
 
-		if (_isOnGround && Input.GetKeyDown(KeyCode.S)){
+		if (_isOnGround && Input.GetKeyDown(KeyCode.X)){
 
 			_jumpTimer = longJumpTime;
 			_body.velocity.y = ySpeed * Time.fixedDeltaTime;
@@ -239,12 +242,12 @@ public class SMBPlayer : SMBCharacter {
 
 		if (_jumpTimer > 0f) {
 
-			if (Input.GetKeyUp(KeyCode.S)) {
+			if (Input.GetKeyUp(KeyCode.X)) {
 
 				_jumpTimer = 0f;
 
 			}
-			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.S)) {
+			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.X)) {
 
 				float runningBoost = 1f;
 				if (_runningTimer >= runTime)
