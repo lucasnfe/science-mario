@@ -26,6 +26,7 @@ public class SMBParticleSystem : MonoBehaviour {
 	private void Start () {
 
 		_particles = new SMBObjectPool<SMBParticle>(25, _particleSprites, InitParticle);
+		_shootingTimer = _shootingRate;
 	}
 
 	private void Update () {

@@ -16,7 +16,7 @@ public class SMBBlockQuestion : SMBBlock {
 		}
 	}
 
-	override protected void DestroyBlock () {
+	override protected void DestroyBlock (SMBPlayer player) {
 
 		_isDestroyed = true;
 		_animator.SetTrigger ("triggerDestroy");

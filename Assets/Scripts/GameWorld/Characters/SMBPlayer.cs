@@ -331,7 +331,7 @@ public class SMBPlayer : SMBCharacter {
 		if (collider.tag == "Block") {
 
 			if (collider.bounds.center.y > transform.position.y)
-				collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+				collider.SendMessage ("OnInteraction", this, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 		

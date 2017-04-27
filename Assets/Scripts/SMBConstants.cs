@@ -23,7 +23,8 @@ public static class SMBConstants {
 
 	public enum GameWorldSoundEffects {
 		Coin,
-		Death
+		Death,
+		BreakBlock
 	}
 
 	public static readonly int   maxLayers = 32;

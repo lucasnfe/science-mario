@@ -4,14 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof (AudioSource))]
-[RequireComponent(typeof(SMBParticleSystem))]
 public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	private GameObject _levelParent;
 
 	// Custom components
 	private AudioSource    	  _audio;
-	private SMBParticleSystem _particleSystem;
+	private Dictionary<string, SMBParticleSystem> _particleSystems;
 
 	// Pointers to main game objects
 	private List<GameObject> _gameObjecs;
@@ -48,13 +47,16 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	void Awake() {
 
 		_audio = GetComponent<AudioSource> ();
-		_particleSystem = GetComponent<SMBParticleSystem> ();
+
+		_particleSystems = new Dictionary<string, SMBParticleSystem>();
+		foreach (SMBParticleSystem particleSys in GetComponentsInChildren<SMBParticleSystem> ()) {
+			_particleSystems [particleSys.gameObject.name] = particleSys;
+			_particleSystems [particleSys.gameObject.name]._shootParticles = false;
+		}
 	}
 
 	// Use this for initialization
 	void Start () {
-
-		_particleSystem._shootParticles = false;
 
 		SMBTileMap tileMap = SMBLevelParser.ParseTileMap (SMBConstants.tilesDescrition);
 		if (tileMap == null)
@@ -223,10 +225,10 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		}
 	}
 
-	public void PlayParticle(Vector3 position) {
+	public void PlayParticle(Vector3 position, string particleSystemName) {
 	
-		_particleSystem.transform.position = position;
-		_particleSystem._shootParticles = true;
+		_particleSystems[particleSystemName].transform.position = position;
+		_particleSystems[particleSystemName]._shootParticles = true;
 	}
 
 	public void PlaySoundEffect(int clip) {

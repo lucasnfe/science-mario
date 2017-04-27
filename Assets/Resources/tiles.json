@@ -7,6 +7,7 @@
 		{"id": "6", "prefab": "Prefab/BlockQuestionCoin", "layer": 1},
 		{"id": "7", "prefab": "Prefab/BlockQuestionMushroomRed", "layer": -2},
 		{"id": "8", "prefab": "Prefab/BlockQuestionMushroomGreen", "layer": 1},
+		{"id": "e", "prefab": "Prefab/BlockBreakable", "layer": 1},
 		{"id": "9", "prefab": "Prefab/BlockQuestionFlower", "layer": 1},
 		{"id": "2", "prefab": "Prefab/ItemCoin", "layer": 4 },
 		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": -1 },
