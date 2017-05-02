@@ -11,29 +11,31 @@
 		{"id": "9", "prefab": "Prefab/BlockQuestionFlower", "layer": 1},
 		{"id": "2", "prefab": "Prefab/ItemCoin", "layer": 4 },
 		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": -1 },
-		{"id": "1", "prefab": "Prefab/GroundGrass", "layer": 1, "collisions": {
+		{"id": "1", "prefab": "Prefab/GroundGrass", "layer": 1, "isGround": true, "collisions": {
 						"top": true, 
 					  "right": false, 
 				     "bottom": false, 
 				       "left": false }
 		},
-		{"id": "3", "prefab": "Prefab/GroundGrassBackground", "layer": 1 },
-		{"id": "a", "prefab": "Prefab/GroundGrassLeftCorner", "layer": 1 , "collisions": {
+		{"id": "3", "prefab": "Prefab/GroundGrassBackground", "layer": 1, "isGround": true },
+		{"id": "a", "prefab": "Prefab/GroundGrassLeftCorner", "layer": 1, "isGround": true, "collisions": {
 						"top": true, 
 					  "right": false, 
 				     "bottom": false, 
 				       "left": false }
 		},
-		{"id": "b", "prefab": "Prefab/GroundGrassRightCorner","layer": 1 , "collisions": {
+		{"id": "b", "prefab": "Prefab/GroundGrassRightCorner","layer": 1, "isGround": true, "collisions": {
 						"top": true, 
 					  "right": false, 
 				     "bottom": false, 
 				       "left": false }
 		},
-		{"id": "c", "prefab": "Prefab/GroundGrassLeftSide", "layer": 1 },
-		{"id": "d", "prefab": "Prefab/GroundGrassRightSide", "layer": 1 },
+		{"id": "c", "prefab": "Prefab/GroundGrassLeftSide", "layer": 1, "isGround": true },
+		{"id": "d", "prefab": "Prefab/GroundGrassRightSide", "layer": 1, "isGround": true },
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2 },
 		{"id": "t", "prefab": "Prefab/PipeTop",  "width": 2 },
+		{"id": "f", "prefab": "Prefab/EndPoleBody", "width": 2, "layer": 1},
+		{"id": "v", "prefab": "Prefab/EndPoleTop",  "width": 2, "layer": 1, "isLevelEnd": true },
 		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true },
 		{"id": "g", "prefab": "Prefab/EnemyGoomba"}
    	]

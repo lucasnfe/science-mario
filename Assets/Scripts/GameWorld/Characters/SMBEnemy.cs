@@ -47,27 +47,34 @@ public class SMBEnemy : SMBCharacter {
 		Destroy (gameObject);
 	}
 
-	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
+	override protected void OnVerticalCollisionEnter(Collider2D collider) {
 				
-		_body.velocity.x = 0f;
-
 		float side = (float)SMBConstants.MoveDirection.Forward;
 		if(isFlipped())
 			side = (float)SMBConstants.MoveDirection.Backward;
 
-		transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;
+		Vector2 yRayOrigin = _collider.Collider.bounds.max - 
+			Vector3.up * _collider.Collider.bounds.size.y - Vector3.up * SMBConstants.playerSkin;
 
-		_renderer.flipX = !_renderer.flipX;
+		if (side == (float)SMBConstants.MoveDirection.Backward)
+			yRayOrigin.x -= _collider.Collider.bounds.size.x;
 
-		base.OnHalfVerticalCollisionEnter (collider);
+		RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.down, SMBConstants.playerSkin);
+		if (!yRay.collider) {
+
+			_body.velocity.x = 0f;
+			_renderer.flipX = !_renderer.flipX;
+
+			transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;
+		}
+
+		base.OnVerticalCollisionEnter (collider);
 	}
 
 	void OnHorizontalCollisionEnter(Collider2D collider) {
 
-		if (collider.tag == "Player") {
-
-			collider.SendMessage("OnHorizontalTriggerEnter", _collider.GetComponent<BoxCollider2D>(), SendMessageOptions.RequireReceiver);
-		}
+		if (collider.tag == "Player")
+			collider.SendMessage("OnHorizontalTriggerEnter", _collider.Collider, SendMessageOptions.RequireReceiver);
 		else
 			_renderer.flipX = !_renderer.flipX;
 	}

@@ -15,14 +15,14 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 	// Pointers to main game objects
 	private List<GameObject> _gameObjecs;
 
-	private SMBCamera  _camera;
-	public SMBCamera Camera { get { return _camera; }}
+	private SMBCamera _camera;
+	public  SMBCamera Camera { get { return _camera; }}
 
-	private SMBPlayer  _player;
-	public SMBPlayer Player { get { return _player; }}
+	private SMBPlayer _player;
+	public  SMBPlayer Player { get { return _player; }}
 
 	private bool _isPaused;
-	public bool IsPaused { get { return _isPaused; }}
+	public  bool IsPaused { get { return _isPaused; }}
 
 	private bool _isReloadingLevel;
 
@@ -77,11 +77,10 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		_levelParent.name = "LevelTiles";
 		_levelParent.transform.parent = transform.parent;
 
-		// Instantiate the parsed level
-		InstantiateLevel();
-
-		if (_player == null)
+		if (CheckLevelIntegrity () == false)
 			return;
+		
+		InstantiateLevel();
 
 		// Camera follow player
 		_camera = FindObjectOfType<SMBCamera>();
@@ -141,11 +140,109 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
-				InstantiateTile (position, tileID);
+				InstantiateTile (position, tileID, j, i);
 			}
 		}
 
 		PlaceBackground ();
+	}
+
+	public GameObject InstantiateTile(Vector3 position, string tileID, int x = 0, int y = 0) {
+
+		GameObject newTile = null;
+
+		if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
+
+			GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
+			if (prefab != null) {
+
+				position.z = (float)TileMap [tileID].layer;
+				position.z += prefab.transform.position.z;
+
+				newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+				newTile.name = tileID;
+				newTile.transform.parent = _levelParent.transform;
+
+				if (TileMap [tileID].isPlayer)
+					_player = newTile.GetComponent<SMBPlayer> ();
+
+				if (TileMap [tileID].isLevelEnd)
+					InstantiateEndPoleBar (position, x, y);
+
+				if (newTile.tag != "Untagged")
+					_gameObjecs.Add (newTile);
+			}
+		}
+
+		return newTile;
+	}
+
+	private void InstantiateEndPoleBar(Vector3 position, int x, int y) {
+
+		int poleTileHeight = 1;
+
+		for (int i = y; i < Level.GetLength (0); i++) {
+			string tileID = Level [i, x].ToString ();
+
+			if (tileID == "f")
+				poleTileHeight++;
+		}
+
+		GameObject prefab = Resources.Load<GameObject> (SMBConstants.endPoleBar);
+		position = position - Vector3.up * poleTileHeight * TileSize;
+		position.z -= 1;
+		position.y += TileSize * 0.5f;
+
+		GameObject newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
+		newTile.name = "!";
+		newTile.transform.parent = _levelParent.transform;
+
+		SMBEndPoleBar endPolebar = newTile.GetComponent<SMBEndPoleBar> ();
+		endPolebar._bounceYDist = (poleTileHeight - 1) * TileSize;
+
+		GameObject endLevelTrigger = new GameObject ();
+		endLevelTrigger.name = "EndLevelTrigger";
+		endLevelTrigger.tag = "End";
+
+		Vector3 endLevelPosition = new Vector3(position.x, (Level.GetLength (0) * 0.5f) * TileSize, 0f);
+		endLevelTrigger.transform.position = endLevelPosition;
+		endLevelTrigger.transform.parent = transform;
+
+		BoxCollider2D collider = endLevelTrigger.AddComponent<BoxCollider2D> ();
+		collider.isTrigger = true;
+		collider.size = new Vector2 (TileSize, Level.GetLength(0) * TileSize);
+	}
+
+	private bool CheckLevelIntegrity() {
+
+		int playerAmount = 0;
+		int endPoleAmount = 0;
+
+		for (int i = 0; i < Level.GetLength(0); i++) {
+
+			for (int j = 0; j < Level.GetLength(1); j++) {
+
+				string tileID = Level[i, j].ToString();
+
+				if (tileID == "m")
+					playerAmount++;
+
+				if (tileID == "v")
+					endPoleAmount++;
+			}
+		}
+
+		if (playerAmount > 1) {
+			Debug.LogError ("Levels can't have more than one player.");
+			return false;
+		}
+
+		if (endPoleAmount > 1) {
+			Debug.LogError ("Levels can't have more than one ending pole.");
+			return false;
+		}
+
+		return true;
 	}
 
 	public void PauseGame(bool pausePlayer = true) {
@@ -175,33 +272,6 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		}
 
 		_isPaused = false;
-	}
-
-	public GameObject InstantiateTile(Vector3 position, string tileID) {
-
-		GameObject newTile = null;
-
-		if (TileMap.ContainsKey(tileID) && TileMap [tileID].prefab != "") {
-
-			position.z = (float)TileMap [tileID].layer;
-
-			GameObject prefab = Resources.Load<GameObject> (TileMap [tileID].prefab);
-			if (prefab) {
-
-				newTile = Instantiate (prefab, position, Quaternion.identity) as GameObject;
-				newTile.name = tileID;
-
-				newTile.transform.parent = _levelParent.transform;
-
-				if (TileMap [tileID].isPlayer)
-					_player = newTile.GetComponent<SMBPlayer> ();
-
-				if (newTile.tag != "Untagged")
-					_gameObjecs.Add (newTile);
-			}
-		}
-
-		return newTile;
 	}
 
 	void PlaceBackground() {

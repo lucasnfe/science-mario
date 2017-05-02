@@ -27,15 +27,17 @@ public static class SMBConstants {
 		BreakBlock
 	}
 
-	public static readonly int   maxLayers = 32;
-	public static readonly float maxVelocityX = 10f;
-	public static readonly float maxVelocityY = 3f;
+	public static readonly int   maxLayers              = 32;
+	public static readonly float maxVelocityX           = 10f;
+	public static readonly float maxVelocityY           = 3f;
 	public static readonly float timeToReloadAfterDeath = 3.5f;
-	public static readonly float playerSkin = 0.01f;
+	public static readonly float playerSkin             = 0.01f;
+	public static readonly float collisionThresholdX    = 0.05f;
+	public static readonly float collisionThresholdY    = 0.01f;
 
 	public static readonly Vector2 gravity = new Vector2(0f, -7f);
 
-	public static readonly string levelFilename = "Levels/level1";
-
 	public static readonly string tilesDescrition = "tiles";
+	public static readonly string levelFilename   = "Levels/level1";
+	public static readonly string endPoleBar      = "Prefab/EndPoleBar";
 }

@@ -325,26 +325,16 @@ public class SMBPlayer : SMBCharacter {
 
 		enemy.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
 	}
-
-	void SolveVerticalCollision(Collider2D collider) {
+		
+	override protected void OnVerticalCollisionEnter(Collider2D collider) {
 
 		if (collider.tag == "Block") {
 
 			if (collider.bounds.center.y > transform.position.y)
 				collider.SendMessage ("OnInteraction", this, SendMessageOptions.DontRequireReceiver);
 		}
-	}
-		
-	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
 
-		SolveVerticalCollision (collider);
-		base.OnHalfVerticalCollisionEnter (collider);
-	}
-
-	override protected void OnFullVerticalCollisionEnter(Collider2D collider) {
-
-		SolveVerticalCollision (collider);
-		base.OnFullVerticalCollisionEnter (collider);
+		base.OnVerticalCollisionEnter (collider);
 	}
 
 	void OnVerticalTriggerEnter(Collider2D collider) {
@@ -359,6 +349,10 @@ public class SMBPlayer : SMBCharacter {
 		else if (collider.tag == "Enemy") {
 
 			KillEnemy (collider.gameObject);
+		}
+		else if (collider.tag == "End") {
+
+			SMBGameWorld.Instance.ReloadLevel ();
 		}
 	}
 

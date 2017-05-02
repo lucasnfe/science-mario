@@ -17,6 +17,8 @@ public class SMBTile {
 	public string id;
 	public string prefab;
 	public bool   isPlayer;
+	public bool   isLevelEnd;
+	public bool   isGround;
 	public int    layer = 0;
 	public int 	  width = 1;
 	public SMBCollision collisions;
