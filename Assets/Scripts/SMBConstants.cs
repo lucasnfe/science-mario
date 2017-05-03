@@ -17,7 +17,6 @@ public static class SMBConstants {
 	public enum PlayerState {
 		Short,
 		GrownUp,
-		Fire,
 		Dead
 	}
 
@@ -34,6 +33,7 @@ public static class SMBConstants {
 	public static readonly float playerSkin             = 0.01f;
 	public static readonly float collisionThresholdX    = 0.05f;
 	public static readonly float collisionThresholdY    = 0.01f;
+	public static readonly float stopingSpeed           = 0.1f;
 
 	public static readonly Vector2 gravity = new Vector2(0f, -7f);
 

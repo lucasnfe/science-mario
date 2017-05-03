@@ -13,6 +13,7 @@ public class SMBPlayer : SMBCharacter {
 	// Custom components
 	private SMBParticleSystem _particleSystem;
 		
+	private bool 	_isCoasting;
 	private bool 	_isInvincible;
 	private bool    _lockController;
 	private float   _jumpTimer;
@@ -58,71 +59,42 @@ public class SMBPlayer : SMBCharacter {
 			return;
 
 		SetInvincible (_isInvincible);
+		float speed = DefineMoveSpeed ();
 
 		Jump ();
-		_animator.SetBool ("isJumping", !_isOnGround);
-
-		float speed = DefineMoveSpeed ();
+		PlayJumpAnimation (speed);
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Backward);
-
-			_animator.SetInteger ("move", 1);
-
-			if(speed > xSpeed)
-				_animator.SetInteger ("move", 2);
-
-			if (_runningTimer >= runTime)
-				_animator.SetInteger ("move", 3);
-
-			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == 1f) {
-
-				_animator.SetBool ("isCoasting", true);
-				_particleSystem._shootParticles = true;
-				_runningTimer = 0f;
-			}
-
+			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Backward);
+			Coast (SMBConstants.MoveDirection.Backward);
 		} 
 		else if (Input.GetKey (KeyCode.RightArrow)) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Forward);
-
-			_animator.SetInteger ("move", 1);
-
-			if(speed > xSpeed)
-				_animator.SetInteger ("move", 2);
-
-			if (_runningTimer >= runTime)
-				_animator.SetInteger ("move", 3);			
-
-			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == -1f) {
-
-				_animator.SetBool ("isCoasting", true);
-				_particleSystem._shootParticles = true;
-				_runningTimer = 0f;
-			}
+			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Forward);
+			Coast (SMBConstants.MoveDirection.Forward);
 		} 
 		else {
 
 			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentum * Time.fixedDeltaTime);
-			_animator.SetInteger ("move", 1);
+			_runningTimer = 0f;
 
-			if (Mathf.Abs (_body.velocity.x) <= 0.1f) {
+			if (_isOnGround && !_isCoasting)
+				_animator.Play ("Move");
 
-				_animator.SetInteger ("move", 0);
+			if (Mathf.Abs (_body.velocity.x) <= SMBConstants.stopingSpeed) {
+
+				if (_isOnGround)
+					_animator.Play ("Idle");
+
+				_isCoasting = false;
 				_body.velocity.x = 0f;
 			}
-
-			_runningTimer = 0f;
-		}
-
-		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool ("isCoasting")) {
-
-			_animator.SetBool ("isCoasting", false);
-			_particleSystem._shootParticles = false;
 		}
 			
+		// Check if mario is at the bottom of the screen
 		if (transform.position.y < -0.2f)
 			Die (0.4f, false);
 
@@ -150,6 +122,50 @@ public class SMBPlayer : SMBCharacter {
 		}
 
 		return speed;
+	}
+
+	void PlayMoveAnimation(float speed, float direction) {
+
+		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
+		float sDirection = speed * direction >= 0f ? 1f : -1f;
+
+		if (_isCoasting && xDirection != sDirection)
+			return;
+
+		if (_isOnGround) {
+
+			if(speed == 0) 
+				_animator.Play ("Idle");
+
+			else if (speed == xSpeed)
+				_animator.Play ("Move");
+
+			else if (speed == xSpeed * runningMultiplyer)
+				_animator.Play ("MoveFaster");
+
+			else
+				_animator.Play ("Run");
+		}
+
+		_particleSystem._shootParticles = false;
+	}
+
+	void Coast(SMBConstants.MoveDirection direction) {
+
+		if (!_isOnGround)
+			return;
+
+		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
+
+		if (Mathf.Abs (_body.velocity.x) > minVelocityToCoast && xDirection == -(float)direction) {
+
+			_animator.Play ("Coasting");
+
+			_isCoasting = true;
+			_runningTimer = 0f;
+
+			_particleSystem._shootParticles = true;
+		}
 	}
 
 	void Blink() {
@@ -257,6 +273,24 @@ public class SMBPlayer : SMBCharacter {
 				if (_jumpTimer <= longJumpTime/2f)
 					_body.velocity.y += ySpeed * longJumpWeight * runningBoost * Time.fixedDeltaTime;
 			}
+		}
+	}
+
+	void PlayJumpAnimation(float speed) {
+
+		if (!_isOnGround) {
+
+			if(speed == 0) 
+				_animator.Play ("Jump");
+
+			else if (speed == xSpeed)
+				_animator.Play ("Jump");
+
+			else if (speed == xSpeed * runningMultiplyer)
+				_animator.Play ("Jump");
+
+			else
+				_animator.Play ("FastJump");
 		}
 	}
 
