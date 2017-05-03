@@ -77,8 +77,15 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		_levelParent.name = "LevelTiles";
 		_levelParent.transform.parent = transform.parent;
 
-		if (CheckLevelIntegrity () == false)
+		if (!isLevelValid) {
+
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 			return;
+		}
 		
 		InstantiateLevel();
 
@@ -213,7 +220,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		collider.size = new Vector2 (TileSize, Level.GetLength(0) * TileSize);
 	}
 
-	private bool CheckLevelIntegrity() {
+	private bool isLevelValid() {
 
 		int playerAmount = 0;
 		int endPoleAmount = 0;
@@ -232,13 +239,13 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 			}
 		}
 
-		if (playerAmount > 1) {
-			Debug.LogError ("Levels can't have more than one player.");
+		if (playerAmount != 1) {
+			Debug.LogError ("This level does not have a player. Levels must have one and only one player.");
 			return false;
 		}
 
-		if (endPoleAmount > 1) {
-			Debug.LogError ("Levels can't have more than one ending pole.");
+		if (endPoleAmount != 1) {
+			Debug.LogError ("This level does not have an end. Levels must have one and only one end.");
 			return false;
 		}
 
