@@ -53,7 +53,7 @@ public class SMBParticleSystem : MonoBehaviour {
 		}
 	}
 
-	private void InitParticle(SMBParticle particle) {
+	private void InitParticle(ref SMBParticle particle) {
 
 		particle.Create (this);
 	}

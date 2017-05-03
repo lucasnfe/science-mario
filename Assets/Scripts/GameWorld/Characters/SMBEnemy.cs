@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SMBEnemy : SMBCharacter {
 
-	private SMBConstants.EnemyState _state;
+	protected SMBConstants.EnemyState _state;
 
 	override protected void Start() {
 
@@ -14,6 +14,8 @@ public class SMBEnemy : SMBCharacter {
 	// Update is called once per frame
 	override protected void Update () {
 
+		base.Update ();
+
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
 
@@ -22,11 +24,12 @@ public class SMBEnemy : SMBCharacter {
 			side = SMBConstants.MoveDirection.Backward;
 		
 		Move (xSpeed * (float)side);
-
-		base.Update ();
 	}
 
 	void Die() {
+
+		if (_state == SMBConstants.EnemyState.Dead)
+			return;
 
 		_body.velocity = Vector2.zero;
 		_body.ApplyForce (Vector2.up);
@@ -40,13 +43,6 @@ public class SMBEnemy : SMBCharacter {
 
 		_state = SMBConstants.EnemyState.Dead;
 		_animator.SetTrigger ("triggerDie");
-
-		Invoke ("DestroyEnemy", 4f);
-	}
-
-	protected virtual void DestroyEnemy() {
-
-		Destroy (gameObject);
 	}
 
 	override protected void OnVerticalCollisionEnter(Collider2D collider) {

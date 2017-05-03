@@ -57,6 +57,8 @@ public class SMBPlayer : SMBCharacter {
 	// Update is called once per frame
 	override protected void Update () {
 
+		base.Update ();
+
 		if (_lockController)
 			return;
 
@@ -92,15 +94,11 @@ public class SMBPlayer : SMBCharacter {
 					_animator.Play ("Idle");
 
 				_isCoasting = false;
+				_particleSystem._shootParticles = false;
+
 				_body.velocity.x = 0f;
 			}
 		}
-			
-		// Check if mario is at the bottom of the screen
-		if (transform.position.y < -0.2f)
-			Die (0.4f, false);
-
-		base.Update ();
 	}
 
 	float DefineMoveSpeed() {
@@ -215,7 +213,7 @@ public class SMBPlayer : SMBCharacter {
 			
 	}
 
-	void Die(float timeToDie, bool animate = true) {
+	void Die() {
 
 		if (_isInvincible)
 			return;
@@ -236,9 +234,9 @@ public class SMBPlayer : SMBCharacter {
 		_body.applyGravity = false;
 
 		_animator.SetTrigger ("triggerDie");
+		Invoke ("PlayDeadAnimation", 0.3f);
 
-		if(animate)
-			Invoke("PlayDeadAnimation", timeToDie);
+		SMBGameWorld.Instance.PlayerDied ();
 	}
 
 	void PlayDeadAnimation() {
@@ -382,7 +380,7 @@ public class SMBPlayer : SMBCharacter {
 		}
 		else if (collider.tag == "Enemy") {
 
-			if (transform.position.y > collider.transform.position.y + 0.1f) {
+			if (!_isOnGround && transform.position.y > collider.transform.position.y + 0.1f) {
 				KillEnemy (collider.gameObject);
 			}
 		}
@@ -406,7 +404,7 @@ public class SMBPlayer : SMBCharacter {
 		}
 		else if (collider.tag == "Enemy") {
 
-			if (transform.position.y > collider.transform.position.y + 0.1f) {
+			if (!_isOnGround && transform.position.y > collider.transform.position.y + 0.1f) {
 
 				KillEnemy (collider.gameObject);
 				return;
@@ -416,7 +414,7 @@ public class SMBPlayer : SMBCharacter {
 
 				TakeDamage ();
 			else
-				Die (0.2f);
+				Die ();
 		}
 	}
 }

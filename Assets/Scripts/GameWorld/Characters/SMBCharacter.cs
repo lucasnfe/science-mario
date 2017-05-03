@@ -62,6 +62,16 @@ public class SMBCharacter : MonoBehaviour {
 				SMBGameWorld.Instance.LockRightX);
 			transform.position = playerPos;
 		}
+
+		// Check if mario is at the bottom of the screen
+		float levelWorldWidth = SMBGameWorld.Instance.Level.GetLength(1) * SMBGameWorld.Instance.TileSize + 0.5f;
+		if (transform.position.y < -0.5f || transform.position.x < -0.5f || transform.position.x > levelWorldWidth)
+			DestroyCharacter ();
+	}
+
+	virtual protected void DestroyCharacter() {
+
+		Destroy (gameObject);
 	}
 
 	virtual protected void OnHorizontalCollisionEnter(Collider2D collider) {

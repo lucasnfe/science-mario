@@ -8,7 +8,7 @@ public class SMBObjectPool<T> where T : MonoBehaviour {
 
 	public int PolledAmount { set; get; }
 
-	public delegate void InitObject(T obj);
+	public delegate void InitObject(ref T obj);
 
 	// Use this for initialization
 	public SMBObjectPool (int polledAmount = 10, GameObject[] reference = null, InitObject initMethod = null) {
@@ -42,13 +42,20 @@ public class SMBObjectPool<T> where T : MonoBehaviour {
 			obj.transform.SetParent(poolObj.transform);
 			obj.SetActive (false);
 
-			T templ = obj.AddComponent<T>();
+			T templ = obj.GetComponent<T> ();
+			if(templ == null)
+				templ = obj.AddComponent<T>();
 
 			if(initMethod != null)
-				initMethod (templ);
+				initMethod (ref templ);
 
 			_pool.Add (templ);
 		}
+	}
+
+	public List<T> GetAllObjects() {
+		
+		return _pool;
 	}
 
 	public List<T> GetUsedObjects() {
