@@ -5,9 +5,10 @@ public class SMBEnemy : SMBCharacter {
 
 	private SMBConstants.EnemyState _state;
 
-	void Start() {
+	override protected void Start() {
 
 		_state = SMBConstants.EnemyState.Move;
+		base.Start ();
 	}
 
 	// Update is called once per frame
@@ -33,6 +34,7 @@ public class SMBEnemy : SMBCharacter {
 
 		_collider.applyHorizCollision = false;
 		_collider.applyVertCollision = false;
+		_body.applyGravity = true;
 
 		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
 
@@ -42,7 +44,7 @@ public class SMBEnemy : SMBCharacter {
 		Invoke ("DestroyEnemy", 4f);
 	}
 
-	void DestroyEnemy() {
+	protected virtual void DestroyEnemy() {
 
 		Destroy (gameObject);
 	}
@@ -71,11 +73,14 @@ public class SMBEnemy : SMBCharacter {
 		base.OnVerticalCollisionEnter (collider);
 	}
 
-	void OnHorizontalCollisionEnter(Collider2D collider) {
+	override protected void OnHorizontalCollisionEnter(Collider2D collider) {
 
 		if (collider.tag == "Player")
-			collider.SendMessage("OnHorizontalTriggerEnter", _collider.Collider, SendMessageOptions.RequireReceiver);
+			collider.SendMessage("OnHorizontalTriggerEnter", 
+				_collider.Collider, SendMessageOptions.RequireReceiver);
 		else
 			_renderer.flipX = !_renderer.flipX;
+
+		base.OnVerticalCollisionEnter (collider);
 	}
 }

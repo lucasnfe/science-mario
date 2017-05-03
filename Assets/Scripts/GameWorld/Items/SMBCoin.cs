@@ -17,19 +17,26 @@ public class SMBCoin : SMBItem {
 		_body.applyGravity = true;
 		_body.ApplyForce (Vector2.up * spawnForce);
 
-		Invoke ("DestroyAfterSpawn", timeToDestroy);
+		Invoke ("SolveCollision", timeToDestroy);
 	}
 		
-	void DestroyAfterSpawn() {
-
-		OnInteraction ();
-	}
-
-	override protected void OnInteraction() {
+	void SolveCollision() {
 
 		SMBGameWorld.Instance.PlayParticle (transform.position, "SMBCoinParticleSystem");
 		SMBGameWorld.Instance.PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Coin);
 
-		base.OnInteraction ();
+		Destroy (gameObject);
+	}
+
+	protected override void OnVerticalCollisionEnter(Collider2D collider) {
+
+		SolveCollision ();
+		base.OnVerticalCollisionEnter (collider);
+	}
+
+	protected override void OnHorizontalCollisionEnter(Collider2D collider) {
+
+		SolveCollision ();
+		base.OnHorizontalCollisionEnter (collider);
 	}
 }

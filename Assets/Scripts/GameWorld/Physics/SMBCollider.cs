@@ -15,7 +15,7 @@ public class SMBCollider : MonoBehaviour {
 	public bool applyVertCollision = true;
 
 	public int horizontalMask { get; set; }
-	public int verticalMask { get; set; }
+	public int verticalMask   { get; set; }
 
 	void Awake() {
 

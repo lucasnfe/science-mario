@@ -43,13 +43,15 @@ public class SMBPlayer : SMBCharacter {
 		base.Awake ();
 	}
 
-	void Start() {
+	override protected void Start() {
 
 		_state = SMBConstants.PlayerState.Short;
 		_particleSystem._shootParticles = false;
 
 		_originalCollider = _collider.GetSize();
 		_originalCollider.center = Vector3.zero;
+
+		base.Start ();
 	}
 
 	// Update is called once per frame
@@ -375,14 +377,14 @@ public class SMBPlayer : SMBCharacter {
 
 		if (collider.tag == "Item") {
 
-			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
-
-			if (collider.name == "r")
-				GrowUp ();
+			collider.SendMessage ("OnVerticalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 		else if (collider.tag == "Enemy") {
 
-			KillEnemy (collider.gameObject);
+			if (transform.position.y > collider.transform.position.y + 0.1f) {
+				KillEnemy (collider.gameObject);
+			}
 		}
 		else if (collider.tag == "End") {
 
@@ -390,7 +392,7 @@ public class SMBPlayer : SMBCharacter {
 		}
 	}
 
-	void OnHorizontalCollisionEnter(Collider2D collider) {
+	override protected void OnHorizontalCollisionEnter(Collider2D collider) {
 
 		_runningTimer = 0f;
 	}
@@ -399,10 +401,8 @@ public class SMBPlayer : SMBCharacter {
 
 		if (collider.tag == "Item") {
 
-			collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
-
-			if (collider.name == "r")
-				GrowUp ();
+			collider.SendMessage ("OnHorizontalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 		else if (collider.tag == "Enemy") {
 

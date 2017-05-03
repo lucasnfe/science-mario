@@ -19,8 +19,10 @@ public class SMBCharacter : MonoBehaviour {
 
 	public float xSpeed = 1f;
 	public float ySpeed = 5f;
-
 	public float momentum = 3f;
+	public bool  lockXPosition = true;
+
+	public SMBConstants.MoveDirection startDirection;
 
 	virtual protected void Awake() {
 
@@ -29,6 +31,12 @@ public class SMBCharacter : MonoBehaviour {
 		_collider = GetComponent<SMBCollider> ();
 		_animator = GetComponent<Animator> ();
 		_renderer = GetComponent<SpriteRenderer> ();
+	}
+
+	virtual protected void Start() {
+
+		if (startDirection == SMBConstants.MoveDirection.Backward)
+			_renderer.flipX = true;
 	}
 
 	protected void Move(float speed) {
@@ -47,11 +55,17 @@ public class SMBCharacter : MonoBehaviour {
 
 	virtual protected void Update() {
 
-		// Lock player x position
-		Vector3 playerPos = transform.position;
-		playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileSize, 
-			SMBGameWorld.Instance.LockRightX);
-		transform.position = playerPos;
+		if (lockXPosition) {
+			
+			Vector3 playerPos = transform.position;
+			playerPos.x = Mathf.Clamp (playerPos.x, SMBGameWorld.Instance.LockLeftX - SMBGameWorld.Instance.TileSize, 
+				SMBGameWorld.Instance.LockRightX);
+			transform.position = playerPos;
+		}
+	}
+
+	virtual protected void OnHorizontalCollisionEnter(Collider2D collider) {
+
 	}
 
 	virtual protected void OnVerticalCollisionEnter(Collider2D collider) {

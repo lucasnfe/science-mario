@@ -7,19 +7,28 @@ using System.Collections;
 public class SMBItem : MonoBehaviour {
 
 	protected SMBRigidBody _body;
-	protected AudioSource _audio;
-	protected Animator _animator;
+	protected SMBCollider  _collider;
+	protected AudioSource  _audio;
+	protected Animator     _animator;
 
 	virtual protected void Awake() {
 
 		_body = GetComponent<SMBRigidBody> ();
+		_collider = GetComponent<SMBCollider> ();
 		_audio = GetComponent<AudioSource> ();
 		_animator = GetComponent<Animator> ();
 	}
 		
-	virtual protected void OnInteraction() {
+	protected virtual void OnVerticalCollisionEnter(Collider2D collider) {
 
-		Destroy (gameObject);
+		if(collider.tag == "Player")
+			Destroy (gameObject);
+	}
+
+	protected virtual void OnHorizontalCollisionEnter(Collider2D collider) {
+
+		if(collider.tag == "Player")
+			Destroy (gameObject);
 	}
 
 	void OnPauseGame() {

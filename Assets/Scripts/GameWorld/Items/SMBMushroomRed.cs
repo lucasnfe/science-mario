@@ -9,15 +9,6 @@ public class SMBMushroomRed : SMBItem {
 
 	private float _side;
 
-	protected SMBCollider _collider;
-
-	override protected void Awake() {
-
-		_collider = GetComponent<SMBCollider> ();
-
-		base.Awake ();
-	}
-
 	void OnSpawnStart() {
 
 		_collider.applyHorizCollision = false;
@@ -55,23 +46,23 @@ public class SMBMushroomRed : SMBItem {
 
 	void SolveCollision(Collider2D collider) {
 
-		if (collider.tag == "Player") {
-
+		if(collider.tag == "Player")
 			collider.gameObject.SendMessage ("GrowUp");
-			OnInteraction ();
-		}
 	}
 
-	void OnVerticalCollisionEnter(Collider2D collider) {
+	protected override void OnVerticalCollisionEnter(Collider2D collider) {
 
 		SolveCollision (collider);
+		base.OnVerticalCollisionEnter (collider);
 	}
 
-	void OnHorizontalCollisionEnter(Collider2D collider) {
+	protected override void OnHorizontalCollisionEnter(Collider2D collider) {
 
 		SolveCollision (collider);
 
 		if (collider.tag != "Player")
 			_side *= -1f;
+
+		base.OnHorizontalCollisionEnter (collider);
 	}
 }
