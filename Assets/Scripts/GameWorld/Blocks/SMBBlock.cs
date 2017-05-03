@@ -34,11 +34,11 @@ public class SMBBlock : MonoBehaviour {
 			Bounce ();
 	}
 
-	void OnInteraction() {
+	void OnInteraction(SMBPlayer player) {
 
 		if (_bounceState == BounceState.None && !_isDestroyed) {
 				
-			DestroyBlock ();
+			DestroyBlock (player);
 
 			_posBeforeBounce = transform.position;
 			_bounceState = BounceState.Up;
@@ -55,8 +55,8 @@ public class SMBBlock : MonoBehaviour {
 
 				transform.Translate (_bounceVelocity * Vector2.up * Time.fixedDeltaTime);
 			}
-			else 
-			{
+			else  {
+				
 				_bounceState = BounceState.Down;
 			}
 		}
@@ -76,7 +76,7 @@ public class SMBBlock : MonoBehaviour {
 		}
 	}
 		
-	protected virtual void DestroyBlock () {
+	protected virtual void DestroyBlock (SMBPlayer player) {
 		
 	}
 

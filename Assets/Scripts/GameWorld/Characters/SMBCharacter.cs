@@ -54,15 +54,10 @@ public class SMBCharacter : MonoBehaviour {
 		transform.position = playerPos;
 	}
 
-	virtual protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
+	virtual protected void OnVerticalCollisionEnter(Collider2D collider) {
 
-		if(Mathf.Sign(_body.velocity.y) == -1f)
-			_isOnGround = true;
-	}
-
-	virtual protected void OnFullVerticalCollisionEnter(Collider2D collider) {
-
-		if(Mathf.Sign(_body.velocity.y) == -1f)
+		float yDirection = _body.velocity.y > 0f ? 1f : -1f;
+		if(yDirection == -1f)
 			_isOnGround = true;
 	}
 

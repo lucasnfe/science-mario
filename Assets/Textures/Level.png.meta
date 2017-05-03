@@ -161,7 +161,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 2048
+  maxTextureSize: 256
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -180,11 +180,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Level_0
+    - serializedVersion: 2
+      name: Level_0
       rect:
         serializedVersion: 2
         x: 64
@@ -195,7 +198,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_1
       rect:
         serializedVersion: 2
         x: 80
@@ -206,7 +211,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_2
       rect:
         serializedVersion: 2
         x: 96
@@ -217,7 +224,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_3
       rect:
         serializedVersion: 2
         x: 112
@@ -228,7 +237,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_4
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_4
       rect:
         serializedVersion: 2
         x: 144
@@ -239,7 +250,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_5
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_5
       rect:
         serializedVersion: 2
         x: 160
@@ -250,7 +263,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_6
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_6
       rect:
         serializedVersion: 2
         x: 176
@@ -261,7 +276,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_7
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_7
       rect:
         serializedVersion: 2
         x: 192
@@ -272,7 +289,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_8
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_8
       rect:
         serializedVersion: 2
         x: 224
@@ -283,7 +302,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_9
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_9
       rect:
         serializedVersion: 2
         x: 0
@@ -294,7 +315,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_10
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_10
       rect:
         serializedVersion: 2
         x: 16
@@ -305,7 +328,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_11
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_11
       rect:
         serializedVersion: 2
         x: 32
@@ -316,7 +341,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_12
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_12
       rect:
         serializedVersion: 2
         x: 48
@@ -327,7 +354,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_13
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_13
       rect:
         serializedVersion: 2
         x: 64
@@ -338,7 +367,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_14
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_14
       rect:
         serializedVersion: 2
         x: 80
@@ -349,7 +380,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_15
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_15
       rect:
         serializedVersion: 2
         x: 96
@@ -360,7 +393,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_16
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_16
       rect:
         serializedVersion: 2
         x: 112
@@ -371,7 +406,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_17
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_17
       rect:
         serializedVersion: 2
         x: 128
@@ -382,7 +419,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_18
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_18
       rect:
         serializedVersion: 2
         x: 144
@@ -393,7 +432,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_19
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_19
       rect:
         serializedVersion: 2
         x: 160
@@ -404,7 +445,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_20
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_20
       rect:
         serializedVersion: 2
         x: 176
@@ -415,7 +458,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_21
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_21
       rect:
         serializedVersion: 2
         x: 192
@@ -426,7 +471,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_22
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_22
       rect:
         serializedVersion: 2
         x: 224
@@ -437,7 +484,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_23
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_23
       rect:
         serializedVersion: 2
         x: 0
@@ -448,7 +497,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_24
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_24
       rect:
         serializedVersion: 2
         x: 16
@@ -459,7 +510,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_25
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_25
       rect:
         serializedVersion: 2
         x: 32
@@ -470,7 +523,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_26
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_26
       rect:
         serializedVersion: 2
         x: 48
@@ -481,7 +536,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_27
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_27
       rect:
         serializedVersion: 2
         x: 64
@@ -492,7 +549,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_28
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_28
       rect:
         serializedVersion: 2
         x: 80
@@ -503,7 +562,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_29
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_29
       rect:
         serializedVersion: 2
         x: 96
@@ -514,7 +575,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_30
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_30
       rect:
         serializedVersion: 2
         x: 112
@@ -525,7 +588,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_31
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_31
       rect:
         serializedVersion: 2
         x: 128
@@ -536,7 +601,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_32
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_32
       rect:
         serializedVersion: 2
         x: 144
@@ -547,7 +614,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_33
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_33
       rect:
         serializedVersion: 2
         x: 224
@@ -558,7 +627,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_34
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_34
       rect:
         serializedVersion: 2
         x: 128
@@ -569,7 +640,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_35
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_35
       rect:
         serializedVersion: 2
         x: 144
@@ -580,7 +653,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_36
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_36
       rect:
         serializedVersion: 2
         x: 192
@@ -591,7 +666,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_37
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_37
       rect:
         serializedVersion: 2
         x: 208
@@ -602,7 +679,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_38
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_38
       rect:
         serializedVersion: 2
         x: 48
@@ -613,7 +692,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_39
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_39
       rect:
         serializedVersion: 2
         x: 64
@@ -624,7 +705,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_40
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_40
       rect:
         serializedVersion: 2
         x: 96
@@ -635,7 +718,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_41
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_41
       rect:
         serializedVersion: 2
         x: 112
@@ -646,7 +731,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_42
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_42
       rect:
         serializedVersion: 2
         x: 144
@@ -657,7 +744,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_43
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_43
       rect:
         serializedVersion: 2
         x: 160
@@ -668,7 +757,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_44
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_44
       rect:
         serializedVersion: 2
         x: 176
@@ -679,7 +770,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_45
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_45
       rect:
         serializedVersion: 2
         x: 192
@@ -690,7 +783,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_46
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_46
       rect:
         serializedVersion: 2
         x: 208
@@ -701,7 +796,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_47
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_47
       rect:
         serializedVersion: 2
         x: 0
@@ -712,7 +809,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_48
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_48
       rect:
         serializedVersion: 2
         x: 16
@@ -723,7 +822,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_49
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_49
       rect:
         serializedVersion: 2
         x: 32
@@ -734,7 +835,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_50
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_50
       rect:
         serializedVersion: 2
         x: 48
@@ -745,7 +848,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_51
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_51
       rect:
         serializedVersion: 2
         x: 64
@@ -756,7 +861,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_52
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_52
       rect:
         serializedVersion: 2
         x: 96
@@ -767,7 +874,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_53
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_53
       rect:
         serializedVersion: 2
         x: 112
@@ -778,7 +887,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_54
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_54
       rect:
         serializedVersion: 2
         x: 144
@@ -789,7 +900,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_55
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_55
       rect:
         serializedVersion: 2
         x: 160
@@ -800,7 +913,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_56
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_56
       rect:
         serializedVersion: 2
         x: 176
@@ -811,7 +926,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_57
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_57
       rect:
         serializedVersion: 2
         x: 192
@@ -822,7 +939,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_58
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_58
       rect:
         serializedVersion: 2
         x: 208
@@ -833,7 +952,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_59
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_59
       rect:
         serializedVersion: 2
         x: 0
@@ -844,7 +965,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_60
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_60
       rect:
         serializedVersion: 2
         x: 16
@@ -855,7 +978,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_61
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_61
       rect:
         serializedVersion: 2
         x: 32
@@ -866,7 +991,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_62
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_62
       rect:
         serializedVersion: 2
         x: 96
@@ -877,7 +1004,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_63
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_63
       rect:
         serializedVersion: 2
         x: 112
@@ -888,7 +1017,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_64
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_64
       rect:
         serializedVersion: 2
         x: 128
@@ -899,7 +1030,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_65
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_65
       rect:
         serializedVersion: 2
         x: 144
@@ -910,7 +1043,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_66
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_66
       rect:
         serializedVersion: 2
         x: 96
@@ -921,7 +1056,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_67
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_67
       rect:
         serializedVersion: 2
         x: 112
@@ -932,7 +1069,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_68
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_68
       rect:
         serializedVersion: 2
         x: 128
@@ -943,7 +1082,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_69
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_69
       rect:
         serializedVersion: 2
         x: 144
@@ -954,7 +1095,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_70
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_70
       rect:
         serializedVersion: 2
         x: 0
@@ -965,7 +1108,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_71
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_71
       rect:
         serializedVersion: 2
         x: 16
@@ -976,7 +1121,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_72
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_72
       rect:
         serializedVersion: 2
         x: 32
@@ -987,7 +1134,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_73
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_73
       rect:
         serializedVersion: 2
         x: 48
@@ -998,7 +1147,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_74
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_74
       rect:
         serializedVersion: 2
         x: 64
@@ -1009,7 +1160,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_75
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_75
       rect:
         serializedVersion: 2
         x: 80
@@ -1020,7 +1173,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_76
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_76
       rect:
         serializedVersion: 2
         x: 96
@@ -1031,7 +1186,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_77
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_77
       rect:
         serializedVersion: 2
         x: 112
@@ -1042,7 +1199,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_78
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_78
       rect:
         serializedVersion: 2
         x: 128
@@ -1053,7 +1212,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_79
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_79
       rect:
         serializedVersion: 2
         x: 144
@@ -1064,7 +1225,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_80
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_80
       rect:
         serializedVersion: 2
         x: 160
@@ -1075,7 +1238,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_81
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_81
       rect:
         serializedVersion: 2
         x: 176
@@ -1086,7 +1251,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_82
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_82
       rect:
         serializedVersion: 2
         x: 192
@@ -1097,7 +1264,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_83
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_83
       rect:
         serializedVersion: 2
         x: 208
@@ -1108,7 +1277,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_84
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_84
       rect:
         serializedVersion: 2
         x: 224
@@ -1119,7 +1290,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_85
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_85
       rect:
         serializedVersion: 2
         x: 240
@@ -1130,7 +1303,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_86
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_86
       rect:
         serializedVersion: 2
         x: 0
@@ -1141,7 +1316,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_87
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_87
       rect:
         serializedVersion: 2
         x: 16
@@ -1152,7 +1329,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_88
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_88
       rect:
         serializedVersion: 2
         x: 32
@@ -1163,7 +1342,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_89
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_89
       rect:
         serializedVersion: 2
         x: 48
@@ -1174,7 +1355,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_90
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_90
       rect:
         serializedVersion: 2
         x: 64
@@ -1185,7 +1368,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_91
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_91
       rect:
         serializedVersion: 2
         x: 80
@@ -1196,7 +1381,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_92
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_92
       rect:
         serializedVersion: 2
         x: 96
@@ -1207,7 +1394,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_93
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_93
       rect:
         serializedVersion: 2
         x: 112
@@ -1218,7 +1407,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_94
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_94
       rect:
         serializedVersion: 2
         x: 128
@@ -1229,7 +1420,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_95
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_95
       rect:
         serializedVersion: 2
         x: 144
@@ -1240,7 +1433,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_96
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_96
       rect:
         serializedVersion: 2
         x: 160
@@ -1251,7 +1446,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_97
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_97
       rect:
         serializedVersion: 2
         x: 176
@@ -1262,7 +1459,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_98
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_98
       rect:
         serializedVersion: 2
         x: 192
@@ -1273,7 +1472,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_99
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_99
       rect:
         serializedVersion: 2
         x: 208
@@ -1284,7 +1485,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_100
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_100
       rect:
         serializedVersion: 2
         x: 224
@@ -1295,7 +1498,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_101
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_101
       rect:
         serializedVersion: 2
         x: 240
@@ -1306,7 +1511,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_102
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_102
       rect:
         serializedVersion: 2
         x: 0
@@ -1317,7 +1524,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_103
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_103
       rect:
         serializedVersion: 2
         x: 16
@@ -1328,7 +1537,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_104
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_104
       rect:
         serializedVersion: 2
         x: 32
@@ -1339,7 +1550,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_105
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_105
       rect:
         serializedVersion: 2
         x: 48
@@ -1350,7 +1563,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_106
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_106
       rect:
         serializedVersion: 2
         x: 64
@@ -1361,7 +1576,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_107
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_107
       rect:
         serializedVersion: 2
         x: 80
@@ -1372,7 +1589,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_108
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_108
       rect:
         serializedVersion: 2
         x: 96
@@ -1383,7 +1602,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_109
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_109
       rect:
         serializedVersion: 2
         x: 112
@@ -1394,7 +1615,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_110
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_110
       rect:
         serializedVersion: 2
         x: 128
@@ -1405,7 +1628,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_111
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_111
       rect:
         serializedVersion: 2
         x: 144
@@ -1416,7 +1641,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_112
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_112
       rect:
         serializedVersion: 2
         x: 160
@@ -1427,7 +1654,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_113
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_113
       rect:
         serializedVersion: 2
         x: 176
@@ -1438,7 +1667,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_114
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_114
       rect:
         serializedVersion: 2
         x: 192
@@ -1449,7 +1680,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_115
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_115
       rect:
         serializedVersion: 2
         x: 208
@@ -1460,7 +1693,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_116
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_116
       rect:
         serializedVersion: 2
         x: 224
@@ -1471,7 +1706,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_117
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_117
       rect:
         serializedVersion: 2
         x: 240
@@ -1482,7 +1719,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_118
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_118
       rect:
         serializedVersion: 2
         x: 0
@@ -1493,7 +1732,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_119
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_119
       rect:
         serializedVersion: 2
         x: 16
@@ -1504,7 +1745,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_120
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_120
       rect:
         serializedVersion: 2
         x: 32
@@ -1515,7 +1758,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_121
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_121
       rect:
         serializedVersion: 2
         x: 48
@@ -1526,7 +1771,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_122
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_122
       rect:
         serializedVersion: 2
         x: 64
@@ -1537,7 +1784,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_123
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_123
       rect:
         serializedVersion: 2
         x: 80
@@ -1548,7 +1797,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_124
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_124
       rect:
         serializedVersion: 2
         x: 96
@@ -1559,7 +1810,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_125
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_125
       rect:
         serializedVersion: 2
         x: 112
@@ -1570,7 +1823,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_126
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_126
       rect:
         serializedVersion: 2
         x: 176
@@ -1581,7 +1836,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_127
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_127
       rect:
         serializedVersion: 2
         x: 240
@@ -1592,7 +1849,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_128
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_128
       rect:
         serializedVersion: 2
         x: 0
@@ -1603,7 +1862,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_129
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_129
       rect:
         serializedVersion: 2
         x: 16
@@ -1614,7 +1875,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_130
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_130
       rect:
         serializedVersion: 2
         x: 32
@@ -1625,7 +1888,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_131
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_131
       rect:
         serializedVersion: 2
         x: 0
@@ -1636,7 +1901,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_132
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_132
       rect:
         serializedVersion: 2
         x: 16
@@ -1647,7 +1914,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Level_133
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Level_133
       rect:
         serializedVersion: 2
         x: 32
@@ -1658,6 +1927,7 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

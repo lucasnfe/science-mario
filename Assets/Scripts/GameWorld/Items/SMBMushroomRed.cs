@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(SMBCollider))]
 public class SMBMushroomRed : SMBItem {
 
 	public float xSpeed = 1f;
@@ -63,12 +62,7 @@ public class SMBMushroomRed : SMBItem {
 		}
 	}
 
-	void OnHalfVerticalCollisionEnter(Collider2D collider) {
-
-		SolveCollision (collider);
-	}
-
-	void OnFullVerticalCollisionEnter(Collider2D collider) {
+	void OnVerticalCollisionEnter(Collider2D collider) {
 
 		SolveCollision (collider);
 	}

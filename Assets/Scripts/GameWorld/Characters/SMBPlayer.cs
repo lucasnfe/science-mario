@@ -13,6 +13,7 @@ public class SMBPlayer : SMBCharacter {
 	// Custom components
 	private SMBParticleSystem _particleSystem;
 		
+	private bool 	_isCoasting;
 	private bool 	_isInvincible;
 	private bool    _lockController;
 	private float   _jumpTimer;
@@ -57,72 +58,43 @@ public class SMBPlayer : SMBCharacter {
 		if (_lockController)
 			return;
 
-		Jump ();
-		_animator.SetBool ("isJumping", !_isOnGround);
-
+		SetInvincible (_isInvincible);
 		float speed = DefineMoveSpeed ();
+
+		Jump ();
+		PlayJumpAnimation (speed);
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Backward);
-
-			_animator.SetInteger ("move", 1);
-
-			if(speed > xSpeed)
-				_animator.SetInteger ("move", 2);
-
-			if (_runningTimer >= runTime)
-				_animator.SetInteger ("move", 3);
-
-			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == 1f) {
-
-				_animator.SetBool ("isCoasting", true);
-				_particleSystem._shootParticles = true;
-				_runningTimer = 0f;
-			}
-
+			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Backward);
+			Coast (SMBConstants.MoveDirection.Backward);
 		} 
 		else if (Input.GetKey (KeyCode.RightArrow)) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Forward);
-
-			_animator.SetInteger ("move", 1);
-
-			if(speed > xSpeed)
-				_animator.SetInteger ("move", 2);
-
-			if (_runningTimer >= runTime)
-				_animator.SetInteger ("move", 3);			
-
-			if (_isOnGround && Mathf.Abs (_body.velocity.x) > minVelocityToCoast && Mathf.Sign (_body.velocity.x) == -1f) {
-
-				_animator.SetBool ("isCoasting", true);
-				_particleSystem._shootParticles = true;
-				_runningTimer = 0f;
-			}
+			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Forward);
+			Coast (SMBConstants.MoveDirection.Forward);
 		} 
 		else {
 
 			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentum * Time.fixedDeltaTime);
-			_animator.SetInteger ("move", 1);
+			_runningTimer = 0f;
 
-			if (Mathf.Abs (_body.velocity.x) <= 0.1f) {
+			if (_isOnGround && !_isCoasting)
+				_animator.Play ("Move");
 
-				_animator.SetInteger ("move", 0);
+			if (Mathf.Abs (_body.velocity.x) <= SMBConstants.stopingSpeed) {
+
+				if (_isOnGround)
+					_animator.Play ("Idle");
+
+				_isCoasting = false;
 				_body.velocity.x = 0f;
 			}
-
-			_runningTimer = 0f;
 		}
-
-		if (Mathf.Abs (_body.velocity.x) <= 0.1f && _animator.GetBool ("isCoasting")) {
-
-			_animator.SetBool ("isCoasting", false);
-			_particleSystem._shootParticles = false;
-		}
-
-		SetInvincible (_isInvincible);
 			
+		// Check if mario is at the bottom of the screen
 		if (transform.position.y < -0.2f)
 			Die (0.4f, false);
 
@@ -132,7 +104,7 @@ public class SMBPlayer : SMBCharacter {
 	float DefineMoveSpeed() {
 
 		float speed = xSpeed;
-		if (Input.GetKey (KeyCode.A)) {
+		if (Input.GetKey (KeyCode.Z)) {
 
 			speed *= runningMultiplyer;
 
@@ -144,12 +116,56 @@ public class SMBPlayer : SMBCharacter {
 			if (_runningTimer >= runTime)
 				speed *= runningMultiplyer * 0.625f;
 		} 
-		else if (Input.GetKeyUp (KeyCode.A)) {
+		else if (Input.GetKeyUp (KeyCode.Z)) {
 
 			_runningTimer = 0f;
 		}
 
 		return speed;
+	}
+
+	void PlayMoveAnimation(float speed, float direction) {
+
+		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
+		float sDirection = speed * direction >= 0f ? 1f : -1f;
+
+		if (_isCoasting && xDirection != sDirection)
+			return;
+
+		if (_isOnGround) {
+
+			if(speed == 0) 
+				_animator.Play ("Idle");
+
+			else if (speed == xSpeed)
+				_animator.Play ("Move");
+
+			else if (speed == xSpeed * runningMultiplyer)
+				_animator.Play ("MoveFaster");
+
+			else
+				_animator.Play ("Run");
+		}
+
+		_particleSystem._shootParticles = false;
+	}
+
+	void Coast(SMBConstants.MoveDirection direction) {
+
+		if (!_isOnGround)
+			return;
+
+		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
+
+		if (Mathf.Abs (_body.velocity.x) > minVelocityToCoast && xDirection == -(float)direction) {
+
+			_animator.Play ("Coasting");
+
+			_isCoasting = true;
+			_runningTimer = 0f;
+
+			_particleSystem._shootParticles = true;
+		}
 	}
 
 	void Blink() {
@@ -199,6 +215,9 @@ public class SMBPlayer : SMBCharacter {
 
 	void Die(float timeToDie, bool animate = true) {
 
+		if (_isInvincible)
+			return;
+
 		_state = SMBConstants.PlayerState.Dead;
 
 		_lockController = true;
@@ -229,7 +248,7 @@ public class SMBPlayer : SMBCharacter {
 				
 	void Jump() {
 
-		if (_isOnGround && Input.GetKeyDown(KeyCode.S)){
+		if (_isOnGround && Input.GetKeyDown(KeyCode.X)){
 
 			_jumpTimer = longJumpTime;
 			_body.velocity.y = ySpeed * Time.fixedDeltaTime;
@@ -239,12 +258,12 @@ public class SMBPlayer : SMBCharacter {
 
 		if (_jumpTimer > 0f) {
 
-			if (Input.GetKeyUp(KeyCode.S)) {
+			if (Input.GetKeyUp(KeyCode.X)) {
 
 				_jumpTimer = 0f;
 
 			}
-			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.S)) {
+			else if(_body.velocity.y > 0f && Input.GetKey(KeyCode.X)) {
 
 				float runningBoost = 1f;
 				if (_runningTimer >= runTime)
@@ -254,6 +273,24 @@ public class SMBPlayer : SMBCharacter {
 				if (_jumpTimer <= longJumpTime/2f)
 					_body.velocity.y += ySpeed * longJumpWeight * runningBoost * Time.fixedDeltaTime;
 			}
+		}
+	}
+
+	void PlayJumpAnimation(float speed) {
+
+		if (!_isOnGround) {
+
+			if(speed == 0) 
+				_animator.Play ("Jump");
+
+			else if (speed == xSpeed)
+				_animator.Play ("Jump");
+
+			else if (speed == xSpeed * runningMultiplyer)
+				_animator.Play ("Jump");
+
+			else
+				_animator.Play ("FastJump");
 		}
 	}
 
@@ -322,26 +359,16 @@ public class SMBPlayer : SMBCharacter {
 
 		enemy.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
 	}
-
-	void SolveVerticalCollision(Collider2D collider) {
+		
+	override protected void OnVerticalCollisionEnter(Collider2D collider) {
 
 		if (collider.tag == "Block") {
 
 			if (collider.bounds.center.y > transform.position.y)
-				collider.SendMessage ("OnInteraction", SendMessageOptions.DontRequireReceiver);
+				collider.SendMessage ("OnInteraction", this, SendMessageOptions.DontRequireReceiver);
 		}
-	}
-		
-	override protected void OnHalfVerticalCollisionEnter(Collider2D collider) {
 
-		SolveVerticalCollision (collider);
-		base.OnHalfVerticalCollisionEnter (collider);
-	}
-
-	override protected void OnFullVerticalCollisionEnter(Collider2D collider) {
-
-		SolveVerticalCollision (collider);
-		base.OnFullVerticalCollisionEnter (collider);
+		base.OnVerticalCollisionEnter (collider);
 	}
 
 	void OnVerticalTriggerEnter(Collider2D collider) {
@@ -356,6 +383,10 @@ public class SMBPlayer : SMBCharacter {
 		else if (collider.tag == "Enemy") {
 
 			KillEnemy (collider.gameObject);
+		}
+		else if (collider.tag == "End") {
+
+			SMBGameWorld.Instance.ReloadLevel ();
 		}
 	}
 
