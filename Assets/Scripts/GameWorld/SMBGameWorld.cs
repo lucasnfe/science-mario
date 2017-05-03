@@ -77,7 +77,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		_levelParent.name = "LevelTiles";
 		_levelParent.transform.parent = transform.parent;
 
-		if (!isLevelValid) {
+		if (!isLevelValid()) {
 
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
