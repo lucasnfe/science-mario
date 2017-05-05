@@ -22,7 +22,7 @@ public class SMBShell : SMBItem {
 
 		_body.velocity = Vector2.zero;
 		_body.ApplyForce (Vector2.up);
-		_body.ApplyForce (Vector2.right * _side * 10f);
+		_body.ApplyForce (Vector2.right * -_side * 1.5f);
 
 		_collider.applyHorizCollision = false;
 		_collider.applyVertCollision = false;
@@ -91,6 +91,21 @@ public class SMBShell : SMBItem {
 		SMBGameWorld.Instance.Player.CarryItem ();
 	}
 
+	void SetIdle() {
+
+		tag = "Item";
+		gameObject.layer = LayerMask.NameToLayer ("Default");
+
+		_body.velocity = Vector2.zero;
+		_body.applyGravity = true;
+
+		_sheelState = ShellState.Idle;
+		_animator.Play ("Idle");
+
+		_collider.horizontalMask = _horizontalMask;
+		_collider.verticalMask = _verticalMask;
+	}
+
 	void SetItem() {
 
 		tag = "Item";
@@ -128,23 +143,34 @@ public class SMBShell : SMBItem {
 
 	void SolveCollision(Collider2D collider) {
 
-		if (_sheelState == ShellState.Idle && _isOnGround) {
+		SMBConstants.MoveDirection playerDirection = SMBGameWorld.Instance.Player.direction;
+		Vector3 playerPosition = SMBGameWorld.Instance.Player.transform.position;
+		bool isPlayerOnGround = SMBGameWorld.Instance.Player.IsOnGround;
 
-			if (Input.GetKey (KeyCode.Z)) {
+		if (_sheelState == ShellState.Idle) {
 
-				SetItem ();
-				_sheelState = ShellState.Dragged;
-			} 
-			else {
+			if (isPlayerOnGround && _isOnGround) {
+
+				if (Input.GetKey (KeyCode.Z)) {
+
+					SetItem ();
+					_sheelState = ShellState.Dragged;
+				} 
+				else {
 				
-				SMBConstants.MoveDirection playerDirection = SMBGameWorld.Instance.Player.direction;
-				Vector3 playerPosition = SMBGameWorld.Instance.Player.transform.position;
-				Kick (playerPosition, (float)playerDirection);
+					Kick (playerPosition, (float)playerDirection);
+				}
 			}
 		} 
 		else if (_sheelState == ShellState.Spinning) {
 
-			collider.SendMessage ("TakeDamage", 
+			if (playerPosition.y > transform.position.y + 0.1f) {
+
+				collider.SendMessage ("KillEnemy");
+				SetIdle ();
+			}
+			else
+				collider.SendMessage ("TakeDamage", 
 				_collider.Collider, SendMessageOptions.RequireReceiver);
 		}
 	}
