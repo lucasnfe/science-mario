@@ -26,7 +26,7 @@ public class SMBEnemy : SMBCharacter {
 		Move (xSpeed * (float)side);
 	}
 
-	void Die() {
+	virtual protected void Die() {
 
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
@@ -60,7 +60,10 @@ public class SMBEnemy : SMBCharacter {
 		RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.down, SMBConstants.playerSkin);
 		if (!yRay.collider) {
 
-			_body.velocity.x = 0f;
+			Vector3 newVelocity = _body.velocity;
+			newVelocity.x = 0f;
+			_body.velocity = newVelocity;
+
 			_renderer.flipX = !_renderer.flipX;
 
 			transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;

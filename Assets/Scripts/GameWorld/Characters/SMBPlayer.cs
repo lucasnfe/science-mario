@@ -14,6 +14,7 @@ public class SMBPlayer : SMBCharacter {
 	private SMBParticleSystem _particleSystem;
 		
 	private bool 	_isCoasting;
+	private bool 	_isCarriyng;
 	private bool 	_isInvincible;
 	private bool    _lockController;
 	private float   _jumpTimer;
@@ -85,13 +86,26 @@ public class SMBPlayer : SMBCharacter {
 			_body.velocity.x = Mathf.Lerp (_body.velocity.x, 0f, momentum * Time.fixedDeltaTime);
 			_runningTimer = 0f;
 
-			if (_isOnGround && !_isCoasting)
-				_animator.Play ("Move");
+			if (Mathf.Abs (_body.velocity.x) > SMBConstants.stopingSpeed) {
 
-			if (Mathf.Abs (_body.velocity.x) <= SMBConstants.stopingSpeed) {
+				if (_isOnGround && !_isCoasting) {
+					if (_isCarriyng)
 
-				if (_isOnGround)
-					_animator.Play ("Idle");
+						_animator.Play ("MoveItem");
+					else
+						_animator.Play ("Move");
+				}
+			}
+			else {
+
+				if (_isOnGround) {
+
+					if (_isCarriyng)
+
+						_animator.Play ("IdleItem");
+					else
+						_animator.Play ("Idle");
+				}
 
 				_isCoasting = false;
 				_particleSystem._shootParticles = false;
@@ -103,12 +117,16 @@ public class SMBPlayer : SMBCharacter {
 
 	float DefineMoveSpeed() {
 
-		float speed = xSpeed;
+		float speed = 0;
+
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.RightArrow))
+			speed = xSpeed;
+
 		if (Input.GetKey (KeyCode.Z)) {
 
 			speed *= runningMultiplyer;
 
-			if (_isOnGround)
+			if (_isOnGround && !_isCarriyng)
 				_runningTimer += Time.fixedDeltaTime;
 
 			_runningTimer = Mathf.Clamp (_runningTimer, 0f, runTime);
@@ -134,15 +152,26 @@ public class SMBPlayer : SMBCharacter {
 
 		if (_isOnGround) {
 
-			if(speed == 0) 
-				_animator.Play ("Idle");
+			if (speed == 0) {
 
-			else if (speed == xSpeed)
+				if (_isCarriyng)
+					
+					_animator.Play ("IdleItem");
+				else
+					_animator.Play ("Idle");
+			} 
+			else if (speed == xSpeed) {
+
 				_animator.Play ("Move");
+			} 
+			else if (speed == xSpeed * runningMultiplyer) {
 
-			else if (speed == xSpeed * runningMultiplyer)
-				_animator.Play ("MoveFaster");
+				if (_isCarriyng)
 
+					_animator.Play ("MoveItem");
+				else
+					_animator.Play ("MoveFaster");
+			}
 			else
 				_animator.Play ("Run");
 		}
@@ -152,7 +181,7 @@ public class SMBPlayer : SMBCharacter {
 
 	void Coast(SMBConstants.MoveDirection direction) {
 
-		if (!_isOnGround)
+		if (!_isOnGround || _isCarriyng)
 			return;
 
 		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
@@ -210,7 +239,16 @@ public class SMBPlayer : SMBCharacter {
 			_collider.SetIsTrigger (false);
 			_collider.horizontalMask |= (1 << enemies);
 		}
-			
+	}
+
+	public void DropItem() {
+
+		_isCarriyng = false;
+	}
+
+	public void CarryItem() {
+
+		_isCarriyng = true;
 	}
 
 	void Die() {
@@ -322,22 +360,29 @@ public class SMBPlayer : SMBCharacter {
 
 		SMBGameWorld.Instance.PauseGame (false);
 
-		_animator.SetTrigger("triggerDamage");
-		_animator.SetLayerWeight (0, 1);
-		_animator.SetLayerWeight (1, 0);
+		if (_state == SMBConstants.PlayerState.GrownUp) {
 
-		_collider.SetSize (_originalCollider);
+			_animator.SetTrigger ("triggerDamage");
+			_animator.SetLayerWeight (0, 1);
+			_animator.SetLayerWeight (1, 0);
 
-		_lockController = true;
-		_isInvincible = true;
+			_collider.SetSize (_originalCollider);
 
-		_body.applyGravity = false;
-		_body.velocity = Vector2.zero;
-		_velocityBeforeGrowUp = Vector2.zero;
+			_lockController = true;
+			_isInvincible = true;
 
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.GrowUp]);
+			_body.applyGravity = false;
+			_body.velocity = Vector2.zero;
+			_velocityBeforeGrowUp = Vector2.zero;
 
-		_state = SMBConstants.PlayerState.Short;
+			_audio.PlayOneShot (soundEffects [(int)SoundEffects.GrowUp]);
+
+			_state = SMBConstants.PlayerState.Short;
+		} 
+		else if (_state == SMBConstants.PlayerState.Short) {
+
+			Die ();
+		}
 	}
 
 	void UnlockController() {
@@ -381,8 +426,13 @@ public class SMBPlayer : SMBCharacter {
 		else if (collider.tag == "Enemy") {
 
 			if (!_isOnGround && transform.position.y > collider.transform.position.y + 0.1f) {
+
 				KillEnemy (collider.gameObject);
+				return;
 			}
+
+			if(transform.position.y < collider.transform.position.y + 0.1f)
+				TakeDamage ();
 		}
 		else if (collider.tag == "End") {
 
@@ -410,11 +460,7 @@ public class SMBPlayer : SMBCharacter {
 				return;
 			}
 				
-			if (_state == SMBConstants.PlayerState.GrownUp)
-
-				TakeDamage ();
-			else
-				Die ();
+			TakeDamage ();
 		}
 	}
 }

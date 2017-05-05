@@ -21,6 +21,7 @@ public class SMBTile {
 	public bool   isGround;
 	public int    layer = 0;
 	public int 	  width = 1;
+	public int 	  height = 1;
 	public SMBCollision collisions;
 }
 

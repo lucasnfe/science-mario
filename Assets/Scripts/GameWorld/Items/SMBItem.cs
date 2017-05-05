@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(SMBCollider))]
 [RequireComponent(typeof(SMBRigidBody))]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
 public class SMBItem : MonoBehaviour {
+
+	public float xSpeed = 1f;
+	public float ySpeed = 1f;
+
+	protected float _side;
 
 	protected SMBRigidBody _body;
 	protected SMBCollider  _collider;
@@ -13,9 +19,9 @@ public class SMBItem : MonoBehaviour {
 
 	virtual protected void Awake() {
 
-		_body = GetComponent<SMBRigidBody> ();
+		_body     = GetComponent<SMBRigidBody> ();
 		_collider = GetComponent<SMBCollider> ();
-		_audio = GetComponent<AudioSource> ();
+		_audio    = GetComponent<AudioSource> ();
 		_animator = GetComponent<Animator> ();
 	}
 		

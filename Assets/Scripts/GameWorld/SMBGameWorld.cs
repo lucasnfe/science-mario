@@ -144,15 +144,14 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 				if (TileMap [tileID].width > 1)
 					position.x += TileMap [tileID].width * 0.25f * TileSize;
 
+				if (TileMap [tileID].height > 1)
+					position.y += TileMap [tileID].height * 0.25f * TileSize;
+
 				InstantiateTile (position, tileID, j, i);
 			}
 		}
 
 		PlaceBackground ();
-	}
-
-	public void AddGameObject(GameObject smbGameObject) {
-		_gameObjecs.Add (smbGameObject);
 	}
 
 	public GameObject InstantiateTile(Vector3 position, string tileID, int x = 0, int y = 0) {
@@ -219,6 +218,10 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		BoxCollider2D collider = endLevelTrigger.AddComponent<BoxCollider2D> ();
 		collider.isTrigger = true;
 		collider.size = new Vector2 (TileSize, Level.GetLength(0) * TileSize);
+	}
+
+	public void AddGameObject(GameObject smbGameObject) {
+		_gameObjecs.Add (smbGameObject);
 	}
 
 	private bool isLevelValid() {

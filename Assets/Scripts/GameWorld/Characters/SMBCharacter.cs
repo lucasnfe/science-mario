@@ -22,7 +22,7 @@ public class SMBCharacter : MonoBehaviour {
 	public float momentum = 3f;
 	public bool  lockXPosition = true;
 
-	public SMBConstants.MoveDirection startDirection;
+	public SMBConstants.MoveDirection direction;
 
 	virtual protected void Awake() {
 
@@ -35,7 +35,7 @@ public class SMBCharacter : MonoBehaviour {
 
 	virtual protected void Start() {
 
-		if (startDirection == SMBConstants.MoveDirection.Backward)
+		if (direction == SMBConstants.MoveDirection.Backward)
 			_renderer.flipX = true;
 	}
 
@@ -54,6 +54,10 @@ public class SMBCharacter : MonoBehaviour {
 	}
 
 	virtual protected void Update() {
+
+		direction = SMBConstants.MoveDirection.Forward;
+		if(isFlipped())
+			direction = SMBConstants.MoveDirection.Backward;
 
 		if (lockXPosition) {
 			

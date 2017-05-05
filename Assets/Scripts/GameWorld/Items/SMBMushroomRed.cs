@@ -3,11 +3,7 @@ using System.Collections;
 
 public class SMBMushroomRed : SMBItem {
 
-	public float xSpeed = 1f;
-	public float ySpeed = 1f;
 	public float timeToSpawn = 1f;
-
-	private float _side;
 
 	void OnSpawnStart() {
 

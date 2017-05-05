@@ -15,10 +15,9 @@ public class SMBBullet : SMBEnemy {
 
 		_state = SMBConstants.EnemyState.Move;
 
-		lockXPosition = false;
-
-		xSpeed = bulletSpeed;
-		startDirection = direction;
+		this.lockXPosition = false;
+		this.xSpeed = bulletSpeed;
+		this.direction = direction;
 
 		transform.position = position;
 	}
