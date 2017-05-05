@@ -155,6 +155,7 @@ public class SMBPlayer : SMBCharacter {
 			if (speed == 0) {
 
 				if (_isCarriyng)
+					
 					_animator.Play ("IdleItem");
 				else
 					_animator.Play ("Idle");
@@ -166,6 +167,7 @@ public class SMBPlayer : SMBCharacter {
 			else if (speed == xSpeed * runningMultiplyer) {
 
 				if (_isCarriyng)
+					
 					_animator.Play ("MoveItem");
 				else
 					_animator.Play ("MoveFaster");
@@ -256,9 +258,6 @@ public class SMBPlayer : SMBCharacter {
 
 	void Die() {
 
-		if (_isInvincible)
-			return;
-
 		_state = SMBConstants.PlayerState.Dead;
 
 		_lockController = true;
@@ -276,8 +275,6 @@ public class SMBPlayer : SMBCharacter {
 
 		_animator.SetTrigger ("triggerDie");
 		Invoke ("PlayDeadAnimation", 0.3f);
-
-		SMBGameWorld.Instance.PlayerDied ();
 	}
 
 	void PlayDeadAnimation() {
@@ -360,6 +357,9 @@ public class SMBPlayer : SMBCharacter {
 	}
 
 	void TakeDamage() {
+
+		if (_isInvincible)
+			return;
 
 		SMBGameWorld.Instance.PauseGame (false);
 

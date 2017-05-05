@@ -110,9 +110,9 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 		LockUpY = ((float)levelHeight + 0.5f) * TileSize;
 	}
 
-	public void PlayerDied() {
+	void Update() {
 
-		if (!_isReloadingLevel) {
+		if ((_player == null || _player.State == SMBConstants.PlayerState.Dead) && !_isReloadingLevel) {
 
 			_theme.Stop ();
 

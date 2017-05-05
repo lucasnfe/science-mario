@@ -42,6 +42,7 @@
 		{"id": "n", "prefab": "Prefab/ItemShellRed", "layer": -1 },
 		{"id": "o", "prefab": "Prefab/ItemShellGreen", "layer": -1 },
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2 },
+		{"id": "q", "prefab": "Prefab/PipePlant", "width": 2 },
 		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": -1 },
 		{"id": "t", "prefab": "Prefab/PipeTop",  "width": 2 },
 		{"id": "v", "prefab": "Prefab/EndPoleTop",  "width": 2, "layer": 1, "isLevelEnd": true }
