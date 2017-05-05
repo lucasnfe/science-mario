@@ -155,7 +155,6 @@ public class SMBPlayer : SMBCharacter {
 			if (speed == 0) {
 
 				if (_isCarriyng)
-					
 					_animator.Play ("IdleItem");
 				else
 					_animator.Play ("Idle");
@@ -167,13 +166,17 @@ public class SMBPlayer : SMBCharacter {
 			else if (speed == xSpeed * runningMultiplyer) {
 
 				if (_isCarriyng)
-
 					_animator.Play ("MoveItem");
 				else
 					_animator.Play ("MoveFaster");
+			} 
+			else {
+				if (_isCarriyng)
+					
+					_animator.Play ("MoveItem");
+				else
+					_animator.Play ("Run");
 			}
-			else
-				_animator.Play ("Run");
 		}
 
 		_particleSystem._shootParticles = false;
