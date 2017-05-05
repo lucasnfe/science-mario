@@ -44,6 +44,7 @@
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2 },
 		{"id": "q", "prefab": "Prefab/PipePlant", "width": 2 },
 		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": -1 },
+		{"id": "s", "prefab": "Prefab/EnemyPiranhaPlant", "layer": 1, "width": 2},
 		{"id": "t", "prefab": "Prefab/PipeTop",  "width": 2 },
 		{"id": "v", "prefab": "Prefab/EndPoleTop",  "width": 2, "layer": 1, "isLevelEnd": true }
    	]

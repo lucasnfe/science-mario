@@ -8,7 +8,8 @@ using System.Collections;
 [RequireComponent (typeof (SpriteRenderer))]
 public class SMBCharacter : MonoBehaviour {
 
-	protected bool  _isOnGround;
+	protected bool _isOnGround;
+	public    bool IsOnGround { get{ return _isOnGround; } }
 
 	// Custom components
 	protected AudioSource     _audio;

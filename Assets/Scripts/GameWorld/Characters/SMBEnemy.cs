@@ -42,31 +42,62 @@ public class SMBEnemy : SMBCharacter {
 		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
 
 		_state = SMBConstants.EnemyState.Dead;
-		_animator.SetTrigger ("triggerDie");
+		_animator.Play ("Die");
 	}
 
-	override protected void OnVerticalCollisionEnter(Collider2D collider) {
-				
-		float side = (float)SMBConstants.MoveDirection.Forward;
-		if(isFlipped())
-			side = (float)SMBConstants.MoveDirection.Backward;
+	bool isOnPlatformEdge(float side) {
 
-		Vector2 yRayOrigin = _collider.Collider.bounds.max - 
+		Vector2 yRayOrigin = _collider.Collider.bounds.max -
 			Vector3.up * _collider.Collider.bounds.size.y - Vector3.up * SMBConstants.playerSkin;
 
 		if (side == (float)SMBConstants.MoveDirection.Backward)
 			yRayOrigin.x -= _collider.Collider.bounds.size.x;
 
-		RaycastHit2D yRay = Physics2D.Raycast(yRayOrigin, Vector2.down, SMBConstants.playerSkin);
-		if (!yRay.collider) {
+		RaycastHit2D yRay = Physics2D.Raycast (yRayOrigin, Vector2.down, SMBConstants.playerSkin);
+		if (!yRay.collider)
+			return true;
 
-			Vector3 newVelocity = _body.velocity;
-			newVelocity.x = 0f;
-			_body.velocity = newVelocity;
+		return false;
+	}
 
-			_renderer.flipX = !_renderer.flipX;
+	virtual protected void OnCollisionWithPlayer(Collider2D playerCollider) {
 
-			transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;
+		bool isPlayerOnGround = SMBGameWorld.Instance.Player.IsOnGround;
+		Vector3 playerPosition = playerCollider.transform.position;
+
+		if (playerPosition.y > transform.position.y + 0.1f) {
+
+			if (!isPlayerOnGround) {
+				Die ();
+				playerCollider.SendMessage ("KillEnemy");
+			}
+		}
+		else
+			playerCollider.SendMessage ("TakeDamage");
+	}
+
+	override protected void OnVerticalCollisionEnter(Collider2D collider) {
+				
+		if (collider.tag == "Player") {
+
+			OnCollisionWithPlayer (collider);
+		} 
+		else {
+
+			float side = (float)SMBConstants.MoveDirection.Forward;
+			if (isFlipped ())
+				side = (float)SMBConstants.MoveDirection.Backward;
+
+			if(isOnPlatformEdge(side)) {
+				
+				Vector3 newVelocity = _body.velocity;
+				newVelocity.x = 0f;
+				_body.velocity = newVelocity;
+
+				_renderer.flipX = !_renderer.flipX;
+
+				transform.position = transform.position - Vector3.right * side * SMBConstants.playerSkin;
+			}
 		}
 
 		base.OnVerticalCollisionEnter (collider);
@@ -74,12 +105,13 @@ public class SMBEnemy : SMBCharacter {
 
 	override protected void OnHorizontalCollisionEnter(Collider2D collider) {
 
-		if (collider.tag == "Player")
-			collider.SendMessage("OnHorizontalTriggerEnter", 
-				_collider.Collider, SendMessageOptions.RequireReceiver);
+		if (collider.tag == "Player") {
+
+			OnCollisionWithPlayer (collider);
+		}
 		else
 			_renderer.flipX = !_renderer.flipX;
 
-		base.OnVerticalCollisionEnter (collider);
+		base.OnHorizontalCollisionEnter (collider);
 	}
 }

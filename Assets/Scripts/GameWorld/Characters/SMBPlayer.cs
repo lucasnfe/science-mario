@@ -397,15 +397,13 @@ public class SMBPlayer : SMBCharacter {
 		SMBGameWorld.Instance.ResumeGame();
 	}
 
-	void KillEnemy(GameObject enemy) {
+	void KillEnemy() {
 
 		_body.acceleration = Vector2.zero;
 		_body.velocity.y = 0f;
 
 		_body.ApplyForce (Vector2.up * 2.5f);
 		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
-
-		enemy.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
 	}
 		
 	override protected void OnVerticalCollisionEnter(Collider2D collider) {
@@ -428,14 +426,8 @@ public class SMBPlayer : SMBCharacter {
 		}
 		else if (collider.tag == "Enemy") {
 
-			if (!_isOnGround && transform.position.y > collider.transform.position.y + 0.1f) {
-
-				KillEnemy (collider.gameObject);
-				return;
-			}
-
-			if(transform.position.y < collider.transform.position.y + 0.1f)
-				TakeDamage ();
+			collider.SendMessage ("OnVerticalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 		else if (collider.tag == "End") {
 
@@ -457,13 +449,8 @@ public class SMBPlayer : SMBCharacter {
 		}
 		else if (collider.tag == "Enemy") {
 
-			if (!_isOnGround && transform.position.y > collider.transform.position.y + 0.1f) {
-
-				KillEnemy (collider.gameObject);
-				return;
-			}
-				
-			TakeDamage ();
+			collider.SendMessage ("OnHorizontalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }
