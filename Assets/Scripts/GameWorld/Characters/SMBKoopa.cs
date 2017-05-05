@@ -19,15 +19,23 @@ public class SMBKoopa : SMBEnemy {
 		}
 	}
 	
-	override protected void Die() {
+	override protected void Die(GameObject killer) {
 
 		Vector3 position = _shell.transform.position;
 		position.x = transform.position.x;
 		position.y = transform.position.y;
 
-		_shell.transform.position = position;
-		_shell.SetActive (true);
+		if (killer.name != "n" && killer.name != "o") {
 
-		DestroyCharacter ();
+			SMBGameWorld.Instance.PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Kick);
+
+			_shell.transform.position = position;
+			_shell.SetActive (true);
+			DestroyCharacter ();
+		} 
+		else {
+			
+			base.Die (killer);
+		}
 	}
 }

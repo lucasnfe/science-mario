@@ -25,6 +25,8 @@ public class SMBCharacter : MonoBehaviour {
 
 	public SMBConstants.MoveDirection direction;
 
+	public AudioClip[] soundEffects;
+
 	virtual protected void Awake() {
 
 		_audio    = GetComponent<AudioSource> ();

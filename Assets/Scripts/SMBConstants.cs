@@ -23,7 +23,8 @@ public static class SMBConstants {
 	public enum GameWorldSoundEffects {
 		Coin,
 		Death,
-		BreakBlock
+		BreakBlock,
+		Kick
 	}
 
 	public static readonly int   maxLayers              = 32;
@@ -38,6 +39,6 @@ public static class SMBConstants {
 	public static readonly Vector2 gravity = new Vector2(0f, -7f);
 
 	public static readonly string tilesDescrition = "tiles";
-	public static readonly string levelFilename   = "Levels/level1";
+	public static readonly string levelFilename   = "Levels/PriorBelief/Mario1_2";
 	public static readonly string endPoleBar      = "Prefab/EndPoleBar";
 }

@@ -17,6 +17,8 @@ public class SMBItem : MonoBehaviour {
 	protected AudioSource  _audio;
 	protected Animator     _animator;
 
+	public AudioClip[] soundEffects;
+
 	virtual protected void Awake() {
 
 		_body     = GetComponent<SMBRigidBody> ();

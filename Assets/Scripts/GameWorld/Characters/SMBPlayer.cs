@@ -36,8 +36,6 @@ public class SMBPlayer : SMBCharacter {
 
 	public Bounds grownUpColliderSize;
 
-	public AudioClip[] soundEffects;
-
 	override protected void Awake() {
 
 		_particleSystem = GetComponent<SMBParticleSystem> ();
@@ -403,7 +401,6 @@ public class SMBPlayer : SMBCharacter {
 		_body.velocity.y = 0f;
 
 		_body.ApplyForce (Vector2.up * 2.5f);
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 	}
 		
 	override protected void OnVerticalCollisionEnter(Collider2D collider) {

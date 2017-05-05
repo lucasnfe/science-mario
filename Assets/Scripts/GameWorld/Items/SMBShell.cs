@@ -3,6 +3,10 @@ using System.Collections;
 
 public class SMBShell : SMBItem {
 
+	enum SoundEffects {
+		Kick
+	}
+
 	enum ShellState {
 		Idle,
 		Dragged,
@@ -29,6 +33,8 @@ public class SMBShell : SMBItem {
 		_body.applyGravity = true;
 
 		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
+
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 	}
 
 	void Start() {
@@ -109,18 +115,21 @@ public class SMBShell : SMBItem {
 	void SetItem() {
 
 		tag = "Item";
-		gameObject.layer = LayerMask.NameToLayer ("Default");
+		gameObject.layer = LayerMask.NameToLayer ("Item");
 
 		_body.velocity = Vector2.zero;
 		_body.applyGravity = false;
 
 		int enemy = LayerMask.NameToLayer ("Enemy");
+		int item = LayerMask.NameToLayer ("Item");
 
 		_collider.horizontalMask = 0;
 		_collider.horizontalMask |= (1 << enemy);
+		_collider.horizontalMask |= (1 << item);
 
 		_collider.verticalMask = 0;
 		_collider.verticalMask |= (1 << enemy);
+		_collider.verticalMask |= (1 << item);
 	}
 		
 	void SetEnemy() {
@@ -168,6 +177,8 @@ public class SMBShell : SMBItem {
 
 				collider.SendMessage ("KillEnemy");
 				SetIdle ();
+
+				_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 			}
 			else
 				collider.SendMessage ("TakeDamage", 
@@ -204,16 +215,20 @@ public class SMBShell : SMBItem {
 		if (_collider.Collider == collider)
 			return;
 		
-		if (collider.tag == "Enemy") {
+		if (collider.tag == "Enemy" || collider.name == "n" || collider.name == "o") {
 
-			collider.gameObject.SendMessage ("Die", SendMessageOptions.DontRequireReceiver);
+			if (_sheelState == ShellState.Spinning || _sheelState == ShellState.Dragged) {
 
-			if (_sheelState == ShellState.Dragged) {
+				collider.gameObject.SendMessage ("Die", this.gameObject, SendMessageOptions.DontRequireReceiver);
 
-				SMBGameWorld.Instance.Player.DropItem ();
-				_sheelState = ShellState.Destroied;
-				DestroyShell ();
-			} 
+				if (_sheelState == ShellState.Dragged) {
+
+					SMBGameWorld.Instance.Player.DropItem ();
+					_sheelState = ShellState.Destroied;
+
+					DestroyShell ();
+				} 
+			}
 		}
 	}
 

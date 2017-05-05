@@ -3,6 +3,10 @@ using System.Collections;
 
 public class SMBEnemy : SMBCharacter {
 
+	protected enum SoundEffects {
+		Kick
+	}
+
 	protected SMBConstants.EnemyState _state;
 
 	override protected void Start() {
@@ -26,7 +30,7 @@ public class SMBEnemy : SMBCharacter {
 		Move (xSpeed * (float)side);
 	}
 
-	virtual protected void Die() {
+	virtual protected void Die(GameObject killer) {
 
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
@@ -43,6 +47,7 @@ public class SMBEnemy : SMBCharacter {
 
 		_state = SMBConstants.EnemyState.Dead;
 		_animator.Play ("Die");
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 	}
 
 	bool isOnPlatformEdge(float side) {
@@ -68,7 +73,7 @@ public class SMBEnemy : SMBCharacter {
 		if (playerPosition.y > transform.position.y + 0.1f) {
 
 			if (!isPlayerOnGround) {
-				Die ();
+				Die (SMBGameWorld.Instance.Player.gameObject);
 				playerCollider.SendMessage ("KillEnemy");
 			}
 		}
