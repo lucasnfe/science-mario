@@ -83,6 +83,8 @@ public class SMBShell : SMBItem {
 		_animator.Play ("Spin");
 
 		SMBGameWorld.Instance.Player.DropItem ();
+
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 	}
 
 	void Drag(Vector3 playerPosition, float playerDirection) {
