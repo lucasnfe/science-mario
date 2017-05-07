@@ -22,21 +22,6 @@ public class SMBShell : SMBItem {
 
 	public float _kickForce = 1f;
 
-	void DestroyShell() {
-
-		_body.velocity = Vector2.zero;
-		_body.ApplyForce (Vector2.up);
-		_body.ApplyForce (Vector2.right * -_side * 1.5f);
-
-		_collider.applyHorizCollision = false;
-		_collider.applyVertCollision = false;
-		_body.applyGravity = true;
-
-		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
-
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
-	}
-
 	void Start() {
 
 		_horizontalMask = _collider.horizontalMask;
@@ -147,9 +132,20 @@ public class SMBShell : SMBItem {
 
 	void Die() {
 
-		SetItem ();
-		_sheelState = ShellState.Idle;
+		_sheelState = ShellState.Destroied;
 		_animator.Play ("Idle");
+
+		_body.velocity = Vector2.zero;
+		_body.ApplyForce (Vector2.up);
+		_body.ApplyForce (Vector2.right * -_side * 5f * Time.fixedDeltaTime);
+
+		_collider.applyHorizCollision = false;
+		_collider.applyVertCollision = false;
+		_body.applyGravity = true;
+
+		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
+
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
 	}
 
 	void SolveCollision(Collider2D collider) {
@@ -228,7 +224,7 @@ public class SMBShell : SMBItem {
 					SMBGameWorld.Instance.Player.DropItem ();
 					_sheelState = ShellState.Destroied;
 
-					DestroyShell ();
+					Die ();
 				} 
 			}
 		}

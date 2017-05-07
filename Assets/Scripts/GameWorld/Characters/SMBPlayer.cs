@@ -332,6 +332,8 @@ public class SMBPlayer : SMBCharacter {
 
 	void GrowUp() {
 
+		_audio.PlayOneShot (soundEffects[(int)SoundEffects.GrowUp]);
+
 		if (_state == SMBConstants.PlayerState.GrownUp)
 			return;	
 
@@ -348,8 +350,6 @@ public class SMBPlayer : SMBCharacter {
 		_lockController = true;
 		_body.applyGravity = false;
 		_body.velocity = Vector2.zero;
-
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.GrowUp]);
 
 		_state = SMBConstants.PlayerState.GrownUp;
 	}

@@ -36,6 +36,9 @@ public class SMBPiranhaPlant : SMBEnemy {
 
 		base.Update ();
 
+		if (_state == SMBConstants.EnemyState.Dead)
+			return;
+
 		if (_isMoving)
 			UpdateSpeed ();
 	}
@@ -47,7 +50,7 @@ public class SMBPiranhaPlant : SMBEnemy {
 
 		Vector3 pos = transform.position;
 		pos.x = spawner.transform.position.x;
-		pos.y = spawner.transform.position.y;
+		pos.y = spawner.transform.position.y - 0.5f * SMBGameWorld.Instance.TileSize;
 		transform.position = pos;
 
 		_posBeforeBounce = transform.position;
@@ -87,6 +90,7 @@ public class SMBPiranhaPlant : SMBEnemy {
 			}
 			else {
 
+				_body.velocity.y = 0f;
 				_moveState = MoveState.Idle;
 				transform.position = _posBeforeBounce;
 

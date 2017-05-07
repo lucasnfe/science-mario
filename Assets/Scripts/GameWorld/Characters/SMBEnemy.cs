@@ -35,6 +35,10 @@ public class SMBEnemy : SMBCharacter {
 		if (_state == SMBConstants.EnemyState.Dead)
 			return;
 
+		Vector3 pos = transform.position;
+		pos.z = -9;
+		transform.position = pos;
+
 		_body.velocity = Vector2.zero;
 		_body.ApplyForce (Vector2.up);
 		_body.ApplyForce (Vector2.right * Random.Range(-2f, 2f) * Time.fixedDeltaTime);
