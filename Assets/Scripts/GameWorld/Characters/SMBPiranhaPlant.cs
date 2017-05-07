@@ -65,6 +65,7 @@ public class SMBPiranhaPlant : SMBEnemy {
 			_idleTimer += Time.fixedDeltaTime;
 			if (_idleTimer >= _timeIdle) {
 
+				_collider.Collider.enabled = true;
 				_animator.Play ("Move");
 				_moveState = MoveState.Up;
 				_idleTimer = 0f;
@@ -95,6 +96,7 @@ public class SMBPiranhaPlant : SMBEnemy {
 				transform.position = _posBeforeBounce;
 
 				_animator.Play ("Idle");
+				_collider.Collider.enabled = false;
 			}
 		}
 	}
