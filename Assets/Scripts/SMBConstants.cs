@@ -9,14 +9,24 @@ public static class SMBConstants {
 		Backward = -1
 	}
 
-	public enum EnemyState {
+	public enum CharacterState {
 		Move,
 		Dead
 	}
 
 	public enum PlayerState {
 		Short,
-		GrownUp,
+		GrownUp
+	}
+
+	public enum PlayerSoundEffects {
+		Dead,
+		Jump,
+		Kick,
+		GrowUp
+	}
+
+	public enum CharactersSoundEffects {
 		Dead
 	}
 

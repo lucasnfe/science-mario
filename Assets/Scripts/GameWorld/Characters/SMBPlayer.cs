@@ -4,12 +4,6 @@ using System.Collections;
 [RequireComponent (typeof (SMBParticleSystem))]
 public class SMBPlayer : SMBCharacter {
 
-	enum SoundEffects {
-		Jump,
-		Kick,
-		GrowUp
-	}
-
 	// Custom components
 	private SMBParticleSystem _particleSystem;
 		
@@ -24,8 +18,8 @@ public class SMBPlayer : SMBCharacter {
 	private Bounds  _originalCollider;
 	private Vector2 _velocityBeforeGrowUp;
 
-	private SMBConstants.PlayerState _state;
-	public SMBConstants.PlayerState State { get { return _state; } }
+	private SMBConstants.PlayerState _playerState;
+	public  SMBConstants.PlayerState PlayerState { get { return _playerState; } }
 
 	public float blinkTime = 0.1f;
 	public float runTime = 1f;
@@ -44,7 +38,7 @@ public class SMBPlayer : SMBCharacter {
 
 	override protected void Start() {
 
-		_state = SMBConstants.PlayerState.Short;
+		_playerState = SMBConstants.PlayerState.Short;
 		_particleSystem._shootParticles = false;
 
 		_originalCollider = _collider.GetSize();
@@ -254,32 +248,12 @@ public class SMBPlayer : SMBCharacter {
 		_isCarriyng = true;
 	}
 
-	void Die() {
-
-		_state = SMBConstants.PlayerState.Dead;
+	override protected void Die(GameObject killer, float timeToKill) {
 
 		_lockController = true;
-
 		_particleSystem._shootParticles = false;
 
-		_collider.applyHorizCollision = false;
-		_collider.applyVertCollision = false;
-
-		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
-
-		_body.velocity = Vector2.zero;
-		_body.acceleration = Vector2.zero;
-		_body.applyGravity = false;
-
-		_animator.SetTrigger ("triggerDie");
-		Invoke ("PlayDeadAnimation", 0.3f);
-	}
-
-	void PlayDeadAnimation() {
-
-		_body.applyGravity = true;
-		_body.gravityFactor = 0.5f;
-		_body.ApplyForce (Vector2.up * 2.5f);
+		base.Die (killer, timeToKill);
 	}
 				
 	void Jump() {
@@ -289,7 +263,7 @@ public class SMBPlayer : SMBCharacter {
 			_jumpTimer = longJumpTime;
 			_body.velocity.y = ySpeed * Time.fixedDeltaTime;
 
-			_audio.PlayOneShot (soundEffects[(int)SoundEffects.Jump]);
+			_audio.PlayOneShot (soundEffects[(int)SMBConstants.PlayerSoundEffects.Jump]);
 		}
 
 		if (_jumpTimer > 0f) {
@@ -332,9 +306,9 @@ public class SMBPlayer : SMBCharacter {
 
 	void GrowUp() {
 
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.GrowUp]);
+		_audio.PlayOneShot (soundEffects[(int)SMBConstants.PlayerSoundEffects.GrowUp]);
 
-		if (_state == SMBConstants.PlayerState.GrownUp)
+		if (_playerState == SMBConstants.PlayerState.GrownUp)
 			return;	
 
 		SMBGameWorld.Instance.PauseGame (false);
@@ -351,17 +325,17 @@ public class SMBPlayer : SMBCharacter {
 		_body.applyGravity = false;
 		_body.velocity = Vector2.zero;
 
-		_state = SMBConstants.PlayerState.GrownUp;
+		_playerState = SMBConstants.PlayerState.GrownUp;
 	}
 
-	void TakeDamage() {
+	void TakeDamage(GameObject enemy) {
 
 		if (_isInvincible)
 			return;
 
 		SMBGameWorld.Instance.PauseGame (false);
 
-		if (_state == SMBConstants.PlayerState.GrownUp) {
+		if (_playerState == SMBConstants.PlayerState.GrownUp) {
 
 			_animator.SetTrigger ("triggerDamage");
 			_animator.SetLayerWeight (0, 1);
@@ -376,13 +350,13 @@ public class SMBPlayer : SMBCharacter {
 			_body.velocity = Vector2.zero;
 			_velocityBeforeGrowUp = Vector2.zero;
 
-			_audio.PlayOneShot (soundEffects [(int)SoundEffects.GrowUp]);
+			_audio.PlayOneShot (soundEffects [(int)SMBConstants.PlayerSoundEffects.GrowUp]);
 
-			_state = SMBConstants.PlayerState.Short;
+			_playerState = SMBConstants.PlayerState.Short;
 		} 
-		else if (_state == SMBConstants.PlayerState.Short) {
+		else if (_playerState == SMBConstants.PlayerState.Short) {
 
-			Die ();
+			Die (enemy, 0.3f);
 		}
 	}
 
@@ -407,8 +381,8 @@ public class SMBPlayer : SMBCharacter {
 
 		if (collider.tag == "Block") {
 
-			if (collider.bounds.center.y > transform.position.y)
-				collider.SendMessage ("OnInteraction", this, SendMessageOptions.DontRequireReceiver);
+			collider.SendMessage ("OnVerticalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 
 		base.OnVerticalCollisionEnter (collider);

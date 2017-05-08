@@ -112,7 +112,7 @@ public class SMBGameWorld : SMBSingleton<SMBGameWorld> {
 
 	void Update() {
 
-		if ((_player == null || _player.State == SMBConstants.PlayerState.Dead) && !_isReloadingLevel) {
+		if ((_player == null || _player.State == SMBConstants.CharacterState.Dead) && !_isReloadingLevel) {
 
 			_theme.Stop ();
 

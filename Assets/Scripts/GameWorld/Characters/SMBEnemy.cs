@@ -3,15 +3,9 @@ using System.Collections;
 
 public class SMBEnemy : SMBCharacter {
 
-	protected enum SoundEffects {
-		Kick
-	}
-
-	protected SMBConstants.EnemyState _state;
-
 	override protected void Start() {
 
-		_state = SMBConstants.EnemyState.Move;
+		_state = SMBConstants.CharacterState.Move;
 		base.Start ();
 	}
 
@@ -20,7 +14,7 @@ public class SMBEnemy : SMBCharacter {
 
 		base.Update ();
 
-		if (_state == SMBConstants.EnemyState.Dead)
+		if (_state == SMBConstants.CharacterState.Dead)
 			return;
 
 		SMBConstants.MoveDirection side = SMBConstants.MoveDirection.Forward;
@@ -29,31 +23,7 @@ public class SMBEnemy : SMBCharacter {
 		
 		Move (xSpeed * (float)side);
 	}
-
-	virtual protected void Die(GameObject killer) {
-
-		if (_state == SMBConstants.EnemyState.Dead)
-			return;
-
-		Vector3 pos = transform.position;
-		pos.z = -9;
-		transform.position = pos;
-
-		_body.velocity = Vector2.zero;
-		_body.ApplyForce (Vector2.up);
-		_body.ApplyForce (Vector2.right * Random.Range(-2f, 2f) * Time.fixedDeltaTime);
-
-		_collider.applyHorizCollision = false;
-		_collider.applyVertCollision = false;
-		_body.applyGravity = true;
-
-		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
-
-		_state = SMBConstants.EnemyState.Dead;
-		_animator.Play ("Die");
-		_audio.PlayOneShot (soundEffects[(int)SoundEffects.Kick]);
-	}
-
+		
 	bool isOnPlatformEdge(float side) {
 
 		Vector2 yRayOrigin = _collider.Collider.bounds.max -
@@ -82,7 +52,7 @@ public class SMBEnemy : SMBCharacter {
 			}
 		}
 		else
-			playerCollider.SendMessage ("TakeDamage");
+			playerCollider.SendMessage ("TakeDamage", this.gameObject);
 	}
 
 	override protected void OnVerticalCollisionEnter(Collider2D collider) {

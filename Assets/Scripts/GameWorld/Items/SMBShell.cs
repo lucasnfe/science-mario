@@ -180,7 +180,7 @@ public class SMBShell : SMBItem {
 			}
 			else
 				collider.SendMessage ("TakeDamage", 
-				_collider.Collider, SendMessageOptions.RequireReceiver);
+					this.gameObject, SendMessageOptions.RequireReceiver);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class SMBShell : SMBItem {
 		if (_collider.Collider == collider)
 			return;
 		
-		if (collider.tag == "Enemy" || collider.name == "n" || collider.name == "o") {
+		if (collider.tag == "Enemy" || SMBGameWorld.Instance.TileMap[collider.name].isItem) {
 
 			if (_sheelState == ShellState.Spinning || _sheelState == ShellState.Dragged) {
 

@@ -34,14 +34,19 @@ public class SMBBlock : MonoBehaviour {
 			Bounce ();
 	}
 
-	void OnInteraction(SMBPlayer player) {
+	void OnVerticalCollisionEnter(Collider2D collider) {
 
-		if (_bounceState == BounceState.None && !_isDestroyed) {
-				
-			DestroyBlock (player);
+		if (collider.tag == "Player") {
 
-			_posBeforeBounce = transform.position;
-			_bounceState = BounceState.Up;
+			if (collider.bounds.center.y < transform.position.y) {
+				if (_bounceState == BounceState.None && !_isDestroyed) {
+
+					DestroyBlock (SMBGameWorld.Instance.Player);
+
+					_posBeforeBounce = transform.position;
+					_bounceState = BounceState.Up;
+				}
+			}
 		}
 	}
 

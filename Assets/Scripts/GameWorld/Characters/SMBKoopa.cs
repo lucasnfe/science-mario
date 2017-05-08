@@ -25,12 +25,13 @@ public class SMBKoopa : SMBEnemy {
 		position.x = transform.position.x;
 		position.y = transform.position.y;
 
-		if (killer.name != "n" && killer.name != "o") {
+		if (SMBGameWorld.Instance.TileMap[killer.name].isPlayer) {
 
 			SMBGameWorld.Instance.PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Kick);
 
 			_shell.transform.position = position;
 			_shell.SetActive (true);
+
 			DestroyCharacter ();
 		} 
 		else {

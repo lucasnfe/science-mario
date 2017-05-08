@@ -22,6 +22,10 @@ public class SMBCharacter : MonoBehaviour {
 	public float ySpeed = 5f;
 	public float momentum = 3f;
 	public bool  lockXPosition = true;
+	public Vector2 dieForce;
+
+	protected SMBConstants.CharacterState _state;
+	public    SMBConstants.CharacterState State { get { return _state; } }
 
 	public SMBConstants.MoveDirection direction;
 
@@ -54,6 +58,45 @@ public class SMBCharacter : MonoBehaviour {
 
 		if (side == (float)SMBConstants.MoveDirection.Backward)
 			_renderer.flipX = true;
+	}
+
+	virtual protected void Die(GameObject killer) {
+		Die (killer, 0f);
+	}
+
+	virtual protected void Die(GameObject killer, float timeToKill) {
+
+		if (_state == SMBConstants.CharacterState.Dead)
+			return;
+
+		Vector3 pos = transform.position;
+		pos.z = -9;
+		transform.position = pos;
+
+		_body.velocity = Vector2.zero;
+		_body.acceleration = Vector2.zero;
+		_body.applyGravity = false;
+
+		_collider.applyHorizCollision = false;
+		_collider.applyVertCollision = false;
+
+		gameObject.layer = LayerMask.NameToLayer ("Ignore Raycast");
+
+		_state = SMBConstants.CharacterState.Dead;
+
+		_animator.Play ("Die");
+		Invoke ("PlayDeadAnimation", timeToKill);
+
+		_audio.PlayOneShot (soundEffects[(int)SMBConstants.CharactersSoundEffects.Dead]);
+	}
+
+	void PlayDeadAnimation() {
+
+		_body.applyGravity = true;
+		_body.gravityFactor = 0.5f;
+
+		dieForce.x *= (Random.value < 0.5f ? 1f : -1f);
+		_body.ApplyForce (dieForce);
 	}
 
 	virtual protected void Update() {

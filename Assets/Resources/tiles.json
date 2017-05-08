@@ -8,7 +8,7 @@
 				     "bottom": false, 
 				       "left": false }
 		},
-		{"id": "2", "prefab": "Prefab/ItemCoin", "layer": 4 },
+		{"id": "2", "prefab": "Prefab/ItemCoin", "layer": 4, "isItem": true },
 		{"id": "3", "prefab": "Prefab/GroundGrassBackground", "layer": 1, "isGround": true },
 		{"id": "4", "prefab": "Prefab/BlockStone", "layer": 1},
 		{"id": "5", "prefab": "Prefab/BlockQuestion", "layer": 1},
@@ -39,11 +39,11 @@
 		{"id": "k", "prefab": "Prefab/EnemyRedKoopa", "height": 2, "layer": -1},
 		{"id": "l", "prefab": "Prefab/EnemyGreenKoopa", "height": 2, "layer": -1},
 		{"id": "m", "prefab": "Prefab/Player", "isPlayer": true, "layer": -9 },
-		{"id": "n", "prefab": "Prefab/ItemShellRed", "layer": -2 },
-		{"id": "o", "prefab": "Prefab/ItemShellGreen", "layer": -2 },
+		{"id": "n", "prefab": "Prefab/ItemShellRed", "layer": -2, "isItem": true },
+		{"id": "o", "prefab": "Prefab/ItemShellGreen", "layer": -2, "isItem": true },
 		{"id": "p", "prefab": "Prefab/PipeBody", "width": 2, "layer": -1 },
 		{"id": "q", "prefab": "Prefab/PipePlant", "width": 2, "layer": -1 },
-		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": 2 },
+		{"id": "r", "prefab": "Prefab/ItemMushroomRed", "layer": 2, "isItem": true },
 		{"id": "s", "prefab": "Prefab/EnemyPiranhaPlant", "layer": -1, "width": 2},
 		{"id": "t", "prefab": "Prefab/PipeTop",  "width": 2 },
 		{"id": "v", "prefab": "Prefab/EndPoleTop",  "width": 2, "layer": 1, "isLevelEnd": true }

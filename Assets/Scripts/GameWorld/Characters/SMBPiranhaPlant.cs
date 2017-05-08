@@ -36,7 +36,7 @@ public class SMBPiranhaPlant : SMBEnemy {
 
 		base.Update ();
 
-		if (_state == SMBConstants.EnemyState.Dead)
+		if (_state == SMBConstants.CharacterState.Dead)
 			return;
 
 		if (_isMoving)
@@ -103,6 +103,6 @@ public class SMBPiranhaPlant : SMBEnemy {
 
 	override protected void OnCollisionWithPlayer(Collider2D playerCollider) {
 
-		playerCollider.SendMessage ("TakeDamage");
+		playerCollider.SendMessage ("TakeDamage", this.gameObject);
 	}
 }

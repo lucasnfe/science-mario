@@ -60,7 +60,7 @@ public class SMBCamera : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 
-		if (!player || player.State == SMBConstants.PlayerState.Dead)
+		if (!player || player.State == SMBConstants.CharacterState.Dead)
 			return;
 
 		Vector3 cameraZPos = Vector3.forward * transform.position.z;

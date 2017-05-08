@@ -13,7 +13,7 @@ public class SMBBullet : SMBEnemy {
 		_body.applyGravity = false;
 		_collider.applyHorizCollision = true;
 
-		_state = SMBConstants.EnemyState.Move;
+		_state = SMBConstants.CharacterState.Move;
 
 		this.lockXPosition = false;
 		this.xSpeed = bulletSpeed;
