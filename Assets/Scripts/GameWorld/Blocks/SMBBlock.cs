@@ -24,6 +24,7 @@ public class SMBBlock : MonoBehaviour {
 
 	public float _bounceVelocity = 1f;
 	public float _bounceYDist = 0.15f;
+	public float _enemyKickForce = 1f;
 
 	void Awake() {
 
@@ -42,11 +43,13 @@ public class SMBBlock : MonoBehaviour {
 
 		if (collider.tag == "Player") {
 
-			SMBRigidBody playerBody = collider.GetComponent<SMBRigidBody> ();
-			if (playerBody.velocity.y > 0f)
-				playerBody.velocity.y = 0f;
+			if (collider.bounds.center.y < transform.position.y && 
+				Mathf.Abs(collider.bounds.center.x - transform.position.x) < 0.5f * SMBGameWorld.Instance.TileSize) {
 
-			if (collider.bounds.center.y < transform.position.y) {
+				SMBRigidBody playerBody = collider.GetComponent<SMBRigidBody> ();
+				if (playerBody.velocity.y > 0f)
+					playerBody.velocity.y = 0f;
+				
 				if (_bounceState == BounceState.None && !_isDestroyed) {
 
 					DestroyBlock (SMBGameWorld.Instance.Player);
@@ -60,12 +63,17 @@ public class SMBBlock : MonoBehaviour {
 
 	void OnVerticalTriggerEnter(Collider2D collider) {
 
-		if (collider.tag == "Enemy") {
+		if (_bounceState == BounceState.Up) {
 
-			if (_bounceState == BounceState.Up) {
+			SMBRigidBody body = collider.GetComponent<SMBRigidBody> ();
+			if (body != null)
+				body.ApplyForce (Vector2.up * _enemyKickForce * Time.fixedDeltaTime);
+
+			if (collider.tag == "Enemy")
 				collider.SendMessage ("Die", this.gameObject, SendMessageOptions.DontRequireReceiver);	
-			}
 		}
+
+
 	}
 
 	private void Bounce() {

@@ -206,6 +206,7 @@ public class SMBShell : SMBItem {
 		} 
 		else
 			_side *= -1f;
+
 	}
 
 	void SolveTrigger(Collider2D collider) {
