@@ -94,6 +94,9 @@ public class SMBCollider : MonoBehaviour {
 
 	void ResolveHorizontalCollision(Vector2 xRayOrigin, float xBound, float xDirection) {
 
+		if (_body.velocity.x == 0f)
+			return;
+		
 		// Player collided on x axis, so stop it
 		_body.velocity.x = 0f;
 
@@ -155,6 +158,9 @@ public class SMBCollider : MonoBehaviour {
 	}
 
 	void ResolveVerticalCollision(Vector2 yRayOrigin, float yBound, float yDirection) {
+
+		if (_body.velocity.y == 0f)
+			return;
 
 		// Player collided on y axis, so stop it
 		_body.velocity.y = 0f;

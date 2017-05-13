@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(SMBCollider))]
+[RequireComponent(typeof(SMBRigidBody))]
 public class SMBBlock : MonoBehaviour {
 
 	enum BounceState {
@@ -16,16 +18,18 @@ public class SMBBlock : MonoBehaviour {
 
 	protected bool  _isDestroyed;
 
+	protected SMBRigidBody   _body;
+	protected SMBCollider    _collider;
 	protected Animator       _animator;
-	protected BoxCollider2D  _collider;
 
 	public float _bounceVelocity = 1f;
 	public float _bounceYDist = 0.15f;
 
 	void Awake() {
 
+		_body     = GetComponent<SMBRigidBody> ();
+		_collider = GetComponent<SMBCollider> ();
 		_animator = GetComponent<Animator> ();
-		_collider = GetComponent<BoxCollider2D> ();
 	}
 
 	void Update() {
@@ -38,6 +42,10 @@ public class SMBBlock : MonoBehaviour {
 
 		if (collider.tag == "Player") {
 
+			SMBRigidBody playerBody = collider.GetComponent<SMBRigidBody> ();
+			if (playerBody.velocity.y > 0f)
+				playerBody.velocity.y = 0f;
+
 			if (collider.bounds.center.y < transform.position.y) {
 				if (_bounceState == BounceState.None && !_isDestroyed) {
 
@@ -46,6 +54,16 @@ public class SMBBlock : MonoBehaviour {
 					_posBeforeBounce = transform.position;
 					_bounceState = BounceState.Up;
 				}
+			}
+		} 
+	}
+
+	void OnVerticalTriggerEnter(Collider2D collider) {
+
+		if (collider.tag == "Enemy") {
+
+			if (_bounceState == BounceState.Up) {
+				collider.SendMessage ("Die", this.gameObject, SendMessageOptions.DontRequireReceiver);	
 			}
 		}
 	}
@@ -58,7 +76,7 @@ public class SMBBlock : MonoBehaviour {
 
 			if (currentPos.y <= _posBeforeBounce.y + _bounceYDist) {
 
-				transform.Translate (_bounceVelocity * Vector2.up * Time.fixedDeltaTime);
+				_body.velocity.y = _bounceVelocity;
 			}
 			else  {
 				
@@ -69,11 +87,12 @@ public class SMBBlock : MonoBehaviour {
 
 			if (currentPos.y >= _posBeforeBounce.y) {
 
-				transform.Translate (_bounceVelocity * Vector2.down * Time.fixedDeltaTime);
+				_body.velocity.y = -_bounceVelocity;
 			}
 			else {
 
 				_bounceState = BounceState.None;
+				_body.velocity.y = 0f;
 				transform.position = _posBeforeBounce;
 
 				GivePrize ();

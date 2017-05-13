@@ -213,7 +213,7 @@ public class SMBShell : SMBItem {
 		if (_collider.Collider == collider)
 			return;
 		
-		if (collider.tag == "Enemy" || SMBGameWorld.Instance.TileMap[collider.name].isItem) {
+		if (collider.tag == "Enemy" || SMBGameWorld.Instance.TileMap[collider.name].isWeapon) {
 
 			if (_sheelState == ShellState.Spinning || _sheelState == ShellState.Dragged) {
 

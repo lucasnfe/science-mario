@@ -25,7 +25,11 @@ public class SMBKoopa : SMBEnemy {
 		position.x = transform.position.x;
 		position.y = transform.position.y;
 
-		if (SMBGameWorld.Instance.TileMap[killer.name].isPlayer) {
+		if (SMBGameWorld.Instance.TileMap[killer.name].isWeapon) {
+
+			base.Die (killer);
+		} 
+		else {
 
 			SMBGameWorld.Instance.PlaySoundEffect ((int)SMBConstants.GameWorldSoundEffects.Kick);
 
@@ -33,10 +37,6 @@ public class SMBKoopa : SMBEnemy {
 			_shell.SetActive (true);
 
 			DestroyCharacter ();
-		} 
-		else {
-			
-			base.Die (killer);
 		}
 	}
 }

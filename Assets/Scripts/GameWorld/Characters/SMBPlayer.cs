@@ -290,6 +290,11 @@ public class SMBPlayer : SMBCharacter {
 
 		if (!_isOnGround) {
 
+			if (_isCarriyng) {
+				_animator.Play ("JumpItem");
+				return;
+			}
+
 			if(speed == 0) 
 				_animator.Play ("Jump");
 
@@ -400,6 +405,11 @@ public class SMBPlayer : SMBCharacter {
 			collider.SendMessage ("OnVerticalCollisionEnter", 
 				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
+		else if (collider.tag == "Block") {
+
+			collider.SendMessage ("OnVerticalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
+		}
 		else if (collider.tag == "End") {
 
 			SMBGameWorld.Instance.ReloadLevel ();
@@ -419,6 +429,11 @@ public class SMBPlayer : SMBCharacter {
 				_collider.Collider, SendMessageOptions.DontRequireReceiver);
 		}
 		else if (collider.tag == "Enemy") {
+
+			collider.SendMessage ("OnHorizontalCollisionEnter", 
+				_collider.Collider, SendMessageOptions.DontRequireReceiver);
+		}
+		else if (collider.tag == "Block") {
 
 			collider.SendMessage ("OnHorizontalCollisionEnter", 
 				_collider.Collider, SendMessageOptions.DontRequireReceiver);

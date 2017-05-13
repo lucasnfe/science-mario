@@ -20,6 +20,7 @@ public class SMBTile {
 	public bool   isLevelEnd;
 	public bool   isGround;
 	public bool   isItem;
+	public bool   isWeapon;
 	public int    layer = 0;
 	public int 	  width = 1;
 	public int 	  height = 1;
