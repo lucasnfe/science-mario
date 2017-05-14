@@ -35,9 +35,7 @@ public class SMBMushroomRed : SMBItem {
 
 		_side = (Random.value < 0.5f ? (float)SMBConstants.MoveDirection.Backward : 
 			(float)SMBConstants.MoveDirection.Forward);
-		
-		_body.velocity.x = xSpeed * _side * Time.fixedDeltaTime;
-		_body.velocity.y = 0f;
+
 	}
 
 	void SolveCollision(Collider2D collider) {

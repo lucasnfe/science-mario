@@ -9,6 +9,7 @@ public class SMBPlayer : SMBCharacter {
 		
 	private bool 	_isCoasting;
 	private bool 	_isCarriyng;
+	private bool 	_isDucking;
 	private bool 	_isInvincible;
 	private bool    _lockController;
 	private float   _jumpTimer;
@@ -29,6 +30,7 @@ public class SMBPlayer : SMBCharacter {
 	public float minVelocityToCoast = 0.25f;
 
 	public Bounds grownUpColliderSize;
+	public Bounds duckColliderSize;
 
 	override protected void Awake() {
 
@@ -61,13 +63,24 @@ public class SMBPlayer : SMBCharacter {
 		Jump ();
 		PlayJumpAnimation (speed);
 
-		if (Input.GetKey (KeyCode.LeftArrow)) {
+		_isDucking = false;
+		if(_playerState == SMBConstants.PlayerState.GrownUp)
+			_collider.SetSize (grownUpColliderSize);
+		else
+			_collider.SetSize (_originalCollider);
+
+		if (Input.GetKey (KeyCode.DownArrow)) {
+
+			Duck ();
+		} 
+
+		if (Input.GetKey (KeyCode.LeftArrow) && !_isDucking) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Backward);
 			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Backward);
 			Coast (SMBConstants.MoveDirection.Backward);
 		} 
-		else if (Input.GetKey (KeyCode.RightArrow)) {
+		else if (Input.GetKey (KeyCode.RightArrow) && !_isDucking) {
 
 			Move (speed * (float)SMBConstants.MoveDirection.Forward);
 			PlayMoveAnimation (speed, (float)SMBConstants.MoveDirection.Forward);
@@ -80,7 +93,8 @@ public class SMBPlayer : SMBCharacter {
 
 			if (Mathf.Abs (_body.velocity.x) > SMBConstants.stopingSpeed) {
 
-				if (_isOnGround && !_isCoasting) {
+				if (_isOnGround && !_isCoasting && !_isDucking) {
+
 					if (_isCarriyng)
 
 						_animator.Play ("MoveItem");
@@ -90,7 +104,7 @@ public class SMBPlayer : SMBCharacter {
 			}
 			else {
 
-				if (_isOnGround) {
+				if (_isOnGround && !_isDucking) {
 
 					if (_isCarriyng)
 
@@ -139,6 +153,9 @@ public class SMBPlayer : SMBCharacter {
 		float xDirection = _body.velocity.x >= 0f ? 1f : -1f;
 		float sDirection = speed * direction >= 0f ? 1f : -1f;
 
+		if (_isDucking)
+			return;
+
 		if (_isCoasting && xDirection != sDirection)
 			return;
 
@@ -174,6 +191,22 @@ public class SMBPlayer : SMBCharacter {
 		}
 
 		_particleSystem._shootParticles = false;
+	}
+
+	void Duck() {
+
+		if (_isOnGround) {
+
+			_collider.SetSize (duckColliderSize);
+
+			if (_isCarriyng)
+
+				_animator.Play ("DuckItem");
+			else
+				_animator.Play ("Duck");
+
+			_isDucking = true;
+		}
 	}
 
 	void Coast(SMBConstants.MoveDirection direction) {
@@ -241,6 +274,7 @@ public class SMBPlayer : SMBCharacter {
 	public void DropItem() {
 
 		_isCarriyng = false;
+		_animator.Play ("Kick");
 	}
 
 	public void CarryItem() {
